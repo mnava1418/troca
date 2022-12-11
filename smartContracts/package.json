@@ -1,0 +1,11 @@
+{
+  "name": "trocasamrtcontracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for DAPP",
+  
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Martin Nava",
+  "license": "ISC"
+}
