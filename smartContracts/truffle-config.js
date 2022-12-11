@@ -1,3 +1,5 @@
+require('babel-register');
+require('babel-polyfill');
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -119,7 +121,7 @@ module.exports = {
   },
 
   contracts_directory: './contracts/',
-  contracts_build_directory: './src/abis/',
+  contracts_build_directory: '../trocafront/src/abis/',
 
   // Truffle DB is currently disabled by default; to enable it, change enabled:
   // false to enabled: true. The default storage location can also be
