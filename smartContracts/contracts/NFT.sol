@@ -4,6 +4,8 @@ pragma solidity ^0.8.17;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 
+import "./Troca.sol";
+
 contract NFT is ERC721URIStorage, ERC721Royalty {
     uint256 private tokenId  = 0;
 
@@ -22,12 +24,14 @@ contract NFT is ERC721URIStorage, ERC721Royalty {
     {
         return super.tokenURI(_tokenId);
     }
-    
-    function mint (address owner, string memory _tokenURI, uint96 _royalty) external returns (uint256) {
+   
+    function mint (address _troca, address _owner, string memory _tokenURI, uint96 _royalty) external returns (uint256) {
+        require(Troca(_troca).members(_owner), "Owner must be a member.");
+        
         tokenId ++;
-        _safeMint(owner, tokenId);
+        _safeMint(_owner, tokenId);
         _setTokenURI(tokenId, _tokenURI);
-        _setTokenRoyalty(tokenId, owner, _royalty);
+        _setTokenRoyalty(tokenId, _owner, _royalty);
 
         return tokenId;
     }
