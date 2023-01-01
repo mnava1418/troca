@@ -15,22 +15,16 @@ function Menu() {
     return (
         <Navbar bg="dark" variant="dark" expand="lg" fixed='top'>
         <Container>
-            <Navbar.Brand href={PATHS.main}>
-                <img
-                alt=""
-                src={logo}
-                width="30"
-                height="30"
-                className="d-inline-block align-top"
-                />{' '}
-                Troca</Navbar.Brand>
+            <Navbar.Brand href={PATHS.main} style={{fontWeight: 'bold'}}>
+                TROCA</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-            </Nav>
-            <Form className="d-flex">
-                <Button variant="outline-light" style={{fontWeight: 'bold'}} onClick={handleConnectWallet}><i className="bi bi-wallet-fill" style={{marginRight: '8px'}}/>Connect Wallet</Button>
-            </Form>
+                <Nav className="me-auto">
+                    <Nav.Link href={PATHS.main}>Home</Nav.Link>
+                </Nav>
+                <Form className="d-flex">
+                    <Button variant="outline-light" style={{fontWeight: '600'}} onClick={handleConnectWallet}><i className="bi bi-wallet-fill" style={{marginRight: '8px'}}/>Connect Wallet</Button>
+                </Form>
             </Navbar.Collapse>
         </Container>
         </Navbar>
