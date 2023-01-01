@@ -1,3 +1,9 @@
+:root {
+  --primary-color: white;
+  --secondary-color: #6c757d;
+  --navBar-height: 65px;
+}
+
 .App {
   text-align: center;
   background-color: #282c34;
@@ -9,3 +15,37 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+nav {
+  min-height: var(--navBar-height) !important;
+}
+
+.bg-img {
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.bg-im-cover {
+  background-size: cover;
+}
+
+.full-screen {
+  padding-top: var(--navBar-height);
+  width: 100%;
+  min-height: 100vh;
+}
+
+.full-screen-transparency {
+  width: 100%;
+}
+
+.full-screen-transparency::before {
+  content: "";
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
