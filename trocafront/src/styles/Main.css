@@ -4,6 +4,7 @@ main {
 
 .main-container {
     position: absolute;
+    text-align: center;
 }
 
 .main-content {
