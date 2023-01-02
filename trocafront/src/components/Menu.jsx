@@ -23,7 +23,7 @@ function Menu() {
                     <Nav.Link href={PATHS.main}>Home</Nav.Link>
                 </Nav>
                 <Form className="d-flex">
-                    <Button variant="outline-light" style={{fontWeight: '600'}} onClick={handleConnectWallet}><i className="bi bi-wallet-fill" style={{marginRight: '8px'}}/>Connect Wallet</Button>
+                    <Button variant="outline-light" style={{fontWeight: '600'}} onClick={handleConnectWallet}><i className="bi bi-wallet-fill" style={{marginRight: '8px'}}/>Wallet</Button>
                 </Form>
             </Navbar.Collapse>
         </Container>
