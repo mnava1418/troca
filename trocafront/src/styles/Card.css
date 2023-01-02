@@ -1,7 +1,7 @@
 .card-img-cust {
     width: 80px;
     height: 80px;
-    background-color: white;
+    background-color: whitesmoke;
     border-radius: 50%;
 }
 
@@ -20,4 +20,6 @@ background-image: url('../img/metamask.png');
 
 .card-link-cust:hover {
     transform: scale(1.02);
+    background-color: white !important;
+    color: black !important;
 }
