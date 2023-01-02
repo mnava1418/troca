@@ -2,9 +2,10 @@ import Card from 'react-bootstrap/Card'
 
 import '../../styles/Card.css'
 
-function CardLink({title, text, iconStyle}) {
+function CardLink({id, title, text, iconStyle}) {
     return (
         <Card
+            id={id}
             bg='secondary'
             key='walletCard'
             text='white'
