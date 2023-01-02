@@ -19,7 +19,6 @@ background-image: url('../img/metamask.png');
 }
 
 .card-link-cust:hover {
-    transform: scale(1.02);
     background-color: white !important;
     color: black !important;
 }
