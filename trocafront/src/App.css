@@ -58,3 +58,9 @@ section {
 section h4 {
   color: var(--secondary-color);
 }
+
+.custom-alert {
+  position: absolute;
+  top: var(--navBar-height);
+  z-index: 2000;
+}
