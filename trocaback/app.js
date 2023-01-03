@@ -2,6 +2,7 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const rateLimit = require('express-rate-limit')
 
 const indexRouter = require('./routes/index');
 
@@ -12,7 +13,14 @@ const setMiddlewares = () => {
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'hbs');
 
+  //DOS Attacks parameters
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100 // limit each IP to 100 requests per windowMs
+  });
+
   //app middlewares
+  app.use(limiter);
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
