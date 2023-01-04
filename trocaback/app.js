@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit')
 
 const indexRouter = require('./routes/index');
+const authConfig = require('./config/auth')
 
 const app = express();
 
@@ -29,6 +30,20 @@ const setMiddlewares = () => {
 
 const setRoutes = () => {
   
+  app.use((req, res, next) => {
+    const origin = req.headers.origin
+
+    if(origin === authConfig.origin[process.env.NODE_ENV]) {
+      res.setHeader('Access-Control-Allow-Origin', origin)
+      res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      res.header('Access-Control-Allow-Methods', 'POST');
+
+      next()
+    } else {
+      next(createError(403))
+    }
+  })
+
   //App routes
   app.use('/', indexRouter());
 

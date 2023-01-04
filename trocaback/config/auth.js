@@ -9,5 +9,9 @@ module.exports = {
     jwt: {
         password: process.env.JWT_PASSWORD,
         expires: '24h'
+    },
+
+    origin: {
+        development: 'http://localhost:3000'
     }
 }
