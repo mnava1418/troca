@@ -10,7 +10,7 @@ class User {
             if(account) {
                 const result = await signMessage(account, this.dispatch)
                 if( result.isValid) {
-                    console.log('vamoa hacer el login')
+                    console.log('vamoa hacer el login', {...result, account})
                 }
             } 
         })
