@@ -1,11 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const INITIAL_STATE = {
+    isProcessing: false,
     alert: {
         show: false,
         title: '',
         text: '',
         type: ''
+    },
+    connection: {
+        isConnected: false,
+        account: undefined
     }
 }
 
@@ -19,6 +24,10 @@ export const statusSlice = createSlice({
 
         closeAlert: (state) => {
             state.alert.show = false
+        },
+
+        setIsProcessing: (state, action) => {
+            state.isProcessing = action.payload
         }
     }
 })
@@ -26,10 +35,12 @@ export const statusSlice = createSlice({
 //Actions
 export const {
     setAlert,
-    closeAlert
+    closeAlert,
+    setIsProcessing
 } = statusSlice.actions
 
 //Selectors
 export const alertSelector = (state) => state.status.alert
+export const isProcessingSelector = (state) => state.status.isProcessing
 
 export default statusSlice.reducer
