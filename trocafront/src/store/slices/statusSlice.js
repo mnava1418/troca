@@ -28,6 +28,11 @@ export const statusSlice = createSlice({
 
         setIsProcessing: (state, action) => {
             state.isProcessing = action.payload
+        },
+
+        connectUser: (state, action) => {
+            state.connection.isConnected = true
+            state.connection.account = action.payload
         }
     }
 })
@@ -36,11 +41,13 @@ export const statusSlice = createSlice({
 export const {
     setAlert,
     closeAlert,
-    setIsProcessing
+    setIsProcessing,
+    connectUser
 } = statusSlice.actions
 
 //Selectors
 export const alertSelector = (state) => state.status.alert
 export const isProcessingSelector = (state) => state.status.isProcessing
+export const connectionStatusSelector = (state) => state.status.connection
 
 export default statusSlice.reducer

@@ -1,7 +1,7 @@
 import { connectWallet, signMessage } from '../services/ethServices'
 import { BACK_URLS } from '../config'
 import { post } from '../services/networkService'
-import { setAlert, setIsProcessing } from '../store/slices/statusSlice'
+import { setAlert, setIsProcessing, connectUser } from '../store/slices/statusSlice'
 
 class User {
     constructor (_dispatch) {
@@ -21,6 +21,7 @@ class User {
 
                     if(response.status === 200){
                         localStorage.setItem('jwt', response.data.token)
+                        this.dispatch(connectUser(account))
                     } else {
                         this.dispatch(setAlert({show: true, type: 'danger', title: 'Authentication Error', text: response.data.error}))
                     }

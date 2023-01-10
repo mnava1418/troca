@@ -9,7 +9,7 @@ function CardLink({id, title, text, iconStyle}) {
             bg='secondary'
             key='walletCard'
             text='white'
-            style={{ width: '18rem', marginTop: '24px' }}
+            style={{ width: '18rem'}}
             className="mb-2 card-link-cust"
             border="light"
         >
