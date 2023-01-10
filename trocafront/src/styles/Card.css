@@ -1,0 +1,24 @@
+.card-img-cust {
+    width: 80px;
+    height: 80px;
+    background-color: whitesmoke;
+    border-radius: 50%;
+}
+
+.card-img-cust-icon {
+width: 65%;
+height: 65%;
+}
+
+.card-img-metamask {
+background-image: url('../img/metamask.png');
+}
+
+.card-link-cust {
+    cursor: pointer;
+}
+
+.card-link-cust:hover {
+    background-color: white !important;
+    color: black !important;
+}
