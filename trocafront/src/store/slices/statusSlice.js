@@ -34,6 +34,10 @@ export const statusSlice = createSlice({
         connectUser: (state, action) => {
             state.connection.isConnected = true
             state.connection.account = action.payload
+        },
+
+        disconnectUser: (state) => {
+            state.connection = {isConnected: false, isOnline: false, account: undefined}
         }
     }
 })
@@ -43,7 +47,8 @@ export const {
     setAlert,
     closeAlert,
     setIsProcessing,
-    connectUser
+    connectUser,
+    disconnectUser
 } = statusSlice.actions
 
 //Selectors

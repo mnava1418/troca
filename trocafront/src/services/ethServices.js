@@ -26,7 +26,8 @@ export const connectWallet = async (dispatch) => {
     })
     
     if(accounts && accounts.length > 0) {
-        return accounts[0]
+        const currentAccount = await getConnectedAccount()
+        return currentAccount
     } else {
         return undefined
     }
@@ -45,5 +46,20 @@ export const signMessage = async(account, dispatch) => {
     })
 
     return result
+}
+
+export const getConnectedAccount = async () => {
+    const web3 = getWeb3Provider()
+    const accounts = await web3.eth.getAccounts()
+    .catch(error => {
+        console.error(error)
+        return []
+    })
+
+    if(accounts && accounts.length > 0) {
+        return accounts[0]
+    } else {
+        return undefined
+    }
 }
 

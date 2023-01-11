@@ -1,7 +1,7 @@
-import { connectWallet, signMessage } from '../services/ethServices'
+import { connectWallet, signMessage, getConnectedAccount } from '../services/ethServices'
 import { BACK_URLS } from '../config'
 import { post } from '../services/networkService'
-import { setAlert, setIsProcessing, connectUser } from '../store/slices/statusSlice'
+import { setAlert, setIsProcessing, connectUser, disconnectUser } from '../store/slices/statusSlice'
 
 class User {
     constructor (_dispatch) {
@@ -28,6 +28,22 @@ class User {
                 }
             } 
         })
+    }
+
+    async isConnected() {
+        const token = localStorage.getItem('jwt')
+        const account = await getConnectedAccount()
+            
+        if(token === null || account === undefined) {
+            this.disconnect()
+        } else {
+            console.log('si toy')
+        }
+    }
+
+    disconnect() {
+        localStorage.clear()
+        this.dispatch(disconnectUser())
     }
 }
 
