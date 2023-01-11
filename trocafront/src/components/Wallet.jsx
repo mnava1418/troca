@@ -32,7 +32,7 @@ function Wallet() {
 
     const showActions = () => {
       if(isConnected) {
-        return <i class="bi bi-check-circle" style={{fontSize: '100px', color: 'green'}}></i>        
+        return <i className="bi bi-check-circle" style={{fontSize: '100px', color: 'green'}}></i>        
       } else {
         return <CardLink id={'metaMaskCard'} title='MetaMask' text={cardText} iconStyle='card-img-metamask'/>
       }
@@ -48,4 +48,3 @@ function Wallet() {
   }
   
   export default Wallet;
-  

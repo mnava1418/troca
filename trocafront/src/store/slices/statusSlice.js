@@ -10,6 +10,7 @@ const INITIAL_STATE = {
     },
     connection: {
         isConnected: false,
+        isOnline: false,
         account: undefined
     }
 }
