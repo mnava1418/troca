@@ -38,7 +38,7 @@ function Menu() {
                         </Tooltip>
                     }
                 >
-                    <Nav.Link href={PATHS.profile}>{`${account.substring(0,5)}...${account.substring(account.length - 4)}`} <i className="bi bi-patch-check-fill"></i></Nav.Link>
+                    <Nav.Link href={PATHS.profile}>{`${account.substring(0,5)}...${account.substring(account.length - 4)}`}</Nav.Link>
                 </OverlayTrigger>
                 <OverlayTrigger
                     key={`overlay-online`}
