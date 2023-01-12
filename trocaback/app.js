@@ -32,15 +32,20 @@ const setRoutes = () => {
   
   app.use((req, res, next) => {
     const origin = req.headers.origin
+    const url = req.url
 
-    if(origin === authConfig.origin[process.env.NODE_ENV]) {
-      res.setHeader('Access-Control-Allow-Origin', origin)
-      res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-      res.header('Access-Control-Allow-Methods', 'POST');
-
+    if(url === '/') {
       next()
     } else {
-      next(createError(403))
+      if(origin === authConfig.origin[process.env.NODE_ENV]) {
+        res.setHeader('Access-Control-Allow-Origin', origin)
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.header('Access-Control-Allow-Methods', 'POST');
+  
+        next()
+      } else {
+        next(createError(403))
+      }
     }
   })
 
