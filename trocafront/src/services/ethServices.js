@@ -48,8 +48,11 @@ export const signMessage = async(account, dispatch) => {
     return result
 }
 
-export const getConnectedAccount = async () => {
-    const web3 = getWeb3Provider()
+export const getConnectedAccount = async (web3 = undefined) => {
+    if(web3 === undefined) {
+        web3 = getWeb3Provider()
+    }
+    
     const accounts = await web3.eth.getAccounts()
     .catch(error => {
         console.error(error)
@@ -63,3 +66,19 @@ export const getConnectedAccount = async () => {
     }
 }
 
+export const accountListener = (account, user) => {
+    const web3 = getWeb3Provider()
+
+    const interval = setInterval( async () => {
+        const connectedAccount = await getConnectedAccount(web3)
+
+        if(account !== connectedAccount ) {
+            user.disconnect()
+            clearInterval(interval)
+
+            if(connectedAccount !== undefined) {
+                user.login()
+            }
+        }
+    }, 1000)
+}

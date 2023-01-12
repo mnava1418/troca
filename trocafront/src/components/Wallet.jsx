@@ -17,9 +17,8 @@ function Wallet() {
     useEffect(() => {
       if(!isConnected) {
         document.getElementById('metaMaskCard').addEventListener('click', handleConnection)
-      }
-      // eslint-disable-next-line
-    }, [])
+      }      
+    }, [isConnected])
 
     const handleConnection = () => {
       dispatch(closeAlert())

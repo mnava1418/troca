@@ -1,4 +1,4 @@
-import { connectWallet, signMessage, getConnectedAccount } from '../services/ethServices'
+import { connectWallet, signMessage, getConnectedAccount, accountListener } from '../services/ethServices'
 import { BACK_URLS } from '../config'
 import { post } from '../services/networkService'
 import { setAlert, setIsProcessing, connectUser, disconnectUser } from '../store/slices/statusSlice'
@@ -23,6 +23,7 @@ class User {
                     if(response.status === 200) {
                         localStorage.setItem('jwt', response.data.token)
                         this.dispatch(connectUser(account))
+                        accountListener(account, this)
                     } else {
                         this.dispatch(setAlert({show: true, type: 'danger', title: 'Authentication Error', text: response.data.error}))
                     }
@@ -42,6 +43,8 @@ class User {
 
             if(response.status === 200) {
                 this.dispatch(connectUser(account))
+                accountListener(account, this)
+
             } else {
                 this.disconnect()
             }
@@ -51,7 +54,7 @@ class User {
     disconnect() {
         localStorage.clear()
         this.dispatch(disconnectUser())
-    }
+    }    
 }
 
 export default User
