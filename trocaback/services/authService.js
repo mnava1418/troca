@@ -7,6 +7,20 @@ const generateToken = (payload) => {
     return token
 }
 
+const validateToken = (token) => {
+    let result = undefined
+
+    jwt.verify(token, authConfig.jwt.password, (err, decoded ) => {
+        if(err) {
+            console.error(err)
+        } else {
+            result = decoded
+        }
+    })
+
+    return result
+}
+
 const getProvider = () => {
     const provider = new Web3.providers.HttpProvider("http://127.0.0.1:8545") //TO-DO: Set production provider URL
     return provider
@@ -31,5 +45,6 @@ const login = async (account, signature) => {
 }
 
 module.exports = {
-    login
+    login,
+    validateToken
 }
