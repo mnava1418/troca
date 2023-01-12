@@ -15,7 +15,9 @@ function Wallet() {
     const { isConnected } = useSelector(connectionStatusSelector)
     
     useEffect(() => {
-      document.getElementById('metaMaskCard').addEventListener('click', handleConnection)
+      if(!isConnected) {
+        document.getElementById('metaMaskCard').addEventListener('click', handleConnection)
+      }
       // eslint-disable-next-line
     }, [])
 
