@@ -6,6 +6,7 @@ import { setAlert, setIsProcessing, connectUser, disconnectUser } from '../store
 class User {
     constructor (_dispatch) {
         this.dispatch = _dispatch
+        this.baseURL = BACK_URLS[process.env.NODE_ENV]
     }
     
     login() {
@@ -14,12 +15,12 @@ class User {
                 const result = await signMessage(account, this.dispatch)
                 if( result.isValid) {
                     this.dispatch(setIsProcessing(true))
-                    const baseURL = BACK_URLS[process.env.NODE_ENV]
-                    const response = await post(baseURL, '/auth/login', {signature: result.signature, account})
+                    
+                    const response = await post(this.baseURL, '/auth/login', {signature: result.signature, account})
 
                     this.dispatch(setIsProcessing(false))
 
-                    if(response.status === 200){
+                    if(response.status === 200) {
                         localStorage.setItem('jwt', response.data.token)
                         this.dispatch(connectUser(account))
                     } else {
@@ -37,7 +38,13 @@ class User {
         if(token === null || account === undefined) {
             this.disconnect()
         } else {
-            console.log('si toy')
+            const response = await post(this.baseURL, '/auth/validate', {account}, token)
+
+            if(response.status === 200) {
+                this.dispatch(connectUser(account))
+            } else {
+                this.disconnect()
+            }
         }
     }
 
