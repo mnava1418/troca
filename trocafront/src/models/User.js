@@ -22,8 +22,7 @@ class User {
 
                     if(response.status === 200) {
                         localStorage.setItem('jwt', response.data.token)
-                        this.dispatch(connectUser(account))
-                        accountListener(account, this)
+                        this.connect(account)
                     } else {
                         this.dispatch(setAlert({show: true, type: 'danger', title: 'Authentication Error', text: response.data.error}))
                     }
@@ -42,9 +41,7 @@ class User {
             const response = await post(this.baseURL, '/auth/validate', {account}, token)
 
             if(response.status === 200) {
-                this.dispatch(connectUser(account))
-                accountListener(account, this)
-
+                this.connect(account)
             } else {
                 this.disconnect()
             }
@@ -54,7 +51,12 @@ class User {
     disconnect() {
         localStorage.clear()
         this.dispatch(disconnectUser())
-    }    
+    }
+
+    connect(account) {
+        this.dispatch(connectUser(account))
+        accountListener(account, this)
+    }
 }
 
 export default User
