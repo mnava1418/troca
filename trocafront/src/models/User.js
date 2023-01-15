@@ -1,4 +1,11 @@
-import { connectWallet, signMessage, getConnectedAccount, accountListener } from '../services/ethServices'
+import { 
+    connectWallet, 
+    signMessage, 
+    getConnectedAccount, 
+    accountListener,  
+    loadContracts
+} from '../services/ethServices'
+
 import { BACK_URLS } from '../config'
 import { post } from '../services/networkService'
 import { setAlert, setIsProcessing, connectUser, disconnectUser } from '../store/slices/statusSlice'
@@ -56,6 +63,7 @@ class User {
     connect(account) {
         this.dispatch(connectUser(account))
         accountListener(account, this)
+        loadContracts(this.dispatch)
     }
 }
 

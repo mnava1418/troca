@@ -1,10 +1,33 @@
 import Web3 from 'web3/dist/web3.min'
 import { setAlert } from '../store/slices/statusSlice'
+import { loadContractData } from '../store/slices/contractsSlice'
 import { SIGN_MESSAGE } from '../config'
+
+import NFTContract from '../abis/NFT.json'
+import TrocaContract from '../abis/Troca.json'
+
+const SMART_CONTRACTS = {
+    nft: NFTContract,
+    troca: TrocaContract
+}
 
 const getWeb3Provider = () => {
     const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545')
     return web3
+}
+
+const loadContractDefinition = async (web3, contractDef) => {
+    const networkId = await web3.eth.net.getId()
+    const networks = contractDef.networks
+
+    if(networks[networkId] === undefined) {        
+        return undefined
+    } else {
+        const address = networks[networkId].address
+        const abi = contractDef.abi
+        const contract = new web3.eth.Contract(abi, address)        
+        return contract
+    }
 }
 
 export const isMetamaskAvailable = () => {
@@ -81,4 +104,27 @@ export const accountListener = (account, user) => {
             }
         }
     }, 1000)
+}
+
+export const loadContracts = async(dispatch) => {
+    const web3 = getWeb3Provider()
+    let contractsLoaded = {}
+
+    for(const contractName in SMART_CONTRACTS) {
+        const contract = await loadContractDefinition(web3, SMART_CONTRACTS[contractName])
+
+        if(contract) {
+            contractsLoaded[contractName] = contract
+
+        } else {
+            contractsLoaded = {}
+            break
+        }
+    }
+
+    if(Object.keys(contractsLoaded).length == 0) {
+        dispatch(setAlert({show: true, type: 'danger', title: 'Error loading contracts.', text: "Select another network."}))
+    } else {
+        dispatch(loadContractData({web3, contracts: contractsLoaded}))
+    }
 }
