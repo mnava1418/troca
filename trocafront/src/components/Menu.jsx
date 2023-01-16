@@ -9,6 +9,7 @@ import Spinner from 'react-bootstrap/Spinner'
 import { useSelector } from 'react-redux';
 
 import { connectionStatusSelector } from '../store/slices/statusSlice'
+import { parseAccount } from '../services/ethServices';
 import { PATHS } from '../config'
 
 function Menu() {
@@ -38,7 +39,7 @@ function Menu() {
                         </Tooltip>
                     }
                 >
-                    <Nav.Link href={PATHS.profile}>{`${account.substring(0,5)}...${account.substring(account.length - 4)}`}</Nav.Link>
+                    <Nav.Link href={PATHS.profile}>{parseAccount(account)}</Nav.Link>
                 </OverlayTrigger>
                 <OverlayTrigger
                     key={`overlay-online`}

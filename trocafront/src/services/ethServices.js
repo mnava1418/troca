@@ -122,9 +122,17 @@ export const loadContracts = async(dispatch) => {
         }
     }
 
-    if(Object.keys(contractsLoaded).length == 0) {
+    if(Object.keys(contractsLoaded).length === 0) {
         dispatch(setAlert({show: true, type: 'danger', title: 'Error loading contracts.', text: "Select another network."}))
     } else {
         dispatch(loadContractData({web3, contracts: contractsLoaded}))
+    }
+}
+
+export const parseAccount = (account) => {
+    if(account === undefined || account.length < 5) {
+        return ''
+    } else {
+        return `${account.substring(0,5)}...${account.substring(account.length - 4)}`
     }
 }
