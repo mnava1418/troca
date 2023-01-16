@@ -15,7 +15,7 @@ function Main() {
             </h4>
             <br />
             <div className='d-flex justify-content-center align-items-center main-actions'>
-              <Button variant="secondary" style={{fontWeight: '600'}}>Explore More</Button>
+              <Button variant="primary" style={{fontWeight: '600'}}>Explore More</Button>
               <Button variant="outline-light" style={{fontWeight: '600'}}>Become a Member</Button>
             </div>
           </div>

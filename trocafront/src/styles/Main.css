@@ -3,8 +3,8 @@ main {
 }
 
 .main-container {
-    position: absolute;
     text-align: center;
+    z-index: 10;
 }
 
 .main-content {
