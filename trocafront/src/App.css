@@ -31,8 +31,7 @@ nav {
   background-size: contain;
 }
 
-.full-screen {
-  padding-top: var(--navBar-height);
+.full-screen {  
   width: 100%;
   min-height: 100vh;
 }
