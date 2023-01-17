@@ -5,7 +5,13 @@ import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner'
 import User from '../models/User';
 
-import { connectionStatusSelector, isProcessingSelector, setIsProcessing } from '../store/slices/statusSlice';
+import { 
+    connectionStatusSelector, 
+    isProcessingSelector, 
+    setIsProcessing, 
+    updateUserName 
+} from '../store/slices/statusSlice';
+
 import { parseAccount } from '../services/ethServices';
 import { PATHS } from '../config';
 
@@ -91,6 +97,7 @@ function Profile() {
                                 type="text"
                                 placeholder="Set your username"
                                 defaultValue={userInfo.username}
+                                onChange={(e) => {dispatch(updateUserName(e.target.value))}}
                             />
                             <Form.Control.Feedback type="invalid" style={{margin: '8px 0px 0px 0px'}}>Choose a username.</Form.Control.Feedback>
                         </Form.Group>
