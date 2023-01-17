@@ -1,6 +1,7 @@
 const Web3 = require('web3')
 const jwt = require('jsonwebtoken')
 const authConfig = require('../config/auth')
+const userService = require('./userService')
 
 const generateToken = (payload) => {
     const token = jwt.sign(payload, authConfig.jwt.password, {expiresIn: authConfig.jwt.expires})
@@ -35,9 +36,15 @@ const login = async (account, signature) => {
     } catch (error) {
         console.error(error)
     }
+    
+    if(originalAccount !== '' && originalAccount.toLowerCase() === account.toLowerCase()) {
+        const token = generateToken({account: originalAccount})    
+        let userInfo = await userService.getUserInfo(originalAccount)
 
-    if(originalAccount.toLowerCase() === account.toLowerCase()) {
-        const token = generateToken({account: originalAccount})
+        if(!userInfo) {            
+            await userService.updateUserInfo(account)
+        }
+
         return {isValid: true, token}
     } else {
         return {isValid: false, error: 'Unable to authenticate account.'}
