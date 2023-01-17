@@ -13,5 +13,10 @@ module.exports = {
 
     origin: {
         development: 'http://localhost:3000'
+    },
+
+    firebase: {
+        credential: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+        dbURL: process.env.FIREBASE_DB_URL
     }
 }

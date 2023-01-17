@@ -1,4 +1,5 @@
 const app = require('../app');
+const firebase = require('../loaders/firebaseLoader')
 const http = require('http');
 const port = 9000
 
@@ -9,6 +10,9 @@ const startServer = () => {
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);
+
+  //Loaders
+  firebase()
 }
 
 const onError = (error) => {
@@ -36,7 +40,7 @@ const onError = (error) => {
 }
 
 const onListening = () => {
-  console.log('Listening on ' + port);
+  console.info('Listening on ' + port);
 }
 
 startServer()
