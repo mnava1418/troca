@@ -31,7 +31,8 @@ nav {
   background-size: contain;
 }
 
-.full-screen {  
+.full-screen {
+  padding-top: var(--navBar-height);
   width: 100%;
   min-height: 100vh;
 }
@@ -61,5 +62,5 @@ section h4 {
 .custom-alert {
   position: absolute;
   top: var(--navBar-height);
-  z-index: 2000;
+  z-index: 1000;
 }

@@ -51,6 +51,10 @@ export const statusSlice = createSlice({
                     isMember: false
                 }
             }
+        },
+
+        setUserInfo: (state, action) => {
+            state.connection.userInfo = action.payload
         }
     }
 })
@@ -61,7 +65,8 @@ export const {
     closeAlert,
     setIsProcessing,
     connectUser,
-    disconnectUser
+    disconnectUser,
+    setUserInfo
 } = statusSlice.actions
 
 //Selectors

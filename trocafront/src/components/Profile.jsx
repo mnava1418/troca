@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner'
+import User from '../models/User';
 
 import { connectionStatusSelector, isProcessingSelector, setIsProcessing } from '../store/slices/statusSlice';
 import { parseAccount } from '../services/ethServices';
@@ -20,7 +21,11 @@ function Profile() {
     useEffect(() => {
         if(!isConnected) {
             window.location.href = PATHS.wallet
-        }
+        } else {
+            const user = new User(dispatch)
+            user.getUserInfo()
+        } 
+        
     }, [isConnected])
 
     const handleSubmit = (action) => {

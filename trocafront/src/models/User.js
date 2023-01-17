@@ -6,9 +6,16 @@ import {
     loadContracts
 } from '../services/ethServices'
 
+import { 
+    setAlert, 
+    setIsProcessing, 
+    connectUser, 
+    disconnectUser,
+    setUserInfo
+} from '../store/slices/statusSlice'
+
 import { BACK_URLS } from '../config'
-import { post } from '../services/networkService'
-import { setAlert, setIsProcessing, connectUser, disconnectUser } from '../store/slices/statusSlice'
+import { post, get } from '../services/networkService'
 
 class User {
     constructor (_dispatch) {
@@ -64,6 +71,17 @@ class User {
         this.dispatch(connectUser(account))
         accountListener(account, this)
         loadContracts(this.dispatch)
+    }
+
+    async getUserInfo() {
+        const token = localStorage.getItem('jwt')
+        const response = await get(this.baseURL, '/user', token)
+
+        if(response.status === 200) {
+            this.dispatch(setUserInfo(response.data.userInfo))
+        } else {
+            this.dispatch(setAlert({show: true, type: 'danger', title: 'Unable to get user info', text: response.data.error}))
+        }        
     }
 }
 
