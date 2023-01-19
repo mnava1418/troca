@@ -17,6 +17,7 @@
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^9.0.0",
     "morgan": "~1.9.1",
+    "validator": "^13.7.0",
     "web3": "^1.8.1"
   }
 }

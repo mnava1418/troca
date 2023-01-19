@@ -40,7 +40,7 @@ const setRoutes = () => {
       if(origin === authConfig.origin[process.env.NODE_ENV]) {
         res.setHeader('Access-Control-Allow-Origin', origin)
         res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-        res.header('Access-Control-Allow-Methods', 'POST');
+        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST');
   
         next()
       } else {
