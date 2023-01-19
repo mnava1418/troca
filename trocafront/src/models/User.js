@@ -80,8 +80,23 @@ class User {
         if(response.status === 200) {
             this.dispatch(setUserInfo(response.data.userInfo))
         } else {
-            this.dispatch(setAlert({show: true, type: 'danger', title: 'Unable to get user info', text: response.data.error}))
+            this.dispatch(setAlert({show: true, type: 'danger', title: 'Error', text: response.data.error}))
         }        
+    }
+
+    async updateUserInfo(email, username) {
+        const token = localStorage.getItem('jwt')
+        const userInfo = {email, username, img: ''}
+        const response = await post(this.baseURL, '/user', userInfo, token)
+
+        if(response.status === 200) {
+            this.dispatch(setUserInfo(userInfo))
+            this.dispatch(setAlert({show: true, type: 'success', title: 'Ok', text: 'User info saved.'}))
+        } else {
+            this.dispatch(setAlert({show: true, type: 'danger', title: 'Error', text: response.data.error}))
+        }
+
+        this.dispatch(setIsProcessing(false))
     }
 }
 

@@ -9,7 +9,8 @@ import {
     connectionStatusSelector, 
     isProcessingSelector, 
     setIsProcessing, 
-    updateUserName 
+    updateUserName,
+    closeAlert
 } from '../store/slices/statusSlice';
 
 import { parseAccount } from '../services/ethServices';
@@ -23,12 +24,12 @@ function Profile() {
     const { isConnected, account, userInfo } = useSelector(connectionStatusSelector)
     const isProcessing = useSelector(isProcessingSelector)
     const dispatch = useDispatch()
+    const user = new User(dispatch)
 
     useEffect(() => {
         if(!isConnected) {
             window.location.href = PATHS.wallet
-        } else {
-            const user = new User(dispatch)
+        } else {            
             user.getUserInfo()
         } 
         
@@ -38,6 +39,16 @@ function Profile() {
         const form = document.getElementById('profileForm')
         if (form.checkValidity()) {
             dispatch(setIsProcessing(true))
+            dispatch(closeAlert())
+
+            if(action === 'save') {
+                const email = document.getElementById('userEmail').value
+                const username = document.getElementById('userName').value
+                user.updateUserInfo(email, username)
+            } else {
+                alert('Vamoasernos miembros')
+            }
+
         } else {
             setValidated(true);
         }
