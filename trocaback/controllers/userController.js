@@ -24,10 +24,11 @@ const updateUserInfo = async (req, res) => {
             img = await ethService.ipfsUploadImg(imgData.buffer)
         }
 
-        const result = await userService.updateUserInfo(account, {username: username.trim(), email: email.trim(), img: img.trim()})
+        const userInfo = {username: username.trim(), email: email.trim(), img: img.trim()}
+        const result = await userService.updateUserInfo(account, userInfo)
 
         if(result) {
-            res.status(200).json({message: 'Ok'})
+            res.status(200).json({message: 'Ok', userInfo})
         } else {
             res.status(500).json({error: 'Unable to update user information.'})
         }
