@@ -1,4 +1,5 @@
 const userService = require('../services/userService')
+const ethService = require('../services/ethService')
 
 const getUserInfo = async (req, res) => {
     const account = req.originalAccount
@@ -13,11 +14,16 @@ const getUserInfo = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
     const account = req.originalAccount
-    const {username, email, img} = req.body
-    
+    let {username, email, img} = req.body
+    const imgData = req.file
+
     const validationResult = await userService.validateUserInfo(account.trim(), email.trim(), username.trim())
 
     if(validationResult.success) {
+        if(imgData) {
+            img = await ethService.ipfsUploadImg(imgData.buffer)
+        }
+
         const result = await userService.updateUserInfo(account, {username: username.trim(), email: email.trim(), img: img.trim()})
 
         if(result) {

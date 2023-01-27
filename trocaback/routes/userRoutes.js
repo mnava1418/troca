@@ -1,11 +1,13 @@
 const express = require('express')
+const multer = require('multer')
 const authController = require('../controllers/authController')
 const userController = require('../controllers/userController')
 
 const router = express.Router()
+const upload = multer()
 
 module.exports = () => {    
     router.get('/', authController.validateToken, userController.getUserInfo)
-    router.post('/', authController.validateToken, userController.updateUserInfo)
+    router.post('/', authController.validateToken, upload.single('imgData'), userController.updateUserInfo)
     return router
 }

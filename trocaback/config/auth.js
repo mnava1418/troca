@@ -18,5 +18,10 @@ module.exports = {
     firebase: {
         credential: process.env.GOOGLE_APPLICATION_CREDENTIALS,
         dbURL: process.env.FIREBASE_DB_URL
+    },
+
+    infura : {
+        projectId: process.env.INFURA_PROJECT_ID,
+        secret: process.env.INFURA_PROJECT_SECRET
     }
 }
