@@ -1,3 +1,5 @@
+import FormData from 'form-data'
+
 import { 
     connectWallet, 
     signMessage, 
@@ -79,18 +81,29 @@ class User {
 
         if(response.status === 200) {
             this.dispatch(setUserInfo(response.data.userInfo))
+            return response.data.userInfo
         } else {
             this.dispatch(setAlert({show: true, type: 'danger', title: 'Error', text: response.data.error}))
+            return {}
         }        
     }
 
-    async updateUserInfo(email, username) {
+    async updateUserInfo(email, username, img, imgFile) {
         const token = localStorage.getItem('jwt')
-        const userInfo = {email, username, img: ''}
-        const response = await post(this.baseURL, '/user', userInfo, token)
+
+        const userInfo = new FormData()
+        userInfo.append('email', email)
+        userInfo.append('username', username)
+        userInfo.append('img', img)
+
+        if(imgFile !== undefined) {
+            userInfo.append('imgData', imgFile)
+        }
+
+        const response = await post(this.baseURL, '/user', userInfo, token, {'Content-Type': 'multipart/form-data'})
 
         if(response.status === 200) {
-            this.dispatch(setUserInfo(userInfo))
+            this.dispatch(setUserInfo(response.data.userInfo))
             this.dispatch(setAlert({show: true, type: 'success', title: 'Ok', text: 'User info saved.'}))
         } else {
             this.dispatch(setAlert({show: true, type: 'danger', title: 'Error', text: response.data.error}))

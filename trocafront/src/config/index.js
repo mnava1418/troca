@@ -9,3 +9,5 @@ export const SIGN_MESSAGE = 'Please sign this message to validate you are the ow
 export const BACK_URLS = {
     development: 'http://localhost:9000',
 }
+
+export const INFURA_URL = 'https://troca.infura-ipfs.io/ipfs'
