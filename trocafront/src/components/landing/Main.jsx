@@ -1,8 +1,13 @@
+import { useSelector } from 'react-redux'
+import { connectionStatusSelector } from '../../store/slices/statusSlice';
+
 import Button from 'react-bootstrap/Button';
 
 import '../../styles/Main.css'
 
 function Main() {
+    const { isConnected, isMember } = useSelector(connectionStatusSelector)
+
     return (
       <main className="full-screen full-screen-transparency bg-img bg-im-cover d-flex flex-column justify-content-center align-items-center">
         <div className="d-flex flex-column justify-content-center align-items-center main-container">
@@ -16,7 +21,7 @@ function Main() {
             <br />
             <div className='d-flex justify-content-center align-items-center main-actions'>
               <Button variant="primary" style={{fontWeight: '600'}}>Explore More</Button>
-              <Button variant="outline-light" style={{fontWeight: '600'}}>Become a Member</Button>
+              {(isConnected && !isMember) ?<Button variant="outline-light" style={{fontWeight: '600'}}>Become a Member</Button> : <></>}
             </div>
           </div>
         </div>

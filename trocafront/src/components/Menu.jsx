@@ -15,7 +15,7 @@ import { PATHS } from '../config'
 import logo from '../img/logoTransparent.png'
 
 function Menu() {
-    const { isConnected, isOnline, account } = useSelector(connectionStatusSelector)
+    const { isConnected, isOnline, account, isMember } = useSelector(connectionStatusSelector)
     
     const handleConnectWallet = () => {
         window.location.href = PATHS.wallet
@@ -41,7 +41,13 @@ function Menu() {
                         </Tooltip>
                     }
                 >
-                    <Nav.Link href={PATHS.profile}>{parseAccount(account)}</Nav.Link>
+                    <Nav.Link href={PATHS.profile}>{
+                        isMember ? 
+                            <><i className='bi bi-check-circle-fill' style={{color: '#0d6efd'}}></i> {parseAccount(account) }</>
+                        :
+                            parseAccount(account) 
+                        }
+                    </Nav.Link>
                 </OverlayTrigger>
                 <OverlayTrigger
                     key={`overlay-online`}

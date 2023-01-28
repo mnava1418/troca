@@ -23,7 +23,7 @@ function Profile() {
     const [validated, setValidated] = useState(false);
     const [imgFile, setImgFile] = useState(undefined)
 
-    const { isConnected, account, userInfo } = useSelector(connectionStatusSelector)
+    const { isConnected, account, userInfo, isMember } = useSelector(connectionStatusSelector)
     const isProcessing = useSelector(isProcessingSelector)
     
     const dispatch = useDispatch()
@@ -68,7 +68,7 @@ function Profile() {
     };
 
     const getMembetButton = () => {
-        if(!userInfo.isMember) {
+        if(!isMember) {
             return(
                 <Form.Group controlId="memberBtn">
                     <Button variant="outline-light" style={{fontWeight: '600'}} onClick={() => handleSubmit('member')}>Become a Member</Button>
