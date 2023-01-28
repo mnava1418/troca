@@ -11,12 +11,12 @@ const INITIAL_STATE = {
     connection: {
         isConnected: false,
         isOnline: false,
+        isMember: false,
         account: undefined,
         userInfo: {
             username: '',
             email: '',
-            img: '',
-            isMember: false
+            img: ''
         }
     }
 }
@@ -39,16 +39,16 @@ export const statusSlice = createSlice({
 
         connectUser: (state, action) => {
             state.connection.isConnected = true
-            state.connection.account = action.payload
+            state.connection.account = action.payload.account
+            state.connection.isMember = action.payload.isMember
         },
 
         disconnectUser: (state) => {
-            state.connection = { isConnected: false, isOnline: false, account: undefined,
+            state.connection = { isConnected: false, isOnline: false, isMember: false, account: undefined,
                 userInfo: {
                     username: '',
                     email: '',
-                    img: '',
-                    isMember: false
+                    img: ''
                 }
             }
         },

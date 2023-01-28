@@ -127,6 +127,8 @@ export const loadContracts = async(dispatch) => {
     } else {
         dispatch(loadContractData({web3, contracts: contractsLoaded}))
     }
+
+    return contractsLoaded
 }
 
 export const parseAccount = (account) => {

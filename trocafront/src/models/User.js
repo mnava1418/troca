@@ -38,7 +38,7 @@ class User {
 
                     if(response.status === 200) {
                         localStorage.setItem('jwt', response.data.token)
-                        this.connect(account)
+                        await this.connect(account)
                     } else {
                         this.dispatch(setAlert({show: true, type: 'danger', title: 'Authentication Error', text: response.data.error}))
                     }
@@ -57,11 +57,16 @@ class User {
             const response = await post(this.baseURL, '/auth/validate', {account}, token)
 
             if(response.status === 200) {
-                this.connect(account)
+                await this.connect(account)
             } else {
                 this.disconnect()
             }
         }
+    }
+
+    async isMember(troca, account) {
+        const result = await troca.methods.members(account).call()
+        return result
     }
 
     disconnect() {
@@ -69,10 +74,16 @@ class User {
         this.dispatch(disconnectUser())
     }
 
-    connect(account) {
-        this.dispatch(connectUser(account))
+    async connect(account) {
+        const contracts = await loadContracts(this.dispatch)
+        let isMember = false
+
+        if(contracts.troca) {
+            isMember = await this.isMember(contracts.troca, account)
+        }
+        
+        this.dispatch(connectUser({account, isMember}))
         accountListener(account, this)
-        loadContracts(this.dispatch)
     }
 
     async getUserInfo() {
