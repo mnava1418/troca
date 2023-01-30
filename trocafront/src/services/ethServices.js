@@ -138,3 +138,17 @@ export const parseAccount = (account) => {
         return `${account.substring(0,5)}...${account.substring(account.length - 4)}`
     }
 }
+
+export const parseError = (error) => {
+    if(error.code === 4001) {
+        return error.message
+    } else {
+        error = error.message.split('___')
+
+        if(error.length > 1) {
+            return error[1]
+        } else {
+            return 'Unexpected error. Try again later.'
+        }
+    }
+}
