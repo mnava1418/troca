@@ -22,5 +22,7 @@ export const {
 } = contractsSlice.actions
 
 //Selectors
+export const web3Selector = (state) => state.contracts.web3
+export const contractsSelector = (state) => state.contracts.contracts
 
 export default contractsSlice.reducer
