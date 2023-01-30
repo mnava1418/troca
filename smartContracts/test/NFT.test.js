@@ -3,7 +3,7 @@ const NFT = artifacts.require('NFT')
 const Troca = artifacts.require('Troca')
 
 /*ERROR MESSAGES */
-const ERROR_OWNER_MEMBER = "VM Exception while processing transaction: revert Owner must be a member."
+const ERROR_OWNER_MEMBER = "VM Exception while processing transaction: revert ___Owner must be a member.___"
 
 const getTokens = (tokens) => {
     return new web3.utils.BN(

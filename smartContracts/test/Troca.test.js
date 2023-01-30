@@ -3,8 +3,8 @@ const eth = new web3(web3.givenProvider).eth;
 const Troca = artifacts.require('Troca')
 
 /*ERROR MESSAGES */
-const ERROR_FEE = "VM Exception while processing transaction: revert Membership fee is mandatory"
-const ERROR_MEMBER = "VM Exception while processing transaction: revert You are already a member"
+const ERROR_FEE = "VM Exception while processing transaction: revert ___Membership fee is mandatory.___"
+const ERROR_MEMBER = "VM Exception while processing transaction: revert ___You are already a member.___"
 
 const getTokens = (tokens) => {
     return new web3.utils.BN(

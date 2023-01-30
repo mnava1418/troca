@@ -22,8 +22,8 @@ contract Troca {
     }
 
     function subscribe () payable external {
-        require(msg.value > 0, "Membership fee is mandatory.");
-        require(!members[msg.sender], "You are already a member.");
+        require(msg.value > 0, "___Membership fee is mandatory.___");
+        require(!members[msg.sender], "___You are already a member.___");
         
         ownerAccount.transfer(msg.value);
         members[msg.sender] = true;

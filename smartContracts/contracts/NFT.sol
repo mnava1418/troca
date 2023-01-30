@@ -26,7 +26,7 @@ contract NFT is ERC721URIStorage, ERC721Royalty {
     }
    
     function mint (address _troca, address _owner, string memory _tokenURI, uint96 _royalty) external returns (uint256) {
-        require(Troca(_troca).members(_owner), "Owner must be a member.");
+        require(Troca(_troca).members(_owner), "___Owner must be a member.___");
         
         tokenId ++;
         _safeMint(_owner, tokenId);
