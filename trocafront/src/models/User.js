@@ -5,7 +5,8 @@ import {
     signMessage, 
     getConnectedAccount, 
     accountListener,  
-    loadContracts
+    loadContracts,
+    parseError
 } from '../services/ethServices'
 
 import { 
@@ -13,7 +14,8 @@ import {
     setIsProcessing, 
     connectUser, 
     disconnectUser,
-    setUserInfo
+    setUserInfo,
+    setIsMember
 } from '../store/slices/statusSlice'
 
 import { BACK_URLS } from '../config'
@@ -121,6 +123,21 @@ class User {
         }
 
         this.dispatch(setIsProcessing(false))
+    }
+
+    becomeMember(account, troca, web3, fee = '1') {
+        troca.methods.subscribe().send({from: account, value: web3.utils.toWei(fee, 'ether')})
+        .on('transactionHash', () => {
+            this.dispatch(setAlert({show: true, type: 'success', title: '', text: 'Congrats! You are a new member.'}))
+            this.dispatch(setIsMember(true))
+            this.dispatch(setIsProcessing(false))
+        })
+        .on('error', (error) => {
+            console.error(error)
+            const errorMessage = parseError(error)
+            this.dispatch(setAlert({show: true, type: 'danger', title: '', text: errorMessage}))
+            this.dispatch(setIsProcessing(false))
+        })
     }
 }
 
