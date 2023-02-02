@@ -3,12 +3,11 @@ import { useDispatch } from 'react-redux';
 
 import { closeAlert } from '../../store/slices/statusSlice'
 
-function CustomAlert({type, title, text}) {
+function CustomAlert({type, text}) {
     const dispatch = useDispatch()
 
     return (
-        <Alert variant={type} onClose={() => dispatch(closeAlert())} dismissible className='custom-alert'>
-            <Alert.Heading>{title}</Alert.Heading>
+        <Alert variant={type} onClose={() => dispatch(closeAlert())} dismissible className='custom-alert'>            
             <p>
             {text}
             </p>

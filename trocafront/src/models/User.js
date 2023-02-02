@@ -42,7 +42,7 @@ class User {
                         localStorage.setItem('jwt', response.data.token)
                         await this.connect(account)
                     } else {
-                        this.dispatch(setAlert({show: true, type: 'danger', title: 'Authentication Error', text: response.data.error}))
+                        this.dispatch(setAlert({show: true, type: 'danger', text: response.data.error}))
                     }
                 }
             } 
@@ -96,7 +96,7 @@ class User {
             this.dispatch(setUserInfo(response.data.userInfo))
             return response.data.userInfo
         } else {
-            this.dispatch(setAlert({show: true, type: 'danger', title: 'Error', text: response.data.error}))
+            this.dispatch(setAlert({show: true, type: 'danger', text: response.data.error}))
             return {}
         }        
     }
@@ -117,9 +117,9 @@ class User {
 
         if(response.status === 200) {
             this.dispatch(setUserInfo(response.data.userInfo))
-            this.dispatch(setAlert({show: true, type: 'success', title: 'Ok', text: 'User info saved.'}))
+            this.dispatch(setAlert({show: true, type: 'success', text: 'User info saved.'}))
         } else {
-            this.dispatch(setAlert({show: true, type: 'danger', title: 'Error', text: response.data.error}))
+            this.dispatch(setAlert({show: true, type: 'danger', text: response.data.error}))
         }
 
         this.dispatch(setIsProcessing(false))
@@ -128,14 +128,14 @@ class User {
     becomeMember(account, troca, web3, fee = '1') {
         troca.methods.subscribe().send({from: account, value: web3.utils.toWei(fee, 'ether')})
         .on('transactionHash', () => {
-            this.dispatch(setAlert({show: true, type: 'success', title: '', text: 'Congrats! You are a new member.'}))
+            this.dispatch(setAlert({show: true, type: 'success', text: 'Congrats! You are a new member.'}))
             this.dispatch(setIsMember(true))
             this.dispatch(setIsProcessing(false))
         })
         .on('error', (error) => {
             console.error(error)
             const errorMessage = parseError(error)
-            this.dispatch(setAlert({show: true, type: 'danger', title: '', text: errorMessage}))
+            this.dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
             this.dispatch(setIsProcessing(false))
         })
     }

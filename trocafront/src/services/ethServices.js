@@ -56,7 +56,7 @@ export const connectWallet = async (dispatch) => {
     const accounts = await window.ethereum.request({method: 'eth_requestAccounts'})
     .catch(error => {
         console.error(error)
-        dispatch(setAlert({show: true, type: 'danger', title: 'MetaMask Error', text: error.message}))
+        dispatch(setAlert({show: true, type: 'danger', text: error.message}))
         return []
     })
     
@@ -76,7 +76,7 @@ export const signMessage = async(account, dispatch) => {
     })
     .catch(error => {
         console.error(error)
-        dispatch(setAlert({show: true, type: 'danger', title: 'MetaMask Error', text: error.message}))
+        dispatch(setAlert({show: true, type: 'danger', text: error.message}))
         return {isValid: false}
     })
 
@@ -135,7 +135,7 @@ export const loadContracts = async(dispatch) => {
     }
 
     if(Object.keys(contractsLoaded).length === 0) {
-        dispatch(setAlert({show: true, type: 'danger', title: 'Error loading contracts.', text: "Select another network."}))
+        dispatch(setAlert({show: true, type: 'danger', text: "Select another network."}))
     } else {
         dispatch(loadContractData({web3, contracts: contractsLoaded}))
     }

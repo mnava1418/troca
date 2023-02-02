@@ -50,7 +50,7 @@ function App() {
   return (
     <div className="App">
       <Menu />
-      {alert.show ? <CustomAlert type={alert.type} title={alert.title} text={alert.text} /> : <></>}
+      {alert.show ? <CustomAlert type={alert.type} text={alert.text} /> : <></>}
       {localProcessing ? <Spinner animation='grow' variant='secondary'/> : showApp()}      
     </div>
   );
