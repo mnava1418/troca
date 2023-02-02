@@ -2,6 +2,7 @@ import Web3 from 'web3/dist/web3.min'
 import { setAlert } from '../store/slices/statusSlice'
 import { loadContractData } from '../store/slices/contractsSlice'
 import { SIGN_MESSAGE } from '../config'
+import { get } from './networkService'
 
 import NFTContract from '../abis/NFT.json'
 import TrocaContract from '../abis/Troca.json'
@@ -28,6 +29,17 @@ const loadContractDefinition = async (web3, contractDef) => {
         const contract = new web3.eth.Contract(abi, address)        
         return contract
     }
+}
+
+const getETHPrice = async () => {
+    const result = await get('https://api.coinbase.com', '/v2/prices/ETH-USD/spot')
+    let ethPrice = 0.0
+
+    if(result.status === 200) {
+        ethPrice =  parseFloat(result.data.data.amount)
+    }
+    
+    return ethPrice
 }
 
 export const isMetamaskAvailable = () => {
@@ -151,4 +163,9 @@ export const parseError = (error) => {
             return 'Unexpected error. Try again later.'
         }
     }
+}
+
+export const usdToEth = async(usdAmount) => {
+    const ethPrice = await getETHPrice()
+    return (usdAmount / ethPrice)
 }
