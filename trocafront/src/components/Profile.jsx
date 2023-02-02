@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner'
+import TrocaModal from './helpers/TrocaModal';
 import User from '../models/User';
 
 import { 
@@ -13,18 +14,23 @@ import {
     closeAlert
 } from '../store/slices/statusSlice';
 
-import { parseAccount } from '../services/ethServices';
-import { PATHS, INFURA_URL } from '../config';
+import useWeb3 from '../hooks/useWeb3';
+import { parseAccount, usdToEth } from '../services/ethServices';
+import { PATHS, INFURA_URL, MEMBERSHIP_FEE } from '../config';
 
 import '../styles/Main.css'
 import '../styles/Profile.css'
 
 function Profile() {
-    const [validated, setValidated] = useState(false);
+    const [validated, setValidated] = useState(false)
     const [imgFile, setImgFile] = useState(undefined)
+    const [showModal, setShowModal] = useState(false)
+    const [fee, setFee] = useState('0')
 
     const { isConnected, account, userInfo, isMember } = useSelector(connectionStatusSelector)
     const isProcessing = useSelector(isProcessingSelector)
+
+    const { web3, troca } = useWeb3()
     
     const dispatch = useDispatch()
     const user = new User(dispatch)
@@ -48,7 +54,7 @@ function Profile() {
         // eslint-disable-next-line
     }, [isConnected])
 
-    const handleSubmit = (action) => {
+    const handleSubmit = async (action) => {
         const form = document.getElementById('profileForm')
         if (form.checkValidity()) {
             dispatch(setIsProcessing(true))
@@ -59,9 +65,10 @@ function Profile() {
                 const username = document.getElementById('userName').value
                 user.updateUserInfo(email, username, userInfo.img, imgFile)
             } else {
-                alert('Vamoasernos miembros')
+                const currentFee = await usdToEth(MEMBERSHIP_FEE).then(result => result.toFixed(5))
+                setFee(currentFee.toString())
+                setShowModal(true)
             }
-
         } else {
             setValidated(true);
         }
@@ -146,6 +153,13 @@ function Profile() {
                     {isProcessing ? <Spinner animation='grow' variant='secondary'/> : <></>}
                 </div>
               </div>
+              <TrocaModal 
+                body={<span>We will charge <b>{fee} ETH / 10 USD</b> as a one-time payment for membership.</span>} 
+                title='Become a Member' 
+                action={() => user.becomeMember(account, troca, web3, fee)}
+                dispatch={dispatch}
+                setShowModal={setShowModal}
+                showModal={showModal} />
             </section>
         )
     }

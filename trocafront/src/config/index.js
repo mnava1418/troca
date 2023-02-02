@@ -11,3 +11,5 @@ export const BACK_URLS = {
 }
 
 export const INFURA_URL = 'https://troca.infura-ipfs.io/ipfs'
+
+export const MEMBERSHIP_FEE = 10 //USD
