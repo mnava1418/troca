@@ -2,6 +2,8 @@
   --primary-color: white;
   --secondary-color: #6c757d;
   --navBar-height: 65px;
+  --contrast-color: #212529;  
+  --bg-color: #282c34;
 }
 
 .App {
@@ -59,8 +61,89 @@ section h4 {
   color: var(--secondary-color);
 }
 
+section h5 {
+  color: var(--secondary-color);
+}
+
 .custom-alert {
   position: absolute;
   top: var(--navBar-height);
   z-index: 1000;
+}
+
+.full-content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.form-container form {
+  width: 100%;
+}
+
+.form-container form div {
+  margin: 24px 0px 24px 0px;
+}
+
+.form-container form input {
+  background-color: transparent;
+  border-color: var(--secondary-color);
+  color: white;
+}
+
+.form-container-light form input:focus {
+  background-color: rgb(33 37 41);
+  color: white;
+  border-color: rgb(33 37 41);
+  box-shadow: 0px 0px 0px 4px rgb(33 37 41)
+}
+
+.form-container-dark form input:focus {
+  background-color: var(--bg-color);
+  color: white;
+  border-color: var(--bg-color);
+  box-shadow: 0px 0px 0px 4px rgb(33 37 41)
+}
+
+.form-container form textarea {
+  background-color: transparent;
+  border-color: var(--secondary-color);
+  color: white;
+}
+
+.form-container-light form textarea:focus {
+  background-color: rgb(33 37 41);
+  color: white;
+  border-color: rgb(33 37 41);
+  box-shadow: 0px 0px 0px 4px rgb(33 37 41)
+}
+
+.form-container-dark form textarea:focus {
+  background-color: var(--bg-color);
+  color: white;
+  border-color: var(--bg-color);
+  box-shadow: 0px 0px 0px 4px rgb(33 37 41)
+}
+
+.form-container-row {
+  flex-direction: column;    
+}
+
+.form-container-row div {
+  width: 100%;
+  margin-top: 0px !important;
+  margin-bottom: 12px !important;  
+}
+
+/* Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) { 
+  .form-container form div {
+    margin: 24px;
+  }
+
+  .form-container-row {
+    flex-direction: row;
+  }
 }

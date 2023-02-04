@@ -115,7 +115,7 @@ function Profile() {
         return (
             <section className="profile-background full-screen full-screen-transparency bg-img bg-im-cover d-flex flex-column justify-content-center align-items-center">
               <div className="d-flex flex-column justify-content-center align-items-center main-container" style={{width: '100%'}}>
-                <div className='d-flex flex-column justify-content-center align-items-center profile-container'>
+                <div className='d-flex flex-column justify-content-center align-items-center profile-container form-container form-container-light'>
                     <div id="profileImg" className='d-flex flex-column justify-content-center align-items-center profile-img bg-img bg-im-cover' onClick={() => {document.getElementById('profileImgFile').click()}}>
                         <i className="bi bi-person" style={{fontSize: '60px'}}/>
                     </div>
