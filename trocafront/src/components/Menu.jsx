@@ -89,6 +89,7 @@ function Menu() {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
                     <Nav.Link href={PATHS.main}>Home</Nav.Link>
+                    {isMember ? <Nav.Link href={PATHS.mint}>Mint</Nav.Link> : <></>}
                 </Nav>
                 {getMenuActions()}                
             </Navbar.Collapse>

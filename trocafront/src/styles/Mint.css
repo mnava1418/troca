@@ -1,0 +1,41 @@
+.mint-container {
+    flex-direction: column;    
+    width: 90%;
+    max-width: 1200px;
+    padding: 32px;
+    background-color: var(--contrast-color);    
+    border: 1px solid var(--contrast-color);
+    border-radius: 25px;
+}
+
+.mint-img {
+    position: relative;
+    width: 90%;
+    height: 0;    
+    padding-bottom: 90%;
+    border: 2px dotted var(--secondary-color);
+    border-radius: 0.375rem;
+    cursor: pointer;
+}
+
+.mint-form {
+    width: 90%;        
+    text-align: start;
+}
+
+/* Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) { 
+    .mint-container {
+        flex-direction: row;        
+    }
+
+    .mint-img {
+        width: 40%;    
+        padding-bottom: 40%;    
+    }
+
+    .mint-form {
+        width: 60%;
+        margin-left: 24px;        
+    }
+ }
