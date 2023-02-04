@@ -2,7 +2,10 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const INITIAL_STATE = {
     web3: undefined,
-    contracts: undefined
+    contracts: {
+        troca: undefined,
+        nft: undefined
+    }
 }
 
 export const contractsSlice = createSlice({

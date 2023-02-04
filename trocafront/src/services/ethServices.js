@@ -135,7 +135,7 @@ export const loadContracts = async(dispatch) => {
     }
 
     if(Object.keys(contractsLoaded).length === 0) {
-        dispatch(setAlert({show: true, type: 'danger', text: "Select another network."}))
+        dispatch(setAlert({show: true, type: 'danger', text: "Smart Contracts not available. Select another network."}))
     } else {
         dispatch(loadContractData({web3, contracts: contractsLoaded}))
     }
