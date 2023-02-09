@@ -17,8 +17,11 @@ const getClient = async () => {
     return client
 }
 
-const ipfsUploadImg = async (imgData) => {
-    const client = await getClient()
+const ipfsUploadImg = async (imgData, client = undefined) => {
+    if(client === undefined) {
+        client = await getClient()
+    }
+
     const path = await client.add(imgData)
     .then(result => result.path)
     .catch(error => {
@@ -30,11 +33,11 @@ const ipfsUploadImg = async (imgData) => {
 }
 
 const saveNFTMetaData = async (title, description, imgData) => {
-    const imgPath = await ipfsUploadImg(imgData)
+    const client = await getClient()
+    const imgPath = await ipfsUploadImg(imgData, client)
 
     if(imgPath === '') return imgPath
     
-    const client = await getClient()
     const metaBuffer = Buffer.from(JSON.stringify({title, description, image: `${config.infuraUrl}/${imgPath}`}));
     
     const path = await client.add(metaBuffer)
