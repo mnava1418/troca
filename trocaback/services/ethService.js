@@ -1,6 +1,7 @@
 const infuraAuth = require('../config/auth').infura
+const config = require('../config')
 
-const ipfsUploadImg = async (imgData) => {
+const getClient = async () => {
     const { create } = await import('ipfs-http-client')
     const auth = 'Basic ' + Buffer.from(`${infuraAuth.projectId}:${infuraAuth.secret}`).toString('base64')
 
@@ -13,6 +14,11 @@ const ipfsUploadImg = async (imgData) => {
         }
     })
 
+    return client
+}
+
+const ipfsUploadImg = async (imgData) => {
+    const client = await getClient()
     const path = await client.add(imgData)
     .then(result => result.path)
     .catch(error => {
@@ -23,6 +29,25 @@ const ipfsUploadImg = async (imgData) => {
     return path
 }
 
+const saveNFTMetaData = async (title, description, imgData) => {
+    const imgPath = await ipfsUploadImg(imgData)
+
+    if(imgPath === '') return imgPath
+    
+    const client = await getClient()
+    const metaBuffer = Buffer.from(JSON.stringify({title, description, image: `${config.infuraUrl}/${imgPath}`}));
+    
+    const path = await client.add(metaBuffer)
+    .then(result => result.path)
+    .catch(error => {
+        console.error(error)
+        return ''
+    })
+
+    return path
+}
+
 module.exports = {
-    ipfsUploadImg
+    ipfsUploadImg,
+    saveNFTMetaData
 }
