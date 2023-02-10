@@ -1,3 +1,6 @@
 module.exports = {
-    infuraUrl : 'https://troca.infura-ipfs.io/ipfs'
+    infuraUrl : 'https://troca.infura-ipfs.io/ipfs',
+    tokenStatus: {
+        pending: 'PENDING'
+    }
 }

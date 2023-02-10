@@ -1,3 +1,4 @@
+const admin = require('firebase-admin')
 const infuraAuth = require('../config/auth').infura
 const config = require('../config')
 
@@ -32,13 +33,13 @@ const ipfsUploadImg = async (imgData, client = undefined) => {
     return path
 }
 
-const saveNFTMetaData = async (title, description, imgData) => {
+const saveNFTMetaData = async (account, title, description, price, royalties, imgData) => {
     const client = await getClient()
     const imgPath = await ipfsUploadImg(imgData, client)
 
-    if(imgPath === '') return imgPath
+    if(imgPath === '') return false
     
-    const metaBuffer = Buffer.from(JSON.stringify({title, description, image: `${config.infuraUrl}/${imgPath}`}));
+    const metaBuffer = Buffer.from(JSON.stringify({title, description, royalties, image: `${config.infuraUrl}/${imgPath}`}));
     
     const path = await client.add(metaBuffer)
     .then(result => result.path)
@@ -47,7 +48,22 @@ const saveNFTMetaData = async (title, description, imgData) => {
         return ''
     })
 
-    return path
+    if(path === '') return false
+
+    const result = await updateMetaData(account, path, {title, description, royalties, price, imgPath, status: config.tokenStatus.pending})
+    return result
+}
+
+const updateMetaData = async (account, path, metaData) => {
+    const query = admin.database().ref(`/tokens/${account}/${path}`)
+    const result = await query.update(metaData)
+    .then(() => true)
+    .catch( error => {
+        console.error(error)
+        return false
+    })
+
+    return result
 }
 
 module.exports = {
