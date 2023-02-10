@@ -19,6 +19,7 @@ contract Troca {
     
     constructor(address _ownerAccount) {
         ownerAccount = payable(_ownerAccount);
+        members[ownerAccount] = true;
     }
 
     function subscribe () payable external {

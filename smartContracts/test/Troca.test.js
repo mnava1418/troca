@@ -29,9 +29,9 @@ contract('Troca', ([deployer, user1, user2]) => {
             ownerAccount.should.equal(deployer)
         })
 
-        it('members should be empty', async () => {
+        it('owner is a member', async () => {
             const isMember = await troca.members(deployer)
-            isMember.should.equal(false)
+            isMember.should.equal(true)
         })
     })
 
