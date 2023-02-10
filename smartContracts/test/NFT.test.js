@@ -45,7 +45,7 @@ contract('NFT', ([deployer, user1, user2]) => {
 
             beforeEach(async () => {
                 await troca.subscribe({from: user1, value: fee})
-                result = await nft.mint(troca.address, user1, tokenURI, 500, {from: deployer})
+                result = await nft.mint(troca.address, tokenURI, 500, {from: user1})
             })
 
             it('deployer has 0 nft', async() => {
@@ -98,7 +98,7 @@ contract('NFT', ([deployer, user1, user2]) => {
 
         describe('failure', () => {
             it('user2 is not a member', async () => {
-                await nft.mint(troca.address, user2, tokenURI, 500, {from: deployer}).should.be.rejectedWith(ERROR_OWNER_MEMBER)
+                await nft.mint(troca.address, tokenURI, 500, {from: user2}).should.be.rejectedWith(ERROR_OWNER_MEMBER)
 
                 const balance = await nft.balanceOf(user2)
                 balance.toString().should.equal('0')
