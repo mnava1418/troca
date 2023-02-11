@@ -8,6 +8,7 @@ import Landing from './components/landing/Landing';
 import Wallet from './components/Wallet';
 import Profile from './components/Profile';
 import Mint from './components/Mint';
+import Portfolio from './components/Portfolio';
 import CustomAlert from './components/helpers/CustomAlert';
 import Spinner from 'react-bootstrap/Spinner'
 
@@ -43,6 +44,7 @@ function App() {
           <Route path={PATHS.wallet} element={<Wallet />}/>
           <Route path={PATHS.profile} element={<Profile />}/>
           <Route path={PATHS.mint} element={<Mint />}/>
+          <Route path={PATHS.portfolio} element={<Portfolio />}/>
           <Route  path='*' element={<NotFound />}/>
         </Routes>
       </BrowserRouter>
