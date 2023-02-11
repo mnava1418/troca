@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 import Exchange from '../models/Exchange';
 import useWeb3 from '../hooks/useWeb3';
+import useMint from '../hooks/useMint';
 
 import { 
     connectionStatusSelector, 
@@ -20,11 +21,19 @@ import '../styles/Mint.css'
 
 function Mint() {    
     const [validated, setValidated] = useState(false)
-    const [imgFile, setImgFile] = useState(undefined)
+    
     const { isConnected, isMember } = useSelector(connectionStatusSelector)
     const isProcessing = useSelector(isProcessingSelector)
 
     const { troca, nft } = useWeb3()
+    const {
+        title, setTitle,
+        description, setDescription,
+        price, setPrice,
+        royalties, setRoyalties,
+        imgFile, setImgFile
+    } = useMint('', '', '', '', undefined)
+
     const dispatch = useDispatch()
 
     useEffect(() => {        
@@ -43,10 +52,8 @@ function Mint() {
             dispatch(setIsProcessing(true))
             dispatch(closeAlert())
 
-            const title = document.getElementById('mintTitle').value
-            const description = document.getElementById('mintDescription').value
             const exchange = new Exchange(dispatch, troca, nft)
-            exchange.mint(title, description, imgFile)
+            exchange.createItem(title, description, price, royalties, imgFile)
         } else {
             setValidated(true);
         }
@@ -105,6 +112,7 @@ function Mint() {
                                     required
                                     type="text"
                                     placeholder="Enter item title"
+                                    onChange={(e) => setTitle(e.target.value)}
                                 />
                                 <Form.Control.Feedback type="invalid" style={{margin: '8px 0px 0px 0px'}}>Title is mandatory.</Form.Control.Feedback>
                             </Form.Group>
@@ -113,6 +121,7 @@ function Mint() {
                                 <Form.Control 
                                     as='textarea'
                                     placeholder='Type item description'
+                                    onChange={(e) => setDescription(e.target.value)}
                                 />
                             </Form.Group>
                             <div className='d-flex form-container-row justify-content-center align-items-start'>
@@ -123,6 +132,7 @@ function Mint() {
                                         type='number'
                                         min='0'
                                         placeholder="10 ETH"
+                                        onChange={(e) => setPrice(e.target.value)}
                                     />
                                     <Form.Control.Feedback type="invalid" style={{margin: '8px 0px 0px 0px'}}>Invalid price.</Form.Control.Feedback>
                                 </Form.Group>
@@ -134,6 +144,7 @@ function Mint() {
                                         min='0'
                                         max='100'
                                         placeholder="5%"
+                                        onChange={(e) => setRoyalties(e.target.value)}
                                     />
                                     <Form.Control.Feedback type="invalid" style={{margin: '8px 0px 0px 0px'}}>Invalid royalties.</Form.Control.Feedback>
                                 </Form.Group>

@@ -1,7 +1,7 @@
 import FormData from 'form-data'
 
 import { setAlert, setIsProcessing } from '../store/slices/statusSlice'
-import { BACK_URLS, INFURA_URL } from '../config'
+import { BACK_URLS } from '../config'
 import { post } from '../services/networkService'
 
 class Exchange {
@@ -12,19 +12,20 @@ class Exchange {
         this.baseURL = BACK_URLS[process.env.NODE_ENV]
     }
 
-    async mint(title, description, imgFile) {
+    async createItem(title, description, price, royalties, imgFile) {
         const token = localStorage.getItem('jwt')
 
         const userInfo = new FormData()
         userInfo.append('title', title)
         userInfo.append('description', description)
+        userInfo.append('price', price)
+        userInfo.append('royalties', royalties)
         userInfo.append('imgData', imgFile)
 
         const response = await post(this.baseURL, '/eth/metaData', userInfo, token, {'Content-Type': 'multipart/form-data'})
 
         if(response.status === 200) {
-            const nftURI = `${INFURA_URL}/${response.data.metaData}`
-            this.dispatch(setAlert({show: true, type: 'success', text: nftURI}))
+            this.dispatch(setAlert({show: true, type: 'success', text: response.data.message}))
         } else {
             this.dispatch(setAlert({show: true, type: 'danger', text: response.data.error}))
         }
