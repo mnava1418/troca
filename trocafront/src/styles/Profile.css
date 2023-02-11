@@ -2,16 +2,10 @@
     background-image: url('../img/profileBackground.jpg');
 }
 .profile-container {
-    background-color: #282c34 !important;
     text-align: start;
     width: 85%;
     max-width: 500px;
     padding: 32px;
-
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 0.375rem;
-    border-color: var(--secondary-color);
 }
 
 .profile-container button {
