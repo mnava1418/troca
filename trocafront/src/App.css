@@ -87,40 +87,21 @@ section h5 {
   margin: 24px 0px 24px 0px;
 }
 
-.form-container form input {
+.form-container form input, .form-container form select, .form-container form textarea
+{
   background-color: transparent;
   border-color: var(--secondary-color);
   color: white;
 }
 
-.form-container-light form input:focus {
+.form-container-light form input:focus, .form-container-light form select:focus, .form-container-light form textarea:focus {
   background-color: rgb(33 37 41);
   color: white;
   border-color: rgb(33 37 41);
   box-shadow: 0px 0px 0px 4px rgb(33 37 41)
 }
 
-.form-container-dark form input:focus {
-  background-color: var(--bg-color);
-  color: white;
-  border-color: var(--bg-color);
-  box-shadow: 0px 0px 0px 4px rgb(33 37 41)
-}
-
-.form-container form textarea {
-  background-color: transparent;
-  border-color: var(--secondary-color);
-  color: white;
-}
-
-.form-container-light form textarea:focus {
-  background-color: rgb(33 37 41);
-  color: white;
-  border-color: rgb(33 37 41);
-  box-shadow: 0px 0px 0px 4px rgb(33 37 41)
-}
-
-.form-container-dark form textarea:focus {
+.form-container-dark form input:focus, .form-container-dark form select:focus, .form-container-dark form textarea:focus {
   background-color: var(--bg-color);
   color: white;
   border-color: var(--bg-color);
@@ -137,6 +118,26 @@ section h5 {
   margin-bottom: 12px !important;  
 }
 
+.search-bar {
+  flex-direction: column;
+  margin: 0px !important;
+}
+
+.search-bar div {
+  width: 100%;
+  max-width: 280px;
+}
+
+.search-bar-input {
+  margin-top: 0px !important;
+}
+
+.dark-container {
+  background-color: var(--contrast-color);    
+  border: 1px solid var(--contrast-color);
+  border-radius: 25px;
+}
+
 /* Small devices (landscape phones, 576px and up)*/
 @media (min-width: 576px) { 
   .form-container form div {
@@ -145,5 +146,17 @@ section h5 {
 
   .form-container-row {
     flex-direction: row;
+  }
+
+  .search-bar div {
+    width: 30%;
+  }
+
+  .search-bar {
+    flex-direction: row;
+  }
+
+  .search-bar-input {
+    margin-top: 24px !important;
   }
 }
