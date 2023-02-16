@@ -1,24 +1,41 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup'
 import Spinner from 'react-bootstrap/Spinner'
 
 import { connectionStatusSelector } from '../store/slices/statusSlice';
+
 import { PATHS } from '../config';
 
 function Portfolio () {
     const { isConnected } = useSelector(connectionStatusSelector)
+    const [ currentTokens, setCurrentTokens] = useState({})
 
     useEffect(() => {
         if(!isConnected) {
             window.location.href = PATHS.wallet
         } else {            
-            alert('oli')
+            console.log('get nfts')
         } 
         
         // eslint-disable-next-line
     }, [isConnected])
+
+    const generateCatalog = () => {
+        return(
+            <div style={{width: '90%', backgroundColor: 'red'}}>Contenido</div>
+        )
+    }
+
+    const emptyCatalog = () => {
+        return (
+            <div className='d-flex flex-column justify-content-center align-items-center' style={{width: '90%'}}>
+                <h4 style={{margin: '100px 0px 24px 0px'}}>We weren't able to find NFTs.</h4>
+                <i className="bi bi-emoji-frown" style={{fontSize: '100px', color: 'var(--secondary-color)'}}></i>        
+            </div>
+        )
+    }
 
     const showPage = () => {
         return(
@@ -51,7 +68,7 @@ function Portfolio () {
                         </div>
                     </Form>
                 </div>
-                <div style={{width: '90%', backgroundColor: 'red'}}>Contenido</div>
+                {Object.keys(currentTokens).length > 0 ? generateCatalog() : emptyCatalog()}
             </section>
         )
     }
