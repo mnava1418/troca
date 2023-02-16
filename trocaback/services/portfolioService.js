@@ -1,7 +1,7 @@
 const admin = require('firebase-admin')
 
-const getUserTokens = async (account) => {
-    const query = admin.database().ref(`/tokens/${account}`)
+const getAllTokens = async () => {
+    const query = admin.database().ref(`/tokens`)
     let tokens = undefined
 
     await query.once('value', (data) => {
@@ -17,5 +17,5 @@ const getUserTokens = async (account) => {
 }
 
 module.exports = {
-    getUserTokens
+    getAllTokens
 }

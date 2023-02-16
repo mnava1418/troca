@@ -1,8 +1,8 @@
 const portfolioService = require('../services/portfolioService')
 
-const getUserTokens = async (req, res) => {
+const getAllTokens = async (req, res) => {
     const account = req.originalAccount
-    const tokens = await portfolioService.getUserTokens(account)
+    const tokens = await portfolioService.getAllTokens()
 
     if(tokens !== undefined ) {
         res.status(200).json({tokens})
@@ -12,5 +12,5 @@ const getUserTokens = async (req, res) => {
 }
 
 module.exports = {
-    getUserTokens
+    getAllTokens
 }

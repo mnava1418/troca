@@ -5,6 +5,6 @@ const portfolioController = require('../controllers/portfolioController')
 const router = express.Router()
 
 module.exports = () => {    
-    router.get('/', authController.validateToken, portfolioController.getUserTokens)
+    router.get('/', authController.validateToken, portfolioController.getAllTokens)
     return router
 }
