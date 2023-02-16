@@ -7,6 +7,15 @@ function Portfolio () {
             <div className='dark-container form-container form-container-dark' style={{width: '90%', margin: '24px 0px 24px 0px'}}>
                 <Form>
                     <div className='d-flex justify-content-end align-items-center search-bar'>
+                        <div className='search-bar-check input-group'>
+                            <div className='form-check d-flex flex-row justify-content-center align-items-center'>
+                                <label className='switch' style={{marginRight: '12px'}}>
+                                    <input type="checkbox" className='form-check-input' />
+                                    <span className='slider round'></span>
+                                </label>
+                                <label className="form-check-label">My NFTs</label>
+                            </div>
+                        </div>
                         <InputGroup style={{marginRight: '0px'}}>
                             <Form.Select>
                                 <option>Sort by</option>
