@@ -1,22 +1,27 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup'
 import Spinner from 'react-bootstrap/Spinner'
 
-import { connectionStatusSelector } from '../store/slices/statusSlice';
+import { connectionStatusSelector, isProcessingSelector } from '../store/slices/statusSlice';
 
 import { PATHS } from '../config';
+import MyPortfolio from '../models/MyPortfolio';
 
 function Portfolio () {
     const { isConnected } = useSelector(connectionStatusSelector)
+    const isProcessing = useSelector(isProcessingSelector)
     const [ currentTokens, setCurrentTokens] = useState({})
+
+    const dispatch = useDispatch()
+    const myPortfolio = new MyPortfolio(dispatch)
 
     useEffect(() => {
         if(!isConnected) {
             window.location.href = PATHS.wallet
         } else {            
-            console.log('get nfts')
+            myPortfolio.getTokens()
         } 
         
         // eslint-disable-next-line
@@ -75,7 +80,7 @@ function Portfolio () {
 
     return (
         <>
-            {isConnected ? showPage() : <Spinner animation='grow' variant='secondary'/>}
+            {isConnected && !isProcessing ? showPage() : <Spinner animation='grow' variant='secondary'/>}
         </>
     );
 }
