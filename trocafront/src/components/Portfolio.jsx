@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup'
 import Spinner from 'react-bootstrap/Spinner'
+import NFTCard from './NFTCard';
 
 import { connectionStatusSelector, isProcessingSelector } from '../store/slices/statusSlice';
 import { setOnlyUser } from '../store/slices/portfolioSlice';
@@ -32,8 +33,12 @@ function Portfolio () {
 
     const generateCatalog = () => {        
         return(
-            <div style={{width: '90%'}}>
-                hola
+            <div className='d-flex flex-row justify-content-center align-items-center flex-wrap' style={{width: '90%'}}>
+                {Object.keys(portfolioTokens).map(uri => {
+                    return(
+                        <NFTCard key={uri} />
+                    )
+                })}
             </div>
         )        
     }
