@@ -1,36 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup'
 import Spinner from 'react-bootstrap/Spinner'
 
 import { connectionStatusSelector, isProcessingSelector } from '../store/slices/statusSlice';
+import { setOnlyUser } from '../store/slices/portfolioSlice';
 
-import { PATHS } from '../config';
+import usePortfolio from '../hooks/usePortfolio';
 import MyPortfolio from '../models/MyPortfolio';
+import { PATHS } from '../config';
 
 function Portfolio () {
     const { isConnected } = useSelector(connectionStatusSelector)
     const isProcessing = useSelector(isProcessingSelector)
-    const [ currentTokens, setCurrentTokens] = useState({})
-
+    
+    const { onlyUser, portfolioTokens } = usePortfolio()
+    
     const dispatch = useDispatch()
     const myPortfolio = new MyPortfolio(dispatch)
 
     useEffect(() => {
         if(!isConnected) {
             window.location.href = PATHS.wallet
-        } else {            
+        } else {      
             myPortfolio.getTokens()
         } 
         
         // eslint-disable-next-line
     }, [isConnected])
 
-    const generateCatalog = () => {
+    const generateCatalog = () => {        
         return(
-            <div style={{width: '90%', backgroundColor: 'red'}}>Contenido</div>
-        )
+            <div style={{width: '90%'}}>
+                hola
+            </div>
+        )        
     }
 
     const emptyCatalog = () => {
@@ -51,7 +56,7 @@ function Portfolio () {
                             <div className='search-bar-check input-group'>
                                 <div className='form-check d-flex flex-row justify-content-center align-items-center'>
                                     <label className='switch' style={{marginRight: '12px'}}>
-                                        <input type="checkbox" className='form-check-input' />
+                                        <input type="checkbox" className='form-check-input' defaultChecked={onlyUser} onChange={(e) => {dispatch(setOnlyUser(e.target.checked))}} />
                                         <span className='slider round'></span>
                                     </label>
                                     <label className="form-check-label">My NFTs</label>
@@ -73,7 +78,7 @@ function Portfolio () {
                         </div>
                     </Form>
                 </div>
-                {Object.keys(currentTokens).length > 0 ? generateCatalog() : emptyCatalog()}
+                {Object.keys(portfolioTokens).length > 0 ? generateCatalog() : emptyCatalog()}
             </section>
         )
     }
