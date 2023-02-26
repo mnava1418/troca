@@ -55,8 +55,9 @@ const saveNFTMetaData = async (account, title, description, price, royalties, im
 }
 
 const updateMetaData = async (account, path, metaData) => {
-    const query = admin.database().ref(`/tokens/${account}/${path}`)
-    const result = await query.update(metaData)
+    const timestamp = Date.now().toString()
+    const query = admin.database().ref(`/tokens/${path}`)
+    const result = await query.update({owner: account, timestamp, ...metaData})
     .then(() => true)
     .catch( error => {
         console.error(error)
