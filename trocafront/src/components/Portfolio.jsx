@@ -31,12 +31,20 @@ function Portfolio () {
         // eslint-disable-next-line
     }, [isConnected])
 
-    const generateCatalog = () => {        
+    const generateCatalog = () => {     
+        console.log(portfolioTokens)
+        
         return(
-            <div className='d-flex flex-row justify-content-center align-items-center flex-wrap' style={{width: '90%'}}>
+            <div className='d-flex flex-row justify-content-center flex-wrap fixed-container' style={{width: '90%'}}>
                 {Object.keys(portfolioTokens).map(uri => {
+                    const token = portfolioTokens[uri]
                     return(
-                        <NFTCard key={uri} />
+                        <NFTCard key={uri} 
+                            img={token.imgPath} 
+                            title={token.title}
+                            description={token.description}
+                            onlyUser={onlyUser}
+                        />
                     )
                 })}
             </div>
@@ -45,7 +53,7 @@ function Portfolio () {
 
     const emptyCatalog = () => {
         return (
-            <div className='d-flex flex-column justify-content-center align-items-center' style={{width: '90%'}}>
+            <div className='d-flex flex-column justify-content-center align-items-center fixed-container' style={{width: '90%'}}>
                 <h4 style={{margin: '100px 0px 24px 0px'}}>We weren't able to find NFTs.</h4>
                 <i className="bi bi-emoji-frown" style={{fontSize: '100px', color: 'var(--secondary-color)'}}></i>        
             </div>
@@ -55,7 +63,8 @@ function Portfolio () {
     const showPage = () => {
         return(
             <section className='full-screen d-flex flex-column justify-content-start align-items-center'>
-                <div className='dark-container form-container form-container-dark' style={{width: '90%', margin: '24px 0px 24px 0px'}}>
+                <div style={{backgroundColor: 'var(--bg-color)', width: '100%', height: '24px', position: 'fixed', zIndex: '10'}} />
+                <div className='dark-container form-container form-container-dark search-bar-fixed'>
                     <Form>
                         <div className='d-flex justify-content-end align-items-center search-bar'>
                             <div className='search-bar-check input-group'>
