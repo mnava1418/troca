@@ -36,8 +36,6 @@ function Portfolio () {
     }, [isConnected])
 
     const generateCatalog = () => {     
-        console.log(selectedTokens)
-        
         return(
             <div className='d-flex flex-row justify-content-center flex-wrap fixed-container' style={{width: '90%'}}>
                 {selectedTokens.map(token => {           
