@@ -18,6 +18,8 @@ import {
     setIsMember
 } from '../store/slices/statusSlice'
 
+import { loadUsers } from '../store/slices/portfolioSlice'
+
 import { BACK_URLS } from '../config'
 import { post, get } from '../services/networkService'
 
@@ -138,6 +140,21 @@ class User {
             this.dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
             this.dispatch(setIsProcessing(false))
         })
+    }
+
+    async getAllUsers() {
+        this.dispatch(setIsProcessing(true))
+        
+        const token = localStorage.getItem('jwt')
+        const response = await get(this.baseURL, '/user/all', token)
+
+        if(response.status === 200) {
+            this.dispatch(loadUsers(response.data.users))
+        } else {
+            this.dispatch(setAlert({show: true, type: 'danger', text: response.data.error}))
+        }
+
+        this.dispatch(setIsProcessing(false))
     }
 }
 

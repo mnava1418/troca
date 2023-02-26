@@ -10,6 +10,7 @@ import { setOnlyUser } from '../store/slices/portfolioSlice';
 
 import usePortfolio from '../hooks/usePortfolio';
 import MyPortfolio from '../models/MyPortfolio';
+import User from '../models/User';
 import { PATHS } from '../config';
 
 function Portfolio () {
@@ -20,12 +21,14 @@ function Portfolio () {
     
     const dispatch = useDispatch()
     const myPortfolio = new MyPortfolio(dispatch)
+    const user = new User(dispatch)
 
     useEffect(() => {
         if(!isConnected) {
             window.location.href = PATHS.wallet
         } else {      
             myPortfolio.getTokens()
+            user.getAllUsers()
         } 
         
         // eslint-disable-next-line

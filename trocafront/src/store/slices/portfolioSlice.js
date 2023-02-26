@@ -3,7 +3,8 @@ import { TOKEN_STATUS } from '../../config'
 
 const INITIAL_STATE = {
     allTokens: [],
-    selectedTokens: [],    
+    selectedTokens: [],
+    users: {},
     onlyUser: false,    
 }
 
@@ -18,14 +19,19 @@ export const portfolioSlice = createSlice({
 
         setOnlyUser: (state, action) => {
             state.onlyUser = action.payload
-        }
+        },
+
+        loadUsers: (state, action) => {
+            state.users = action.payload            
+        },
     }
 })
 
 //Actions
 export const {
     loadTokens,
-    setOnlyUser
+    setOnlyUser,
+    loadUsers
 } = portfolioSlice.actions
 
 //Selectors
