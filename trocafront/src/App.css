@@ -123,6 +123,13 @@ section h5 {
   margin: 0px !important;
 }
 
+.search-bar-fixed {
+  width: 90%;
+  margin: 24px 0px;
+  position: fixed; 
+  z-index: 10;
+}
+
 .search-bar div {
   width: 100%;
   max-width: 280px;
@@ -139,6 +146,10 @@ section h5 {
 
 .search-bar-check div {
   margin: 24px 0px 0px 0px !important;
+}
+
+.fixed-container {
+  margin-top: 224px;  
 }
 
 .dark-container {
@@ -227,5 +238,9 @@ input:checked + .slider:before {
 
   .search-bar-check div {
     margin: 24px !important;
+  }
+
+  .fixed-container {
+    margin-top: 108px;
   }
 }
