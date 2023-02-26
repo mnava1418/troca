@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { TOKEN_STATUS } from '../../config'
 
 const INITIAL_STATE = {
     allTokens: [],
@@ -60,5 +59,7 @@ export const portfolioTokensSelector = (state) => {
 }
 
 export const onlyUserSelector = (state) => state.portfolio.onlyUser
+
+export const usersSelector = (state) => state.portfolio.users
 
 export default portfolioSlice.reducer

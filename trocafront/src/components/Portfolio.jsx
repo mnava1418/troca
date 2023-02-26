@@ -12,12 +12,13 @@ import usePortfolio from '../hooks/usePortfolio';
 import MyPortfolio from '../models/MyPortfolio';
 import User from '../models/User';
 import { PATHS } from '../config';
+import { parseAccount, parseUsername } from '../services/ethServices';
 
 function Portfolio () {
     const { isConnected } = useSelector(connectionStatusSelector)
     const isProcessing = useSelector(isProcessingSelector)
     
-    const { onlyUser, selectedTokens } = usePortfolio()
+    const { onlyUser, selectedTokens, allUsers } = usePortfolio()
     
     const dispatch = useDispatch()
     const myPortfolio = new MyPortfolio(dispatch)
@@ -39,12 +40,21 @@ function Portfolio () {
         
         return(
             <div className='d-flex flex-row justify-content-center flex-wrap fixed-container' style={{width: '90%'}}>
-                {selectedTokens.map(token => {                    
+                {selectedTokens.map(token => {           
+                    let owner = token.owner
+
+                    if(allUsers[owner] !== undefined && allUsers[owner].username.trim() !== '') {
+                        owner = parseUsername(`@${allUsers[owner].username.trim()}`)
+                    } else {
+                        owner = parseAccount(owner)
+                    }
+                    
                     return(
                         <NFTCard key={token.uri} 
                             img={token.imgPath} 
                             title={token.title}
-                            description={token.description}
+                            owner={owner}
+                            price={token.price}
                             onlyUser={onlyUser}
                         />
                     )

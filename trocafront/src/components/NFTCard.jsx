@@ -5,7 +5,7 @@ import { INFURA_URL } from '../config';
 
 import '../styles/NFTCard.css'
 
-function NFTCard({img, title, description, onlyUser}) {
+function NFTCard({img, title, owner, onlyUser, price}) {
 
     const cardAction = (action) => {
         switch (action) {
@@ -54,9 +54,16 @@ function NFTCard({img, title, description, onlyUser}) {
             <div className='nft-card-img bg-img bg-im-cover' style={{backgroundImage: `url(${INFURA_URL}/${img})`}} />
             <Card.Body className='d-flex flex-column justify-content-end align-items-center' style={{width: '90%'}}>
                 <Card.Title>{title}</Card.Title>
-                <Card.Text>
-                    {description}
-                </Card.Text>
+                <div className='d-flex flex-row justify-content-around' style={{width: '100%', marginTop: '24px'}}>
+                    <div>
+                        <h6>{owner}</h6>
+                        <h6 style={{color: 'var(--secondary-color)'}}>Owner</h6>                        
+                    </div>
+                    <div>
+                        <h6>{`${price} ETH`}</h6>
+                        <h6 style={{color: 'var(--secondary-color)'}}>Price</h6>
+                    </div>
+                </div>
                 <hr style={{width: '100%'}}></hr>
                 {onlyUser ? getOwnerActions() : getUserActions()}
             </Card.Body>
