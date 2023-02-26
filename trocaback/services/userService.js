@@ -37,11 +37,12 @@ const updateUserInfo = async (account, userInfo = {username: '', email: '', img:
 
 const getAllUsers = async() => {
     const query = admin.database().ref('/users')
-    const info = {byUsername: {}, byEmail: {}}
+    const info = {byUsername: {}, byEmail: {}, all: {}}
 
     await query.once('value', (data) => {
         if(data.exists()) {
             const currentInfo = data.toJSON()
+            info.all = currentInfo
             
             Object.keys(currentInfo).forEach(account => {
                 if(currentInfo[account].username.trim() !== '') {
@@ -80,5 +81,6 @@ const getUserInfo = async (account) => {
 module.exports = {
     getUserInfo,
     updateUserInfo,
-    validateUserInfo
+    validateUserInfo,
+    getAllUsers
 }

@@ -37,7 +37,13 @@ const updateUserInfo = async (req, res) => {
     }
 }
 
+const getAllUsers = async(req, res) => {
+    const users = await userService.getAllUsers()
+    res.status(200).json({users: users.all})
+}
+
 module.exports = {
     getUserInfo,
-    updateUserInfo
+    updateUserInfo,
+    getAllUsers
 }
