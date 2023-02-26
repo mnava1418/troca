@@ -1,7 +1,6 @@
 const portfolioService = require('../services/portfolioService')
 
 const getAllTokens = async (req, res) => {
-    const account = req.originalAccount
     const tokens = await portfolioService.getAllTokens()
 
     if(tokens !== undefined ) {
