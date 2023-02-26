@@ -1,8 +1,14 @@
+import Button from 'react-bootstrap/Button'
+
+import { PATHS } from '../config';
+
 function NotFound() {
   return (
-    <>
-        Page not found.
-    </>
+    <div className="d-flex flex-column justify-content-center align-items-center">
+      <h1 style={{fontSize: '72px'}}>404 Not Found</h1>
+      <p style={{fontSize: '24px', textAlign: 'center', margin: '40px'}}>Sorry, the page you are looking for is not available.</p>
+      <Button variant="primary" onClick={() => {window.location.href = PATHS.main}}>Go Home</Button>
+    </div>
   );
 }
 
