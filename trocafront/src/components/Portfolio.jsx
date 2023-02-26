@@ -16,7 +16,7 @@ function Portfolio () {
     const { isConnected } = useSelector(connectionStatusSelector)
     const isProcessing = useSelector(isProcessingSelector)
     
-    const { onlyUser, portfolioTokens } = usePortfolio()
+    const { onlyUser, selectedTokens } = usePortfolio()
     
     const dispatch = useDispatch()
     const myPortfolio = new MyPortfolio(dispatch)
@@ -32,14 +32,13 @@ function Portfolio () {
     }, [isConnected])
 
     const generateCatalog = () => {     
-        console.log(portfolioTokens)
+        console.log(selectedTokens)
         
         return(
             <div className='d-flex flex-row justify-content-center flex-wrap fixed-container' style={{width: '90%'}}>
-                {Object.keys(portfolioTokens).map(uri => {
-                    const token = portfolioTokens[uri]
+                {selectedTokens.map(token => {                    
                     return(
-                        <NFTCard key={uri} 
+                        <NFTCard key={token.uri} 
                             img={token.imgPath} 
                             title={token.title}
                             description={token.description}
@@ -92,7 +91,7 @@ function Portfolio () {
                         </div>
                     </Form>
                 </div>
-                {Object.keys(portfolioTokens).length > 0 ? generateCatalog() : emptyCatalog()}
+                {selectedTokens.length > 0 ? generateCatalog() : emptyCatalog()}
             </section>
         )
     }

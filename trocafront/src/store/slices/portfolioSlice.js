@@ -2,8 +2,9 @@ import { createSlice } from '@reduxjs/toolkit'
 import { TOKEN_STATUS } from '../../config'
 
 const INITIAL_STATE = {
-    tokens: {},
-    onlyUser: false,
+    allTokens: [],
+    selectedTokens: [],    
+    onlyUser: false,    
 }
 
 export const portfolioSlice = createSlice({
@@ -11,7 +12,8 @@ export const portfolioSlice = createSlice({
     initialState: INITIAL_STATE,
     reducers: {
         loadTokens: (state, action) => {
-            state.tokens = action.payload
+            state.allTokens = action.payload
+            state.selectedTokens = action.payload
         },
 
         setOnlyUser: (state, action) => {
@@ -29,21 +31,21 @@ export const {
 //Selectors
 export const portfolioTokensSelector = (state) => {
     const account = state.status.connection.account
-    const tokens = state.portfolio.tokens
+    const tokens = state.portfolio.selectedTokens
     const onlyUser = state.portfolio.onlyUser
 
-    const result = {}
+    const result = []
 
     if( onlyUser ) {
-        Object.keys(tokens).forEach(key => {
-            if(tokens[key].owner === account) {
-                result[key] = {...tokens[key]}
+        tokens.forEach(element => {
+            if(element.owner === account) {
+                result.push(element)
             }
         })
-    } else {
-        Object.keys(tokens).forEach(key => {
-            if(tokens[key].owner !== account && tokens[key].status === TOKEN_STATUS.active ) {
-                result[key] = {...tokens[key]}
+    } else {        
+        tokens.forEach(element => {
+            if(element.owner !== account) {
+                result.push(element)
             }
         })
     }
