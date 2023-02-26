@@ -151,6 +151,14 @@ export const parseAccount = (account) => {
     }
 }
 
+export const parseUsername = (userName) => {
+    if(userName.length < 10) {
+        return userName
+    } else {
+        return `${userName.substring(0,10)}...`
+    }
+}
+
 export const parseError = (error) => {
     if(error.code === 4001) {
         return error.message
