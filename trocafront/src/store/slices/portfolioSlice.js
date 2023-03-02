@@ -23,6 +23,10 @@ export const portfolioSlice = createSlice({
         loadUsers: (state, action) => {
             state.users = action.payload            
         },
+
+        setSelectedTokens: (state, action) => {
+            state.selectedTokens = action.payload
+        }
     }
 })
 
@@ -30,7 +34,8 @@ export const portfolioSlice = createSlice({
 export const {
     loadTokens,
     setOnlyUser,
-    loadUsers
+    loadUsers,
+    setSelectedTokens
 } = portfolioSlice.actions
 
 //Selectors
@@ -61,5 +66,7 @@ export const portfolioTokensSelector = (state) => {
 export const onlyUserSelector = (state) => state.portfolio.onlyUser
 
 export const usersSelector = (state) => state.portfolio.users
+
+export const allTokensSelector = (state) => state.portfolio.allTokens
 
 export default portfolioSlice.reducer

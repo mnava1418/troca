@@ -6,7 +6,7 @@ import Spinner from 'react-bootstrap/Spinner'
 import NFTCard from './NFTCard';
 
 import { connectionStatusSelector, isProcessingSelector } from '../store/slices/statusSlice';
-import { setOnlyUser } from '../store/slices/portfolioSlice';
+import { setOnlyUser, setSelectedTokens } from '../store/slices/portfolioSlice';
 
 import usePortfolio from '../hooks/usePortfolio';
 import MyPortfolio from '../models/MyPortfolio';
@@ -18,7 +18,12 @@ function Portfolio () {
     const { isConnected } = useSelector(connectionStatusSelector)
     const isProcessing = useSelector(isProcessingSelector)
     
-    const { onlyUser, selectedTokens, allUsers } = usePortfolio()
+    const { 
+        onlyUser, 
+        selectedTokens, 
+        allUsers,
+        allTokens
+    } = usePortfolio()
     
     const dispatch = useDispatch()
     const myPortfolio = new MyPortfolio(dispatch)
@@ -34,6 +39,32 @@ function Portfolio () {
         
         // eslint-disable-next-line
     }, [isConnected])
+
+    const onKeyDown = (e) => {
+        if(e.keyCode === 13) {
+            e.preventDefault()
+        }
+    }
+
+    const search = () => {
+        const text = document.getElementById('searchInput').value.toUpperCase()
+        
+        let currentTokens = [...allTokens].filter(
+            element => {
+                let userName = ''
+
+                if(allUsers[element.owner] !== undefined ) {
+                    userName = allUsers[element.owner].username
+                }
+
+                return element.title.toUpperCase().includes(text) || 
+                    element.owner.toUpperCase().includes(text) ||
+                    userName.toUpperCase().includes(text)
+            }
+        )
+        
+        dispatch(setSelectedTokens(currentTokens))
+    }
 
     const generateCatalog = () => {     
         return(
@@ -80,7 +111,13 @@ function Portfolio () {
                             <div className='search-bar-check input-group'>
                                 <div className='form-check d-flex flex-row justify-content-center align-items-center'>
                                     <label className='switch' style={{marginRight: '12px'}}>
-                                        <input type="checkbox" className='form-check-input' defaultChecked={onlyUser} onChange={(e) => {dispatch(setOnlyUser(e.target.checked))}} />
+                                        <input type="checkbox" className='form-check-input' defaultChecked={onlyUser} 
+                                            onChange={(e) => {
+                                                dispatch(setOnlyUser(e.target.checked))
+                                                document.getElementById('searchInput').value = ''
+                                                search()
+                                            }} 
+                                        />
                                         <span className='slider round'></span>
                                     </label>
                                     <label className="form-check-label">My NFTs</label>
@@ -96,7 +133,7 @@ function Portfolio () {
                                 </Form.Select>
                             </InputGroup>
                             <InputGroup className='search-bar-input'>
-                                <Form.Control type="text" placeholder="address, author or title." />
+                                <Form.Control type="text" id='searchInput' placeholder="address, username or title." onKeyDown={onKeyDown} onKeyUp={search} />
                                 <InputGroup.Text><i className='bi bi-search' /></InputGroup.Text>
                             </InputGroup>
                         </div>
