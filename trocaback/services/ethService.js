@@ -2,6 +2,25 @@ const admin = require('firebase-admin')
 const infuraAuth = require('../config/auth').infura
 const config = require('../config')
 
+const META_DATA = {
+    title: 'TROCA Metadata',
+    type: 'object',
+    properties: {
+        name: {
+            type: 'string',
+            description: ''
+        },
+        description: {
+            type: 'string',
+            description: ''
+        },
+        image: {
+            type: 'string',
+            description: ''
+        }
+    }
+}
+
 const getClient = async () => {
     const { create } = await import('ipfs-http-client')
     const auth = 'Basic ' + Buffer.from(`${infuraAuth.projectId}:${infuraAuth.secret}`).toString('base64')
@@ -33,31 +52,34 @@ const ipfsUploadImg = async (imgData, client = undefined) => {
     return path
 }
 
-const saveNFTMetaData = async (account, title, description, price, royalties, imgData) => {
+const saveNFTMetaData = async (title, description, price, royalties, imgData) => {
     const client = await getClient()
-    const imgPath = await ipfsUploadImg(imgData, client)
+    const image = await ipfsUploadImg(imgData, client)
 
-    if(imgPath === '') return false
-    
-    const metaBuffer = Buffer.from(JSON.stringify({title, description, royalties, image: `${config.infuraUrl}/${imgPath}`}));
-    
-    const path = await client.add(metaBuffer)
+    if(image === '') return false
+
+    META_DATA.properties.name.description = title
+    META_DATA.properties.description.description = description
+    META_DATA.properties.image.description = `${config.infuraUrl}/${image}`
+
+    const metaBuffer = Buffer.from(JSON.stringify(META_DATA));
+
+    const uri = await client.add(metaBuffer)
     .then(result => result.path)
     .catch(error => {
         console.error(error)
         return ''
     })
 
-    if(path === '') return false
+    if(uri === '') return false
 
-    const result = await updateMetaData(account, path, {title, description, royalties, price, imgPath, status: config.tokenStatus.pending})
+    const result = await updateMetaData(uri, {title, description, image, royalties, price})
     return result
 }
 
-const updateMetaData = async (account, path, metaData) => {
-    const timestamp = Date.now().toString()
-    const query = admin.database().ref(`/tokens/${path}`)
-    const result = await query.update({owner: account, timestamp, ...metaData})
+const updateMetaData = async (uri, metaData) => {
+    const query = admin.database().ref(`/tokens/${uri}`)
+    const result = await query.update(metaData)
     .then(() => true)
     .catch( error => {
         console.error(error)
