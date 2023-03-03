@@ -15,7 +15,7 @@ import { PATHS } from '../config'
 import logo from '../img/logoTransparent.png'
 
 function Menu() {
-    const { isConnected, isOnline, account, isMember } = useSelector(connectionStatusSelector)
+    const { isConnected, isOnline, account, isMember, isOwner } = useSelector(connectionStatusSelector)
     
     const handleConnectWallet = () => {
         window.location.href = PATHS.wallet
@@ -43,7 +43,7 @@ function Menu() {
                 >
                     <Nav.Link href={PATHS.profile}>{
                         isMember ? 
-                            <>{parseAccount(account)} <i className='bi bi-patch-check-fill' /></>
+                            <>{parseAccount(account)} <i className='bi bi-patch-check-fill' style={ isOwner ? {color: 'gold'} : {}} /></>
                         :
                             parseAccount(account) 
                         }
@@ -89,7 +89,7 @@ function Menu() {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
                     <Nav.Link href={PATHS.main}>Home</Nav.Link>
-                    {isMember ? <Nav.Link href={PATHS.mint}>Create</Nav.Link> : <></>}
+                    {isOwner ? <Nav.Link href={PATHS.create}>Create</Nav.Link> : <></>}
                     {isConnected ? <Nav.Link href={PATHS.portfolio}>Portfolio</Nav.Link> : <></>}
                 </Nav>
                 {getMenuActions()}                

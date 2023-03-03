@@ -73,6 +73,11 @@ class User {
         return result
     }
 
+    async isOwner(troca, account) {
+        const owner = await troca.methods.ownerAccount().call()
+        return owner === account
+    }
+
     disconnect() {
         localStorage.clear()
         this.dispatch(disconnectUser())
@@ -81,12 +86,18 @@ class User {
     async connect(account) {
         const contracts = await loadContracts(this.dispatch)
         let isMember = false
+        let isOwner = false
 
         if(contracts.troca) {
             isMember = await this.isMember(contracts.troca, account)
+            isOwner = await this.isOwner(contracts.troca, account)
+
+            if(isOwner) {
+                isMember = true
+            }
         }
         
-        this.dispatch(connectUser({account, isMember}))
+        this.dispatch(connectUser({account, isMember, isOwner}))
         accountListener(account, this)
     }
 
