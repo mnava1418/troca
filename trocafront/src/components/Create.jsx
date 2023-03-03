@@ -19,10 +19,10 @@ import { PATHS } from '../config';
 
 import '../styles/Mint.css'
 
-function Mint() {    
+function Create() {    
     const [validated, setValidated] = useState(false)
     
-    const { isConnected, isMember } = useSelector(connectionStatusSelector)
+    const { isConnected, isOwner } = useSelector(connectionStatusSelector)
     const isProcessing = useSelector(isProcessingSelector)
 
     const { troca, nft } = useWeb3()
@@ -39,12 +39,12 @@ function Mint() {
     useEffect(() => {        
         if(!isConnected) {
             window.location.href = PATHS.wallet
-        } else if(!isMember) {
+        } else if(!isOwner) {
             window.location.href = PATHS.main
         }
 
         // eslint-disable-next-line       
-    }, [isConnected, isMember])
+    }, [isConnected, isOwner])
 
     const handleSubmit = async () => {
         const form = document.getElementById('mintForm')
@@ -159,10 +159,10 @@ function Mint() {
 
     return (
         <>
-            {isConnected && isMember ? showPage() : <Spinner animation='grow' variant='secondary'/>}
+            {isConnected && isOwner ? showPage() : <Spinner animation='grow' variant='secondary'/>}
         </>
       );
   }
   
-  export default Mint;
+  export default Create;
   

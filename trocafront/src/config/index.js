@@ -2,7 +2,7 @@ export const PATHS = {
     main: '/',
     wallet: '/wallet',
     profile: '/profile',
-    mint: '/mint',
+    create: '/create',
     portfolio: '/portfolio'
 }
 
