@@ -91,10 +91,6 @@ class User {
         if(contracts.troca) {
             isMember = await this.isMember(contracts.troca, account)
             isOwner = await this.isOwner(contracts.troca, account)
-
-            if(isOwner) {
-                isMember = true
-            }
         }
         
         this.dispatch(connectUser({account, isMember, isOwner}))
