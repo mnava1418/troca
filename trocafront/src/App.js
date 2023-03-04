@@ -9,6 +9,7 @@ import Wallet from './components/Wallet';
 import Profile from './components/Profile';
 import Create from './components/Create';
 import Portfolio from './components/Portfolio';
+import Mint from './components/Mint';
 import CustomAlert from './components/helpers/CustomAlert';
 import Spinner from 'react-bootstrap/Spinner'
 
@@ -45,6 +46,7 @@ function App() {
           <Route path={PATHS.profile} element={<Profile />}/>
           <Route path={PATHS.create} element={<Create />}/>
           <Route path={PATHS.portfolio} element={<Portfolio />}/>
+          <Route path={PATHS.mint} element={<Mint />}/>
           <Route  path='*' element={<NotFound />}/>
         </Routes>
       </BrowserRouter>

@@ -1,18 +1,20 @@
 import { useState } from 'react'
 
-function useMint(currTitle, currDescription, currPrice, currRoyalties, currImg) {
-    const [title, setTitle] = useState(currTitle)
-    const [description, setDescription] = useState(currDescription)
-    const [price, setPrice] = useState(currPrice)
-    const [royalties, setRoyalties] = useState(currRoyalties)
-    const [imgFile, setImgFile] = useState(currImg)
+function useMint() {
+    const [isMinting, setIsMinting] = useState(false)
+    const [showNFT, setShowNFT] = useState('')
+    const [animateCard, setAnimateCard] = useState('')
+    const [animateLogo, setAnimateLogo] = useState('')
 
-    return { 
-        title, setTitle, 
-        description, setDescription, 
-        price, setPrice,
-        royalties, setRoyalties,
-        imgFile, setImgFile
+    const animate = () => {
+        setAnimateCard('nft-card-animate')
+        setAnimateLogo('nft-card-back-animate')
+    }
+
+    return {
+        isMinting, setIsMinting,
+        showNFT,
+        animate, animateCard, animateLogo
     }
 }
 
