@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 import Exchange from '../models/Exchange';
 import useWeb3 from '../hooks/useWeb3';
-import useMint from '../hooks/useMint';
+import useCreate from '../hooks/useCreate';
 
 import { 
     connectionStatusSelector, 
@@ -32,7 +32,7 @@ function Create() {
         price, setPrice,
         royalties, setRoyalties,
         imgFile, setImgFile
-    } = useMint('', '', '', '', undefined)
+    } = useCreate('', '', '', '', undefined)
 
     const dispatch = useDispatch()
 
