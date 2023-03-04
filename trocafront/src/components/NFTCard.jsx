@@ -50,7 +50,7 @@ function NFTCard({img, title, owner, onlyUser, price}) {
     }
 
     return (
-        <Card className='d-flex flex-column justify-content-center align-items-center nft-card-container' style={{ width: '20rem', margin: '40px' }}>
+        <Card className='d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-shadow' style={{ width: '20rem', margin: '40px' }}>
             <div className='nft-card-img bg-img bg-im-cover' style={{backgroundImage: `url(${INFURA_URL}/${img})`}} />
             <Card.Body className='d-flex flex-column justify-content-end align-items-center' style={{width: '90%'}}>
                 <Card.Title>{title}</Card.Title>
