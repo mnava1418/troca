@@ -1,4 +1,5 @@
 import FormData from 'form-data'
+import { io } from 'socket.io-client'
 
 import { 
     connectWallet, 
@@ -85,6 +86,11 @@ class User {
 
     async connect(account) {
         const contracts = await loadContracts(this.dispatch)
+        const token = localStorage.getItem('jwt')
+        const socket = io(this.baseURL, {
+            query: { token }
+        })        
+
         let isMember = false
         let isOwner = false
 
@@ -92,8 +98,9 @@ class User {
             isMember = await this.isMember(contracts.troca, account)
             isOwner = await this.isOwner(contracts.troca, account)
         }
-        
-        this.dispatch(connectUser({account, isMember, isOwner}))
+
+        this.dispatch(connectUser({account, isMember, isOwner, socket}))
+
         accountListener(account, this)
     }
 

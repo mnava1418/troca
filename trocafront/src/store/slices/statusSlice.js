@@ -8,6 +8,7 @@ const INITIAL_STATE = {
         type: ''
     },
     connection: {
+        socket: undefined,
         isConnected: false,
         isOnline: false,
         isMember: false,
@@ -42,10 +43,15 @@ export const statusSlice = createSlice({
             state.connection.account = action.payload.account
             state.connection.isMember = action.payload.isMember
             state.connection.isOwner = action.payload.isOwner
+            state.connection.socket = action.payload.socket
         },
 
         disconnectUser: (state) => {
-            state.connection = { isConnected: false, isOnline: false, isMember: false, isOwner: false, account: undefined,
+            if(state.connection.socket) {
+                state.connection.socket.disconnect()
+            }
+            
+            state.connection = { isConnected: false, isOnline: false, isMember: false, isOwner: false, account: undefined, socket: undefined,
                 userInfo: {
                     username: '',
                     email: '',

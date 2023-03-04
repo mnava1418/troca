@@ -1,5 +1,7 @@
 const app = require('../app');
 const firebase = require('../loaders/firebaseLoader')
+const socketio = require('../loaders/socketIoLoader')
+
 const http = require('http');
 const port = 9000
 
@@ -13,6 +15,7 @@ const startServer = () => {
 
   //Loaders
   firebase()
+  socketio(server)
 }
 
 const onError = (error) => {
