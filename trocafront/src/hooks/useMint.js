@@ -9,12 +9,28 @@ function useMint() {
     const [status, setStatus] = useState('')    
     const [title, setTitle] = useState('Mint an NFT')
     const [subtitle, setSubtitle] = useState('Click to mint your next NFT.')
+    const [tokenURI, setTokenURI] = useState('')
 
     const startMinting = () => {
         setIsMinting(true)        
         setTitle('In Progress...')
         setSubtitle('Please DO NOT LEAVE this page until transaction is confirmed!')
         startAnimation()
+    }
+
+    const stopMinting = () => {
+        setIsMinting(false)        
+        stopAnimation()
+        setTitle('Mint an NFT')
+        setSubtitle('Click to mint your next NFT.')
+    }
+
+    const displayNFT = (uri) => {        
+        stopAnimation()
+        setShowNFT('nft-mint-container-animate')
+        setTokenURI(uri)
+        setTitle('Congratulations!')
+        setSubtitle('Your new NFT is ready. Click on it or go to Portfolio to start playing with it.')
     }
 
     const startAnimation = () => {
@@ -46,11 +62,11 @@ function useMint() {
     }
 
     return {
-        isMinting, setIsMinting, startMinting,
+        isMinting, setIsMinting, startMinting, stopMinting, displayNFT,
         showNFT,
         animateCard, animateLogo,
         status, showMintingStatus, showError,
-        title, subtitle
+        title, subtitle, tokenURI
     }
 }
 
