@@ -5,23 +5,25 @@ import Card from 'react-bootstrap/Card';
 import { connectionStatusSelector } from '../store/slices/statusSlice';
 import useMint from '../hooks/useMint';
 import { PATHS } from '../config';
+import {setListeners} from '../services/socketServices'
 
 import '../styles/NFTCard.css'
 
-function Mint() {
+function Mint() {    
+    const { isConnected, isMember, socket, account } = useSelector(connectionStatusSelector)    
     
-    const { isConnected, isMember } = useSelector(connectionStatusSelector)
     const {
         isMinting, setIsMinting,
-        animate, animateCard, animateLogo,
-        showNFT
+        animate, animateCard, animateLogo, stopAnimation,
+        showNFT,
+        status, showMintingStatus,        
     } = useMint()
 
     const mintNFT = () => {
         if(!isMinting) {
             setIsMinting(true)
             animate()
-            alert('vamoa a mintear')
+            socket.emit('generate-token')
         }
     }
 
@@ -30,12 +32,17 @@ function Mint() {
             window.location.href = PATHS.wallet
         } else if(!isMember) {
             window.location.href = PATHS.main
+        } else {
+            setListeners(account, socket, {showMintingStatus, stopAnimation, setIsMinting})
+            socket.emit('tokens-available')
         }
+
+        // eslint-disable-next-line
     }, [isConnected, isMember])
 
     return(
         <section className='d-flex flex-column justify-content-center align-items-center full-screen'>
-            <h1>Mint your NFT</h1>            
+            <h1>Mint an NFT</h1>            
             <h4 style={{marginBottom: '60px'}}>Click to mint your next NFT.</h4>
             <div className={`nft-mint-container ${showNFT}`}>
                 <Card className={`d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-shadow nft-card-back ${animateCard}`} style={{ width: '20rem', height: '20rem' }} onClick={mintNFT}>
@@ -46,7 +53,7 @@ function Mint() {
                 </Card>
             </div>            
             <br/>
-            <h4 style={{marginTop: '40px'}}>NFT's remaining to mint: 10/10</h4>            
+            <h4 style={{marginTop: '40px'}}>{status}</h4>
         </section>       
     )
 }
