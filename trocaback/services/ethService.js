@@ -2,25 +2,6 @@ const admin = require('firebase-admin')
 const infuraAuth = require('../config/auth').infura
 const config = require('../config')
 
-const META_DATA = {
-    title: 'TROCA Metadata',
-    type: 'object',
-    properties: {
-        name: {
-            type: 'string',
-            description: ''
-        },
-        description: {
-            type: 'string',
-            description: ''
-        },
-        image: {
-            type: 'string',
-            description: ''
-        }
-    }
-}
-
 const getClient = async () => {
     const { create } = await import('ipfs-http-client')
     const auth = 'Basic ' + Buffer.from(`${infuraAuth.projectId}:${infuraAuth.secret}`).toString('base64')
@@ -58,11 +39,13 @@ const saveNFTMetaData = async (title, description, price, royalties, imgData) =>
 
     if(image === '') return false
 
-    META_DATA.properties.name.description = title
-    META_DATA.properties.description.description = description
-    META_DATA.properties.image.description = `${config.infuraUrl}/${image}`
+    const metaData = {
+        name: title,
+        description,
+        image: `${config.infuraUrl}/${image}`
+    }
 
-    const metaBuffer = Buffer.from(JSON.stringify(META_DATA));
+    const metaBuffer = Buffer.from(JSON.stringify(metaData));
 
     const uri = await client.add(metaBuffer)
     .then(result => result.path)
