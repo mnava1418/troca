@@ -1,8 +1,9 @@
 import { get } from '../services/networkService'
-import { BACK_URLS } from '../config'
+import { BACK_URLS, INFURA_URL } from '../config'
 
 import { setIsProcessing, setAlert } from '../store/slices/statusSlice'
 import { loadTokens } from '../store/slices/portfolioSlice'
+import { parseError } from '../services/ethServices'
 
 class MyPortfolio {
     constructor (dispatch) {
@@ -23,6 +24,25 @@ class MyPortfolio {
         }
 
         this.dispatch(setIsProcessing(false))
+    }
+
+    mint(account, nft, troca, token) {
+        const mintPromise = new Promise((resolve, reject) => {
+            const uri = `${INFURA_URL}/${token.uri}`
+            const royalties = parseInt(token.royalties) * 100 //In basis points
+
+            nft.methods.mint(troca._address, uri, royalties).send({from: account})
+            .on('transactionHash', () => {
+                resolve()
+            })
+            .on('error', (error) => {
+                console.error(error)
+                const errorMessage = parseError(error)
+                reject(errorMessage)
+            })
+        })        
+
+        return mintPromise
     }
 }
 

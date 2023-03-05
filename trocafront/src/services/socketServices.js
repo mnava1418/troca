@@ -1,6 +1,9 @@
 import { MINTING_STATUS } from "../config"
+import MyPortfolio from "../models/MyPortfolio"
+import { setAlert } from "../store/slices/statusSlice"
+import { INFURA_URL } from "../config"
 
-export const setListeners = (account, socket, actions = {}) => {
+export const setListeners = (dispatch, account, socket, actions = {}, contracts = {}) => {
     socket.on('update-tokens-available', (info) => {
         actions.showMintingStatus('', info.totalCount, info.availableTokens)
     })
@@ -8,7 +11,19 @@ export const setListeners = (account, socket, actions = {}) => {
     socket.on('minting-token', (newToken, mintingAccount) => {
         if(newToken !== undefined && newToken !== null) {
             if(mintingAccount === account) {
-                console.log('vamos a mintear', newToken)
+                const portfolio = new MyPortfolio(dispatch)
+                
+                portfolio.mint(account, contracts.nft, contracts.troca, newToken)
+                .then(() => {
+                    socket.emit('complete-minting', newToken.uri)
+                    actions.displayNFT(`${INFURA_URL}/${newToken.image}`)
+                })
+                .catch( errorMessage => {
+                    dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
+                    socket.emit('cancel-minting', newToken.uri)
+                    actions.stopMinting()
+                })
+
             } else {
                 actions.showMintingStatus(MINTING_STATUS.minting)
             }                

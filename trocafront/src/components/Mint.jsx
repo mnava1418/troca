@@ -1,26 +1,32 @@
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Card from 'react-bootstrap/Card';
 
 import { connectionStatusSelector } from '../store/slices/statusSlice';
 import useMint from '../hooks/useMint';
+import useWeb3 from '../hooks/useWeb3';
 import { PATHS } from '../config';
 import {setListeners} from '../services/socketServices'
 
 import '../styles/NFTCard.css'
 
 function Mint() {    
+
+    const dispatch = useDispatch()
     const { isConnected, isMember, socket, account } = useSelector(connectionStatusSelector)    
+    const { nft, troca } = useWeb3()
     
     const {
-        isMinting, startMinting,
+        isMinting, startMinting, stopMinting, displayNFT,
         animateCard, animateLogo,
         showNFT,
         status, showMintingStatus, showError,
-        title, subtitle
+        title, subtitle, tokenURI
     } = useMint()
 
-    const mintNFT = () => {
+    const mintNFT = (e) => {        
+        e.stopPropagation()
+        
         if(!isMinting) {
             startMinting()
             socket.emit('generate-token')
@@ -29,13 +35,18 @@ function Mint() {
         }
     }
 
+    const goToPortfolio = (e) => {        
+        e.stopPropagation()
+        window.location.href = PATHS.portfolio
+    }
+
     useEffect(() => {
         if(!isConnected) {
             window.location.href = PATHS.wallet
         } else if(!isMember) {
             window.location.href = PATHS.main
         } else {
-            setListeners(account, socket, {showMintingStatus, showError})
+            setListeners(dispatch, account, socket, {showMintingStatus, showError, stopMinting, displayNFT}, {troca, nft})
             socket.emit('tokens-available')
         }
 
@@ -50,8 +61,8 @@ function Mint() {
                 <Card className={`d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-shadow nft-card-back ${animateCard}`} style={{ width: '20rem', height: '20rem' }} onClick={mintNFT}>
                     <div className={`nft-card-back-img bg-img bg-im-contain ${animateLogo}`} />
                 </Card>    
-                <Card className='d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-front' style={{ width: '20rem', height: '20rem' }}>
-                    <h1>TU NFT</h1>
+                <Card className='d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-front' style={{ width: '20rem', height: '20rem', overflow: 'hidden' }} onClick={goToPortfolio}>
+                    <div className='bg-img bg-im-cover' style={{width: '100%', height: '100%', backgroundImage: `url(${tokenURI})` }}/>
                 </Card>
             </div>            
             <br/>
