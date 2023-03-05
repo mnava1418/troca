@@ -13,7 +13,9 @@ export const setListeners = (account, socket, actions = {}) => {
                 actions.showMintingStatus(MINTING_STATUS.minting)
             }                
         } else {
-            actions.stopAnimation()
+            if(mintingAccount === account) {
+                actions.showError()
+            }            
         }
     })
 }

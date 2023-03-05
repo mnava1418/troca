@@ -13,17 +13,19 @@ function Mint() {
     const { isConnected, isMember, socket, account } = useSelector(connectionStatusSelector)    
     
     const {
-        isMinting, setIsMinting,
-        animate, animateCard, animateLogo, stopAnimation,
+        isMinting, startMinting,
+        animateCard, animateLogo,
         showNFT,
-        status, showMintingStatus,        
+        status, showMintingStatus, showError,
+        title, subtitle
     } = useMint()
 
     const mintNFT = () => {
         if(!isMinting) {
-            setIsMinting(true)
-            animate()
+            startMinting()
             socket.emit('generate-token')
+        } else {
+            alert('Minting in progress...')
         }
     }
 
@@ -33,7 +35,7 @@ function Mint() {
         } else if(!isMember) {
             window.location.href = PATHS.main
         } else {
-            setListeners(account, socket, {showMintingStatus, stopAnimation, setIsMinting})
+            setListeners(account, socket, {showMintingStatus, showError})
             socket.emit('tokens-available')
         }
 
@@ -42,8 +44,8 @@ function Mint() {
 
     return(
         <section className='d-flex flex-column justify-content-center align-items-center full-screen'>
-            <h1>Mint an NFT</h1>            
-            <h4 style={{marginBottom: '60px'}}>Click to mint your next NFT.</h4>
+            <h1>{title}</h1>            
+            <h4 style={{marginBottom: '60px'}}>{subtitle}</h4>
             <div className={`nft-mint-container ${showNFT}`}>
                 <Card className={`d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-shadow nft-card-back ${animateCard}`} style={{ width: '20rem', height: '20rem' }} onClick={mintNFT}>
                     <div className={`nft-card-back-img bg-img bg-im-contain ${animateLogo}`} />
