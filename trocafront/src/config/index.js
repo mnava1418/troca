@@ -20,3 +20,7 @@ export const MEMBERSHIP_FEE = 10 //USD
 export const TOKEN_STATUS = {
     active: 'ACTIVE'
 }
+
+export const MINTING_STATUS = {    
+    minting: 'MINTING'
+}
