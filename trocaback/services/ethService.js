@@ -73,7 +73,7 @@ const saveNFTMetaData = async (title, description, price, royalties, imgData) =>
 
     if(uri === '') return false
 
-    const result = await updateMetaData(uri, {title, description, image, royalties, price})
+    const result = await updateMetaData(uri, {title, description, image, royalties, price, status: config.tokenStatus.available})
     return result
 }
 
@@ -91,5 +91,6 @@ const updateMetaData = async (uri, metaData) => {
 
 module.exports = {
     ipfsUploadImg,
-    saveNFTMetaData
+    saveNFTMetaData,
+    updateMetaData
 }
