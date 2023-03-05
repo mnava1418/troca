@@ -3,5 +3,6 @@ module.exports = {
     tokenStatus: {
         available: 'AVAILABLE',
         minting: 'MINTING',
+        minted: 'MINTED'
     }
 }

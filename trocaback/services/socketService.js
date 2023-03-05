@@ -37,8 +37,14 @@ const cancelMinting = async(account, token) => {
     await userService.updateUserInfo(account, {isMinting: null, token: null})
 }
 
+const completeMinting = async(account, token) => {
+    await ethService.updateMetaData(token, {status: config.tokenStatus.minted})
+    await userService.updateUserInfo(account, {isMinting: null, token: null})
+}
+
 module.exports = {
     generateToken,
     userIsMinting,
-    cancelMinting
+    cancelMinting,
+    completeMinting
 }

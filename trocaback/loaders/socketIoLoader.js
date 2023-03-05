@@ -53,6 +53,19 @@ module.exports = (httpServer) => {
             const newToken = await socketService.generateToken(socket.account)            
             io.emit('minting-token', newToken, socket.account)
         })
+
+        socket.on('cancel-minting', async (tokenURI) => {
+            await socketService.cancelMinting(socket.account, tokenURI)
+            const availableTokens = await portfolioService.getAvailableTokens()
+            io.emit('update-tokens-available', {totalCount: availableTokens.totalCount, availableTokens: availableTokens.available.length})            
+        })
+
+        socket.on('complete-minting', async (tokenURI) => {
+            console.info(`${socket.account} minted a new token`)
+            await socketService.completeMinting(socket.account, tokenURI)
+            const availableTokens = await portfolioService.getAvailableTokens()
+            io.emit('update-tokens-available', {totalCount: availableTokens.totalCount, availableTokens: availableTokens.available.length})
+        })
     })    
 
     console.info('Socket-io ready!')
