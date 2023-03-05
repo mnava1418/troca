@@ -1,4 +1,5 @@
 const admin = require('firebase-admin')
+const config = require('../config')
 
 const getAllTokens = async () => {
     const query = admin.database().ref(`/tokens`)
@@ -21,6 +22,19 @@ const getAllTokens = async () => {
     return tokens
 }
 
+const getAvailableTokens = async () => {
+    let tokens = await getAllTokens()
+
+    if(tokens === undefined) {
+        tokens = []
+    }
+
+    const available = tokens.filter( token => token.status === config.tokenStatus.available)
+
+    return {totalCount: tokens.length, available}
+}
+
 module.exports = {
-    getAllTokens
+    getAllTokens,
+    getAvailableTokens
 }
