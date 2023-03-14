@@ -6,7 +6,7 @@ import { connectionStatusSelector } from '../store/slices/statusSlice';
 import useMint from '../hooks/useMint';
 import useWeb3 from '../hooks/useWeb3';
 import { PATHS } from '../config';
-import {setListeners} from '../services/socketServices'
+import {setMintingListeners} from '../services/socketServices'
 
 import '../styles/NFTCard.css'
 
@@ -46,7 +46,7 @@ function Mint() {
         } else if(!isMember) {
             window.location.href = PATHS.main
         } else {
-            setListeners(dispatch, account, socket, {showMintingStatus, showError, stopMinting, displayNFT}, {troca, nft})
+            setMintingListeners(dispatch, account, socket, {showMintingStatus, showError, stopMinting, displayNFT}, {troca, nft})
             socket.emit('tokens-available')
         }
 

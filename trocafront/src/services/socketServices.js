@@ -3,7 +3,7 @@ import MyPortfolio from "../models/MyPortfolio"
 import { setAlert } from "../store/slices/statusSlice"
 import { INFURA_URL } from "../config"
 
-export const setListeners = (dispatch, account, socket, actions = {}, contracts = {}) => {
+export const setMintingListeners = (dispatch, account, socket, actions = {}, contracts = {}) => {
     socket.on('update-tokens-available', (info) => {
         actions.showMintingStatus('', info.totalCount, info.availableTokens)
     })
