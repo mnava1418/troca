@@ -127,16 +127,6 @@ function Profile() {
                         {parseAccount(account)}
                     </h5>
                     <Form id='profileForm' noValidate validated={validated} autoComplete='off'>
-                        <Form.Group controlId="userEmail">
-                            <Form.Label style={{fontWeight: '600'}}>Email</Form.Label>
-                            <Form.Control
-                                required
-                                type="email"
-                                placeholder="Enter your email"
-                                defaultValue={userInfo.email}
-                            />
-                            <Form.Control.Feedback type="invalid" style={{margin: '8px 0px 0px 0px'}}>Provide a valid email.</Form.Control.Feedback>
-                        </Form.Group>
                         <Form.Group controlId="userName">
                             <Form.Label style={{fontWeight: '600'}}>Username</Form.Label>
                             <Form.Control
@@ -147,6 +137,16 @@ function Profile() {
                                 onChange={(e) => {dispatch(updateUserName(e.target.value))}}
                             />
                             <Form.Control.Feedback type="invalid" style={{margin: '8px 0px 0px 0px'}}>Choose a username.</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="userEmail">
+                            <Form.Label style={{fontWeight: '600'}}>Email</Form.Label>
+                            <Form.Control
+                                required
+                                type="email"
+                                placeholder="Enter your email"
+                                defaultValue={userInfo.email}
+                            />
+                            <Form.Control.Feedback type="invalid" style={{margin: '8px 0px 0px 0px'}}>Provide a valid email.</Form.Control.Feedback>
                         </Form.Group>
                         {!isProcessing ? getActionButtons() : <></>}
                     </Form>
