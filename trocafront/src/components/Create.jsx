@@ -130,6 +130,7 @@ function Create() {
                                     <Form.Control
                                         required
                                         type='number'
+                                        step='0.00001'
                                         min='0'
                                         placeholder="10 ETH"
                                         onChange={(e) => setPrice(e.target.value)}
