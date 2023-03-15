@@ -9,7 +9,7 @@ function useMint() {
     const [status, setStatus] = useState('')    
     const [title, setTitle] = useState('Mint an NFT')
     const [subtitle, setSubtitle] = useState('Click to mint your next NFT.')
-    const [tokenURI, setTokenURI] = useState('')
+    const [tokenImg, setTokenImg] = useState('')
 
     const startMinting = () => {
         setIsMinting(true)        
@@ -25,12 +25,21 @@ function useMint() {
         setSubtitle('Click to mint your next NFT.')
     }
 
-    const displayNFT = (uri) => {        
-        stopAnimation()
-        setShowNFT('nft-mint-container-animate')
-        setTokenURI(uri)
-        setTitle('Congratulations!')
-        setSubtitle('Your new NFT is ready. Click on it or go to Portfolio to start playing with it.')
+    const displayNFT = async (uri) => {        
+        const imageFile = await fetch(uri)
+        const imageData = await imageFile.blob()
+
+        const reader = new FileReader()
+
+        reader.onloadend = () => {
+            stopAnimation()
+            setTitle('Congratulations!')
+            setSubtitle('Your new NFT is ready. Click on it or go to Portfolio to start playing with it.')
+            setTokenImg(reader.result)
+            setShowNFT('nft-mint-container-animate')
+        }
+
+        reader.readAsDataURL(imageData)
     }
 
     const startAnimation = () => {
@@ -66,7 +75,7 @@ function useMint() {
         showNFT,
         animateCard, animateLogo,
         status, showMintingStatus, showError,
-        title, subtitle, tokenURI
+        title, subtitle, tokenImg
     }
 }
 

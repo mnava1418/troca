@@ -21,7 +21,7 @@ function Mint() {
         animateCard, animateLogo,
         showNFT,
         status, showMintingStatus, showError,
-        title, subtitle, tokenURI
+        title, subtitle, tokenImg
     } = useMint()
 
     const mintNFT = (e) => {        
@@ -62,7 +62,7 @@ function Mint() {
                     <div className={`nft-card-back-img bg-img bg-im-contain ${animateLogo}`} />
                 </Card>    
                 <Card className='d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-front' style={{ width: '20rem', height: '20rem', overflow: 'hidden' }} onClick={goToPortfolio}>
-                    <div className='bg-img bg-im-cover' style={{width: '100%', height: '100%', backgroundImage: `url(${tokenURI})` }}/>
+                    <div className='bg-img bg-im-cover' style={{width: '100%', height: '100%', backgroundImage: `url(${tokenImg})` }}/>
                 </Card>
             </div>            
             <br/>
