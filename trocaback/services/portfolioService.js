@@ -3,15 +3,11 @@ const config = require('../config')
 
 const getAllTokens = async () => {
     const query = admin.database().ref(`/tokens`)
-    let tokens = []
+    let tokens = {}
 
     await query.once('value', (data) => {
         if(data.exists()) {
-            const allTokens = data.toJSON()
-            Object.keys(allTokens).forEach(uri => {
-                const tokenData = {...allTokens[uri], uri}
-                tokens.push(tokenData)
-            })            
+             tokens = data.toJSON()
         }
     })
     .catch(error => {
@@ -23,11 +19,15 @@ const getAllTokens = async () => {
 }
 
 const getAvailableTokens = async () => {
-    let tokens = await getAllTokens()
+    const allTokens = await getAllTokens()
+    const tokens = []
 
-    if(tokens === undefined) {
-        tokens = []
-    }
+    if(tokens !== undefined) {
+        Object.keys(allTokens).forEach(uri => {
+            const tokenData = {...allTokens[uri], uri}
+            tokens.push(tokenData)
+        })  
+    } 
 
     const available = tokens.filter( token => token.status === config.tokenStatus.available)
 
