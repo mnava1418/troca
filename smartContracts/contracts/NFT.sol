@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 import "./Troca.sol";
 
 contract NFT is ERC721URIStorage, ERC721Royalty {
-    uint256 private tokenId  = 0;
+    uint256 public tokenId  = 0;
 
     constructor() ERC721("Troca Club", "TRC") {}
 
