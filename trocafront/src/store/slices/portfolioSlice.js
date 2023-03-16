@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const INITIAL_STATE = {
-    allTokens: [],
+    allTokens: {},
     selectedTokens: [],
     users: {},
-    onlyUser: false,    
+    onlyUser: true,    
 }
 
 export const portfolioSlice = createSlice({
@@ -13,7 +13,7 @@ export const portfolioSlice = createSlice({
     reducers: {
         loadTokens: (state, action) => {
             state.allTokens = action.payload
-            state.selectedTokens = action.payload
+            state.selectedTokens = Object.values(action.payload)
         },
 
         setOnlyUser: (state, action) => {
