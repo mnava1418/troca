@@ -9,6 +9,7 @@ import { connectionStatusSelector, isProcessingSelector } from '../store/slices/
 import { setOnlyUser, setSelectedTokens } from '../store/slices/portfolioSlice';
 
 import usePortfolio from '../hooks/usePortfolio';
+import useWeb3 from '../hooks/useWeb3';
 import MyPortfolio from '../models/MyPortfolio';
 import User from '../models/User';
 import { PATHS } from '../config';
@@ -17,7 +18,9 @@ import { parseAccount, parseUsername } from '../services/ethServices';
 function Portfolio () {
     const { isConnected } = useSelector(connectionStatusSelector)
     const isProcessing = useSelector(isProcessingSelector)
-    
+    const { nft } = useWeb3()
+
+
     const { 
         onlyUser, 
         selectedTokens, 
@@ -33,7 +36,7 @@ function Portfolio () {
         if(!isConnected) {
             window.location.href = PATHS.wallet
         } else {      
-            myPortfolio.getTokens()
+            myPortfolio.getTokens(nft)
             user.getAllUsers()
         } 
         
@@ -49,7 +52,7 @@ function Portfolio () {
     const search = () => {
         const text = document.getElementById('searchInput').value.toUpperCase()
         
-        let currentTokens = [...allTokens].filter(
+        let currentTokens = [...Object.values(allTokens)].filter(
             element => {
                 let userName = ''
 
