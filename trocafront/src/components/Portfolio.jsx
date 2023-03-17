@@ -82,12 +82,10 @@ function Portfolio () {
                     }
                     
                     return(
-                        <NFTCard key={token.uri} 
-                            img={token.imgPath} 
-                            title={token.title}
-                            owner={owner}
-                            price={token.price}
+                        <NFTCard key={token.id}
                             onlyUser={onlyUser}
+                            owner={owner}
+                            token={token}
                         />
                     )
                 })}

@@ -26,6 +26,10 @@ export const portfolioSlice = createSlice({
 
         setSelectedTokens: (state, action) => {
             state.selectedTokens = action.payload
+        },
+
+        loadTokenImg: (state, action) => {
+            state.allTokens[action.payload.id].imageData = action.payload.data
         }
     }
 })
@@ -35,7 +39,8 @@ export const {
     loadTokens,
     setOnlyUser,
     loadUsers,
-    setSelectedTokens
+    setSelectedTokens, 
+    loadTokenImg
 } = portfolioSlice.actions
 
 //Selectors

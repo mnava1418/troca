@@ -1,12 +1,45 @@
+import { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
+import { loadTokenImg } from '../store/slices/portfolioSlice';
 import { INFURA_URL } from '../config';
+import usePortfolio from '../hooks/usePortfolio';
 
 import '../styles/NFTCard.css'
 
-function NFTCard({img, title, owner, onlyUser, price}) {
+function NFTCard({owner, onlyUser, token}) {
+    const {allTokens} = usePortfolio()
+    const [tokenImg, setTokenImage] = useState({})
+    const {id, title, price, image} = token
 
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if(allTokens[id].imageData === undefined) {
+            loadImage()
+        } else {
+            setTokenImage({backgroundImage: `url(${allTokens[id].imageData})`})
+        }
+        // eslint-disable-next-line
+    }, [])
+
+    const loadImage = async () => {
+        const imageFile = await fetch(`${INFURA_URL}/${image}`)
+        const imageData = await imageFile.blob()
+
+        const reader = new FileReader()
+
+        reader.onloadend = () => {
+            const data = reader.result
+            dispatch(loadTokenImg({id, data}))
+            setTokenImage({backgroundImage: `url(${data})`})
+        }
+
+        reader.readAsDataURL(imageData)
+    }
+    
     const cardAction = (action) => {
         switch (action) {
             case 'bid':
@@ -51,7 +84,7 @@ function NFTCard({img, title, owner, onlyUser, price}) {
 
     return (
         <Card className='d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-shadow' style={{ width: '20rem', margin: '40px' }}>
-            <div className='nft-card-img bg-img bg-im-cover' style={{backgroundImage: `url(${INFURA_URL}/${img})`}} />
+            <div className='nft-card-img bg-img bg-im-cover' style={tokenImg} />
             <Card.Body className='d-flex flex-column justify-content-end align-items-center' style={{width: '90%'}}>
                 <Card.Title>{title}</Card.Title>
                 <div className='d-flex flex-row justify-content-around' style={{width: '100%', marginTop: '24px'}}>
