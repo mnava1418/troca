@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
 import { loadTokenImg } from '../store/slices/portfolioSlice';
+import { connectionStatusSelector } from '../store/slices/statusSlice';
 import { INFURA_URL } from '../config';
 import usePortfolio from '../hooks/usePortfolio';
 
@@ -15,6 +16,7 @@ function NFTCard({owner, onlyUser, token}) {
     const {id, title, price, image} = token
 
     const dispatch = useDispatch()
+    const { isMember } = useSelector(connectionStatusSelector)
 
     useEffect(() => {
         if(allTokens[id].imageData === undefined) {
@@ -67,8 +69,7 @@ function NFTCard({owner, onlyUser, token}) {
     const getOwnerActions = () => {
         return(
             <div className='d-flex flex-row justify-content-center align-items-center'>
-                <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('mint')}}>Mint</Button>
-                <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('update')}}>Update</Button>
+                <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('update')}}>Update</Button>
             </div>
         )
     }
@@ -76,7 +77,7 @@ function NFTCard({owner, onlyUser, token}) {
     const getUserActions = () => {
         return(
             <div className='d-flex flex-row justify-content-center align-items-center'>
-                <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('bid')}}>Place Bid</Button>
+                {isMember ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('bid')}}>Place Bid</Button> : ''}
                 <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('buy')}}>Buy</Button>
             </div>
         )
