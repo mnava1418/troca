@@ -69,6 +69,30 @@ function Portfolio () {
         dispatch(setSelectedTokens(currentTokens))
     }
 
+    const sortTokens = () => {
+        const sortBy = document.getElementById('portfolioSort').value
+        const currentTokens = [...selectedTokens]
+        
+        switch (sortBy) {
+            case 'topPrice':
+                currentTokens.sort((a, b) => (parseFloat(a.price) <= parseFloat(b.price)) ? 1 : -1 )
+                break;
+            case 'lowPrice':
+                currentTokens.sort((a, b) => (parseFloat(a.price) >= parseFloat(b.price)) ? 1 : -1 )
+                break;                      
+            case 'newest':
+                currentTokens.sort((a, b) => (parseInt(a.id) <= parseInt(b.id)) ? 1 : -1 )
+                break;      
+            case 'oldest':
+                currentTokens.sort((a, b) => (parseInt(a.id) >= parseInt(b.id)) ? 1 : -1 )
+                break;      
+            default:                
+                break;
+        }
+
+        dispatch(setSelectedTokens(currentTokens))
+    }
+
     const generateCatalog = () => {     
         return(
             <div className='d-flex flex-row justify-content-center flex-wrap fixed-container' style={{width: '90%'}}>
@@ -116,6 +140,7 @@ function Portfolio () {
                                             onChange={(e) => {
                                                 dispatch(setOnlyUser(e.target.checked))
                                                 document.getElementById('searchInput').value = ''
+                                                document.getElementById('portfolioSort').value = ''
                                                 search()
                                             }} 
                                         />
@@ -125,12 +150,12 @@ function Portfolio () {
                                 </div>
                             </div>
                             <InputGroup style={{marginRight: '0px'}}>
-                                <Form.Select>
-                                    <option>Sort by</option>
-                                    <option>Top Price</option>
-                                    <option>Low Price</option>
-                                    <option>Newest</option>
-                                    <option>Oldest</option>
+                                <Form.Select id='portfolioSort' onChange={sortTokens}>
+                                    <option value=''>Sort by</option>
+                                    <option value='topPrice'>Top Price</option>
+                                    <option value='lowPrice'>Low Price</option>
+                                    <option value='newest'>Newest</option>
+                                    <option value='oldest'>Oldest</option>
                                 </Form.Select>
                             </InputGroup>
                             <InputGroup className='search-bar-input'>
