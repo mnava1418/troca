@@ -10,6 +10,7 @@ function useMint() {
     const [title, setTitle] = useState('Mint an NFT')
     const [subtitle, setSubtitle] = useState('Click to mint your next NFT.')
     const [tokenImg, setTokenImg] = useState('')
+    const [availableTokens, setAvailableTokens] = useState(0)
 
     const startMinting = () => {
         setIsMinting(true)        
@@ -59,20 +60,27 @@ function useMint() {
     }
 
     const showMintingStatus = (status, total = 0, available = 0) => {
+        if(available === 0) {
+            setTitle('Unable to Mint')
+            setSubtitle('Sorry, no more nfts to mint.')
+        } 
+
         switch (status) {
             case MINTING_STATUS.minting:
                 setStatus('Someone else is minting!')
                 break;
         
             default:
-                setStatus(`NFT's remaining to mint: ${available}/${total}`)
+                setStatus(`NFTs remaining to mint: ${available}/${total}`)
                 break;
-        }
+        }           
+
+        setAvailableTokens(available)
     }
 
     return {
         isMinting, setIsMinting, startMinting, stopMinting, displayNFT,
-        showNFT,
+        showNFT, availableTokens,
         animateCard, animateLogo,
         status, showMintingStatus, showError,
         title, subtitle, tokenImg

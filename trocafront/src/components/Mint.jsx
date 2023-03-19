@@ -19,7 +19,7 @@ function Mint() {
     const {
         isMinting, startMinting, stopMinting, displayNFT,
         animateCard, animateLogo,
-        showNFT,
+        showNFT, availableTokens,
         status, showMintingStatus, showError,
         title, subtitle, tokenImg
     } = useMint()
@@ -27,11 +27,9 @@ function Mint() {
     const mintNFT = (e) => {        
         e.stopPropagation()
         
-        if(!isMinting) {
+        if(availableTokens > 0 && !isMinting) {
             startMinting()
             socket.emit('generate-token')
-        } else {
-            alert('Minting in progress...')
         }
     }
 
