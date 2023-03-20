@@ -120,12 +120,14 @@ section h5 {
 
 .search-bar {
   flex-direction: column;
+  justify-content: center;
   margin: 0px !important;
 }
 
 .search-bar-fixed {
-  width: 90%;
-  margin: 24px 0px;
+  width: 100%;
+  background-color: var(--bg-color);
+  padding: 24px;
   position: fixed; 
   z-index: 10;
 }
@@ -136,20 +138,19 @@ section h5 {
 }
 
 .search-bar-input {
-  margin-top: 0px !important;
+  display: none;
 }
 
 .search-bar-check {
-  width: auto !important;
   margin: 0px !important;
 }
 
 .search-bar-check div {
-  margin: 24px 0px 0px 0px !important;
+  margin: 24px 0px 24px 0px !important;
 }
 
 .fixed-container {
-  margin-top: 224px;  
+  margin-top: 100px;
 }
 
 .dark-container {
@@ -229,18 +230,15 @@ input:checked + .slider:before {
   }
 
   .search-bar {
+    justify-content: flex-end;
     flex-direction: row;
   }
 
   .search-bar-input {
-    margin-top: 24px !important;
+    display: flex;
   }
 
   .search-bar-check div {
     margin: 24px !important;
-  }
-
-  .fixed-container {
-    margin-top: 108px;
   }
 }
