@@ -133,7 +133,6 @@ section h5 {
 }
 
 .search-bar div {
-  width: 100%;
   max-width: 280px;
 }
 
@@ -141,8 +140,14 @@ section h5 {
   display: none;
 }
 
+.search-bar-btn {
+  display: flex;
+}
+
 .search-bar-check {
   margin: 0px !important;
+  width: 100%;
+  justify-content: space-around;
 }
 
 .search-bar-check div {
@@ -240,5 +245,17 @@ input:checked + .slider:before {
 
   .search-bar-check div {
     margin: 24px !important;
+  }
+
+  .search-bar-btn {
+    display: none;
+  }
+
+  .search-bar div {
+    width: 100%;
+  }
+
+  .search-bar-check {
+    justify-content: center;
   }
 }

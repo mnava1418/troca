@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup'
 import Spinner from 'react-bootstrap/Spinner'
+import Button from 'react-bootstrap/Button'
 import NFTCard from './NFTCard';
 
 import { connectionStatusSelector, isProcessingSelector } from '../store/slices/statusSlice';
@@ -133,7 +134,7 @@ function Portfolio () {
                     <div className='dark-container form-container form-container-dark' style={{width: '90%'}}>
                         <Form>
                             <div className='d-flex align-items-center search-bar'>
-                                <div className='search-bar-check input-group'>
+                                <div className='d-flex flex-row align-items-center search-bar-check'>
                                     <div className='d-flex flex-row justify-content-center align-items-center'>
                                         <label className='switch' style={{marginRight: '12px'}}>
                                             <input type="checkbox" className='form-check-input' defaultChecked={onlyUser} 
@@ -147,6 +148,10 @@ function Portfolio () {
                                             <span className='slider round'></span>
                                         </label>
                                         <label className="form-check-label">My NFTs</label>
+                                        
+                                    </div>
+                                    <div className='search-bar-btn'>
+                                        <Button variant="secondary"><i className='bi bi-filter'/></Button>
                                     </div>
                                 </div>
                                 <InputGroup className='search-bar-input' style={{marginRight: '0px'}}>
