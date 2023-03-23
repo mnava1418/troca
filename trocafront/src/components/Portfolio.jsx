@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup'
 import Spinner from 'react-bootstrap/Spinner'
 import Button from 'react-bootstrap/Button'
+import Offcanvas from 'react-bootstrap/Offcanvas'
 import NFTCard from './NFTCard';
 
 import { connectionStatusSelector, isProcessingSelector } from '../store/slices/statusSlice';
@@ -21,6 +22,7 @@ function Portfolio () {
     const isProcessing = useSelector(isProcessingSelector)
     const { nft } = useWeb3()
 
+    const [showFilters, setShowFilters ] = useState(false)
 
     const { 
         onlyUser, 
@@ -127,6 +129,29 @@ function Portfolio () {
         )
     }
 
+    const getFilterInputs = () => {
+        return(
+            <>
+                {showFilters ? <Form.Label style={{fontWeight: '600'}}>Sort</Form.Label> : <></>}
+                <InputGroup className={!showFilters ? 'search-bar-input' : ''} style={{marginRight: '0px'}}>
+                    <Form.Select id='portfolioSort' onChange={sortTokens}>
+                        <option value=''>Sort by</option>
+                        <option value='topPrice'>Top Price</option>
+                        <option value='lowPrice'>Low Price</option>
+                        <option value='newest'>Newest</option>
+                        <option value='oldest'>Oldest</option>
+                    </Form.Select>
+                </InputGroup>
+                {showFilters ? <><br/><Form.Label style={{fontWeight: '600'}}>Search</Form.Label></> : <></>}
+                <InputGroup className={!showFilters ? 'search-bar-input' : ''}>
+                    <Form.Control type="text" id='searchInput' placeholder="address, username or title." onKeyDown={onKeyDown} onKeyUp={search} />
+                    <InputGroup.Text><i className='bi bi-search' /></InputGroup.Text>
+                </InputGroup>
+                {showFilters ? <><br/><Button variant="outline-light" onClick={() => {setShowFilters(false)}}>Close</Button></> : <></>}
+            </>
+        )
+    }
+
     const showPage = () => {
         return(
             <section className='full-screen d-flex flex-column justify-content-start align-items-center'>
@@ -148,30 +173,31 @@ function Portfolio () {
                                             <span className='slider round'></span>
                                         </label>
                                         <label className="form-check-label">My NFTs</label>
-                                        
                                     </div>
                                     <div className='search-bar-btn'>
-                                        <Button variant="secondary"><i className='bi bi-filter'/></Button>
+                                        <Button variant="secondary" onClick={() => {setShowFilters(true)}}><i className='bi bi-filter'/></Button>
                                     </div>
                                 </div>
-                                <InputGroup className='search-bar-input' style={{marginRight: '0px'}}>
-                                    <Form.Select id='portfolioSort' onChange={sortTokens}>
-                                        <option value=''>Sort by</option>
-                                        <option value='topPrice'>Top Price</option>
-                                        <option value='lowPrice'>Low Price</option>
-                                        <option value='newest'>Newest</option>
-                                        <option value='oldest'>Oldest</option>
-                                    </Form.Select>
-                                </InputGroup>
-                                <InputGroup className='search-bar-input'>
-                                    <Form.Control type="text" id='searchInput' placeholder="address, username or title." onKeyDown={onKeyDown} onKeyUp={search} />
-                                    <InputGroup.Text><i className='bi bi-search' /></InputGroup.Text>
-                                </InputGroup>
+                                {getFilterInputs()}
                             </div>
                         </Form>
                     </div>
                 </div>
                 {selectedTokens.length > 0 ? generateCatalog() : emptyCatalog()}
+                <Offcanvas show={showFilters} onHide={() => {setShowFilters(false)}}>
+                    <Offcanvas.Header closeButton style={{backgroundColor: 'var(--contrast-color)', color:'white'}}>
+                        <h5>Portfolio Filters</h5>
+                    </Offcanvas.Header>
+                    <Offcanvas.Body className='d-flex flex-column justify-content-start align-items-center' style={{backgroundColor: 'var(--contrast-color)', color: 'white'}}>
+                        <div className='dark-container form-container form-container-dark' style={{width: '90%'}}>
+                            <Form>
+                                <div className='d-flex flex-column justify-content-center align-items-center'>
+                                    {getFilterInputs()}
+                                </div>
+                            </Form>
+                        </div>
+                    </Offcanvas.Body>
+                </Offcanvas>
             </section>
         )
     }
