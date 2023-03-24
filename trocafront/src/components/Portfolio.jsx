@@ -52,8 +52,7 @@ function Portfolio () {
         }
     }
 
-    const search = () => {
-        const text = document.getElementById('searchInput').value.toUpperCase()
+    const search = (text) => {
         
         let currentTokens = [...Object.values(allTokens)].filter(
             element => {
@@ -72,10 +71,9 @@ function Portfolio () {
         dispatch(setSelectedTokens(currentTokens))
     }
 
-    const sortTokens = () => {
-        const sortBy = document.getElementById('portfolioSort').value
+    const sortTokens = (sortBy) => {
         const currentTokens = [...selectedTokens]
-        
+
         switch (sortBy) {
             case 'topPrice':
                 currentTokens.sort((a, b) => (parseFloat(a.price) <= parseFloat(b.price)) ? 1 : -1 )
@@ -94,6 +92,7 @@ function Portfolio () {
         }
 
         dispatch(setSelectedTokens(currentTokens))
+        setShowFilters(false)
     }
 
     const generateCatalog = () => {     
@@ -134,7 +133,7 @@ function Portfolio () {
             <>
                 {showFilters ? <Form.Label style={{fontWeight: '600'}}>Sort</Form.Label> : <></>}
                 <InputGroup className={!showFilters ? 'search-bar-input' : ''} style={{marginRight: '0px'}}>
-                    <Form.Select id='portfolioSort' onChange={sortTokens}>
+                    <Form.Select id='portfolioSort' onChange={(e) => {sortTokens(e.target.value)}}>
                         <option value=''>Sort by</option>
                         <option value='topPrice'>Top Price</option>
                         <option value='lowPrice'>Low Price</option>
@@ -144,10 +143,10 @@ function Portfolio () {
                 </InputGroup>
                 {showFilters ? <><br/><Form.Label style={{fontWeight: '600'}}>Search</Form.Label></> : <></>}
                 <InputGroup className={!showFilters ? 'search-bar-input' : ''}>
-                    <Form.Control type="text" id='searchInput' placeholder="address, username or title." onKeyDown={onKeyDown} onKeyUp={search} />
+                    <Form.Control type="text" id='searchInput' placeholder="address, username or title." onKeyDown={onKeyDown} onKeyUp={(e) => {search(e.target.value.toUpperCase())}} />
                     <InputGroup.Text><i className='bi bi-search' /></InputGroup.Text>
                 </InputGroup>
-                {showFilters ? <><br/><Button variant="outline-light" onClick={() => {setShowFilters(false)}}>Close</Button></> : <></>}
+                {showFilters ? <><br/><Button variant="primary" onClick={() => {setShowFilters(false)}}>Search</Button></> : <></>}
             </>
         )
     }
@@ -157,7 +156,7 @@ function Portfolio () {
             <section className='full-screen d-flex flex-column justify-content-start align-items-center'>
                 <div className='d-flex flex-column justify-content-center align-items-center search-bar-fixed'>
                     <div className='dark-container form-container form-container-dark' style={{width: '90%'}}>
-                        <Form>
+                        <Form autoComplete='off'>
                             <div className='d-flex align-items-center search-bar'>
                                 <div className='d-flex flex-row align-items-center search-bar-check'>
                                     <div className='d-flex flex-row justify-content-center align-items-center'>
@@ -165,9 +164,7 @@ function Portfolio () {
                                             <input type="checkbox" className='form-check-input' defaultChecked={onlyUser} 
                                                 onChange={(e) => {
                                                     dispatch(setOnlyUser(e.target.checked))
-                                                    document.getElementById('searchInput').value = ''
-                                                    document.getElementById('portfolioSort').value = ''
-                                                    search()
+                                                    search('')
                                                 }} 
                                             />
                                             <span className='slider round'></span>
@@ -190,7 +187,7 @@ function Portfolio () {
                     </Offcanvas.Header>
                     <Offcanvas.Body className='d-flex flex-column justify-content-start align-items-center' style={{backgroundColor: 'var(--contrast-color)', color: 'white'}}>
                         <div className='dark-container form-container form-container-dark' style={{width: '90%'}}>
-                            <Form>
+                            <Form autoComplete='off'>
                                 <div className='d-flex flex-column justify-content-center align-items-center'>
                                     {getFilterInputs()}
                                 </div>
