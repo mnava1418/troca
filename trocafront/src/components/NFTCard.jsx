@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import NFTDetails from './NFTDetails';
 
 import { loadTokenImg } from '../store/slices/portfolioSlice';
 import { connectionStatusSelector } from '../store/slices/statusSlice';
 import { INFURA_URL } from '../config';
 import usePortfolio from '../hooks/usePortfolio';
+import useNFTActions from '../hooks/useNFTActions';
 
 import '../styles/NFTCard.css'
 
@@ -14,6 +16,10 @@ function NFTCard({owner, onlyUser, token}) {
     const {allTokens} = usePortfolio()
     const [tokenImg, setTokenImage] = useState({})
     const {id, title, price, image} = token
+
+    const {
+        showDetails, setShowDetails
+    } = useNFTActions()
 
     const dispatch = useDispatch()
     const { isMember } = useSelector(connectionStatusSelector)
@@ -57,7 +63,7 @@ function NFTCard({owner, onlyUser, token}) {
                 break;
 
             case 'update':
-                alert('Vamo a actualizar')
+                setShowDetails(true)
                 break;
     
             default:
@@ -84,24 +90,27 @@ function NFTCard({owner, onlyUser, token}) {
     }
 
     return (
-        <Card className='d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-shadow' style={{ width: '20rem', margin: '40px' }}>
-            <div className='nft-card-img bg-img bg-im-cover' style={tokenImg} />
-            <Card.Body className='d-flex flex-column justify-content-end align-items-center' style={{width: '90%'}}>
-                <Card.Title>{title}</Card.Title>
-                <div className='d-flex flex-row justify-content-around' style={{width: '100%', marginTop: '24px'}}>
-                    <div>
-                        <h6>{owner}</h6>
-                        <h6 style={{color: 'var(--secondary-color)'}}>Owner</h6>                        
+        <>
+            <Card className='d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-shadow' style={{ width: '20rem', margin: '40px' }}>
+                <div className='nft-card-img bg-img bg-im-cover' style={tokenImg} />
+                <Card.Body className='d-flex flex-column justify-content-end align-items-center' style={{width: '90%'}}>
+                    <Card.Title>{title}</Card.Title>
+                    <div className='d-flex flex-row justify-content-around' style={{width: '100%', marginTop: '24px'}}>
+                        <div>
+                            <h6>{owner}</h6>
+                            <h6 style={{color: 'var(--secondary-color)'}}>Owner</h6>                        
+                        </div>
+                        <div>
+                            <h6>{`${price} ETH`}</h6>
+                            <h6 style={{color: 'var(--secondary-color)'}}>Price</h6>
+                        </div>
                     </div>
-                    <div>
-                        <h6>{`${price} ETH`}</h6>
-                        <h6 style={{color: 'var(--secondary-color)'}}>Price</h6>
-                    </div>
-                </div>
-                <hr style={{width: '100%'}}></hr>
-                {onlyUser ? getOwnerActions() : getUserActions()}
-            </Card.Body>
-        </Card>
+                    <hr style={{width: '100%'}}></hr>
+                    {onlyUser ? getOwnerActions() : getUserActions()}
+                </Card.Body>
+            </Card>
+            {showDetails ? <NFTDetails setShowDetails={setShowDetails} token={token} tokenImg={tokenImg} onlyUser={onlyUser} owner={owner} /> : <></>}
+        </>
     );
   }
   

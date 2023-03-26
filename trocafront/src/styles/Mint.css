@@ -1,11 +1,13 @@
 .mint-container {
     flex-direction: column;    
+    justify-content: flex-start;
     width: 90%;
     max-width: 1200px;
     padding: 32px;
     background-color: var(--contrast-color);    
     border: 1px solid var(--contrast-color);
     border-radius: 25px;
+    overflow-y: auto;
 }
 
 .mint-img {
@@ -18,15 +20,45 @@
     cursor: pointer;
 }
 
+.mint-img-full {
+    border-style: solid !important;
+}
+
 .mint-form {
     width: 90%;        
     text-align: start;
 }
 
+.nft-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(0,0,0, 0.5);
+    z-index: 2000;
+}
+
+.nft-details div {
+    margin: 4px !important;    
+}
+
+.nft-details-item {
+    width: 100%;    
+}
+
+.accordion-button, .accordion-button:not(.collapsed), .accordion-item {
+    color: #ffffff !important;
+    background-color: var(--bg-color) !important;
+    border-color: var(--bg-color) !important;
+    box-shadow: 0px 0px 0px 4px rgb(33 37 41) !important;
+}
+
 /* Small devices (landscape phones, 576px and up)*/
 @media (min-width: 576px) { 
     .mint-container {
-        flex-direction: row;        
+        flex-direction: row;
+        justify-content: center;        
     }
 
     .mint-img {
@@ -37,5 +69,5 @@
     .mint-form {
         width: 60%;
         margin-left: 24px;        
-    }
+    }    
  }
