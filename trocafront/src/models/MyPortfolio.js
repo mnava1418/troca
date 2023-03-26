@@ -32,6 +32,7 @@ class MyPortfolio {
                     imageData: undefined,
                     price: catalog[key].price,
                     description: catalog[key].description,
+                    royalties: catalog[key].royalties
                 }
             }
         } 
