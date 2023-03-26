@@ -92,7 +92,7 @@ function Create() {
     const showPage = () => {
         return (
             <section className='d-flex flex-column justify-content-center align-items-center full-screen'>
-                <div className='d-flex mint-container justify-content-center align-items-center'>
+                <div className='d-flex mint-container align-items-center'>
                     <div id='mintImageDiv' className='mint-img bg-img bg-im-cover' onClick={() => {document.getElementById('mintImageFile').click()}}>
                         <div className='d-flex flex-column justify-content-center align-items-center full-content'>
                             <i className='bi bi-image' style={{fontSize: '60px', color: 'var(--secondary-color)'}}/>
