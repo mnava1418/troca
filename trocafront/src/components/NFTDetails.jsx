@@ -6,28 +6,34 @@ import Button from 'react-bootstrap/Button';
 import Accordion from 'react-bootstrap/Accordion'
 
 import useWeb3 from '../hooks/useWeb3';
-import { isProcessingSelector } from '../store/slices/statusSlice';
 import { parseAccount } from '../services/ethServices';
+import { connectionStatusSelector } from '../store/slices/statusSlice';
 
 import '../styles/Mint.css'
 
-function NFTDetails({setShowDetails, token, tokenImg, onlyUser, owner}) {
+function NFTDetails({setShowDetails, token, tokenImg, onlyUser, owner, isProcessingLocal, setIsProcessingLocal}) {
     const [validated, setValidated] = useState(false)
-    const {id, title, description, price, royalties} = token
-    const [priceETH, setPrice] = useState(price)
+    const {id, title, description, price, royalties, key} = token
+    const [priceETH, setPriceETH] = useState(price)
         
-    const isProcessing = useSelector(isProcessingSelector)
     const {nft} = useWeb3()
-    
+    const { socket } = useSelector(connectionStatusSelector)
+
     const handleSubmit = () => {
-        console.log('vamos a actualizar')
+        const form = document.getElementById('detailsForm')
+        if (form.checkValidity()) {
+            setIsProcessingLocal(true)
+            socket.emit('update-token-price', key, id, token.owner, priceETH)
+        } else {
+            setValidated(true);
+        }
     }
     
     const getActionBtn = () => {
         return (
             <div className='d-flex flex-row justify-content-center align-items-center'>                
                 <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={() => {setShowDetails(false)}}>Close</Button>
-                {onlyUser ? <Button variant="primary" style={{width: '100px', margin: '16px'}} >Update</Button> : ''}
+                {onlyUser ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={handleSubmit}>Update</Button> : ''}
             </div> 
         )
     }
@@ -37,7 +43,7 @@ function NFTDetails({setShowDetails, token, tokenImg, onlyUser, owner}) {
             <div id='nftDetails' className='d-flex mint-container align-items-center'>                
                 <div id='mintImageDiv' className='mint-img mint-img-full bg-img bg-im-cover' style={tokenImg} />                                                
                 <div className='mint-form form-container form-container-dark'>
-                    <Form id='mintForm' noValidate validated={validated} autoComplete='off'>
+                    <Form id='detailsForm' noValidate validated={validated} autoComplete='off'>
                         <Form.Group controlId="mintTitle">
                             <h1>{`${title} #${id}`}</h1>
                             <h4>{owner}</h4>
@@ -57,7 +63,7 @@ function NFTDetails({setShowDetails, token, tokenImg, onlyUser, owner}) {
                                     placeholder="10 ETH"
                                     defaultValue={priceETH}
                                     disabled={!onlyUser}
-                                    onChange={(e) => setPrice(e.target.value)}
+                                    onChange={(e) => setPriceETH(e.target.value)}
                                     style={{backgroundColor: 'transparent'}}
                                 />
                                 <Form.Control.Feedback type="invalid" style={{margin: '8px 0px 0px 0px'}}>Invalid price.</Form.Control.Feedback>
@@ -74,7 +80,7 @@ function NFTDetails({setShowDetails, token, tokenImg, onlyUser, owner}) {
                                     <div className='d-flex flex-column justify-content-center align-items-center'>
                                         <div className='d-flex flex-row justify-content-between align-items-center nft-details-item'>
                                             <div>Contract Address</div>
-                                            <div><a href={`https://etherscan.io/address/${nft._address}`} target={'_blank'}>{parseAccount(nft._address)}</a></div>
+                                            <div><a href={`https://etherscan.io/address/${nft._address}`} target={'_blank'} rel='noreferrer'>{parseAccount(nft._address)}</a></div>
                                         </div>    
                                         <div className='d-flex flex-row justify-content-between align-items-center nft-details-item'>
                                             <div>Token ID</div>
@@ -88,7 +94,7 @@ function NFTDetails({setShowDetails, token, tokenImg, onlyUser, owner}) {
                                 </Accordion.Body>
                             </Accordion.Item>                            
                         </Accordion>                
-                        {isProcessing ? <div className='d-flex flex-column justify-content-center align-items-center' style={{margin: '0px'}}><Spinner animation='grow' variant='secondary' style={{margin: '0px'}}/> </div>: getActionBtn()}                     
+                        {isProcessingLocal ? <div className='d-flex flex-column justify-content-center align-items-center' style={{margin: '0px'}}><Spinner animation='grow' variant='secondary' style={{margin: '0px'}}/> </div>: getActionBtn()}                     
                     </Form>                                                     
                 </div>
             </div>

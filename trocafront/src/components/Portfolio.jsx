@@ -16,10 +16,12 @@ import MyPortfolio from '../models/MyPortfolio';
 import User from '../models/User';
 import { PATHS } from '../config';
 import { parseAccount, parseUsername } from '../services/ethServices';
+import { setPriceUpdateListeners } from '../services/socketServices';
 
 function Portfolio () {
-    const { isConnected } = useSelector(connectionStatusSelector)
+    const { isConnected, socket } = useSelector(connectionStatusSelector)
     const isProcessing = useSelector(isProcessingSelector)
+    const [isProcessingLocal, setIsProcessingLocal] = useState(false)
     const { nft } = useWeb3()
 
     const [showFilters, setShowFilters ] = useState(false)
@@ -41,6 +43,7 @@ function Portfolio () {
         } else {      
             myPortfolio.getTokens(nft)
             user.getAllUsers()
+            setPriceUpdateListeners(socket, setIsProcessingLocal, dispatch)
         } 
         
         // eslint-disable-next-line
@@ -112,6 +115,8 @@ function Portfolio () {
                             onlyUser={onlyUser}
                             owner={owner}
                             token={token}
+                            isProcessingLocal={isProcessingLocal}
+                            setIsProcessingLocal={setIsProcessingLocal}
                         />
                     )
                 })}

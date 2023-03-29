@@ -30,6 +30,15 @@ export const portfolioSlice = createSlice({
 
         loadTokenImg: (state, action) => {
             state.allTokens[action.payload.id].imageData = action.payload.data
+        },
+
+        updateTokenPrice: (state, action) => {
+            state.allTokens[action.payload.id].price = action.payload.price
+            state.selectedTokens.forEach(token => {
+                if(token.id === action.payload.id) {
+                    token.price = action.payload.price
+                }
+            })
         }
     }
 })
@@ -40,7 +49,8 @@ export const {
     setOnlyUser,
     loadUsers,
     setSelectedTokens, 
-    loadTokenImg
+    loadTokenImg,
+    updateTokenPrice
 } = portfolioSlice.actions
 
 //Selectors
