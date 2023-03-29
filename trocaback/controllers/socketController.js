@@ -27,6 +27,15 @@ const mintingListeners = (io, socket) => {
     })
 }
 
+const priceUpdateListeners = (io, socket) => {
+    socket.on('update-token-price', async (uri, id, owner, price) => {
+        if(socket.account === owner) {
+            await socketService.updatePrice(uri, price)
+            io.emit('refresh-token', id, price)
+        }
+    })
+}
+
 const setListeners = (io, socket) => {
     socket.on('disconnect', async () => {            
         console.info(`Client disconnected: ${socket.account}`)
@@ -41,6 +50,7 @@ const setListeners = (io, socket) => {
     })
 
     mintingListeners(io, socket) //set minting listeners
+    priceUpdateListeners(io, socket) // set price update listener
 }
 
 module.exports = {

@@ -42,9 +42,14 @@ const completeMinting = async(account, token) => {
     await userService.updateUserInfo(account, {isMinting: null, token: null})
 }
 
+const updatePrice = async(uri, price) => {
+    await ethService.updateMetaData(uri, {price})
+}
+
 module.exports = {
     generateToken,
     userIsMinting,
     cancelMinting,
-    completeMinting
+    completeMinting,
+    updatePrice,
 }
