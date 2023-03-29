@@ -12,7 +12,7 @@ import useNFTActions from '../hooks/useNFTActions';
 
 import '../styles/NFTCard.css'
 
-function NFTCard({owner, onlyUser, token}) {
+function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLocal}) {
     const {allTokens} = usePortfolio()
     const [tokenImg, setTokenImage] = useState({})
     const {id, title, price, image} = token
@@ -109,7 +109,7 @@ function NFTCard({owner, onlyUser, token}) {
                     {onlyUser ? getOwnerActions() : getUserActions()}
                 </Card.Body>
             </Card>
-            {showDetails ? <NFTDetails setShowDetails={setShowDetails} token={token} tokenImg={tokenImg} onlyUser={onlyUser} owner={owner} /> : <></>}
+            {showDetails ? <NFTDetails setShowDetails={setShowDetails} token={token} tokenImg={tokenImg} onlyUser={onlyUser} owner={owner} isProcessingLocal={isProcessingLocal} setIsProcessingLocal={setIsProcessingLocal} /> : <></>}
         </>
     );
   }
