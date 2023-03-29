@@ -27,6 +27,7 @@ class MyPortfolio {
                     id: i, 
                     owner, 
                     uri,
+                    key,
                     title: catalog[key].title,
                     image: catalog[key].image,
                     imageData: undefined,
