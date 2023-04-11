@@ -6,7 +6,7 @@ import { updateTokenPrice } from "../store/slices/portfolioSlice"
 
 export const setMintingListeners = (dispatch, account, socket, actions = {}, contracts = {}) => {
     socket.on('update-tokens-available', (info) => {
-        actions.showMintingStatus('', info.totalCount, info.availableTokens)
+        actions.showMintingStatus('', info.totalCount, info.availableTokens, info.newToken)
     })
 
     socket.on('minting-token', (newToken, mintingAccount) => {

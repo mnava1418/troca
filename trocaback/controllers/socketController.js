@@ -23,7 +23,7 @@ const mintingListeners = (io, socket) => {
         console.info(`${socket.account} minted a new token`)
         await socketService.completeMinting(socket.account, tokenURI)
         const availableTokens = await portfolioService.getAvailableTokens()
-        io.emit('update-tokens-available', {totalCount: availableTokens.totalCount, availableTokens: availableTokens.available.length})
+        io.emit('update-tokens-available', {totalCount: availableTokens.totalCount, availableTokens: availableTokens.available.length, newToken: true})
     })
 }
 
