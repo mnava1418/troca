@@ -48,7 +48,9 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
         reader.readAsDataURL(imageData)
     }
     
-    const cardAction = (action) => {
+    const cardAction = (e, action) => {
+        e.stopPropagation()
+
         switch (action) {
             case 'bid':
                 alert('Vamo a ofertar')
@@ -75,7 +77,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
     const getOwnerActions = () => {
         return(
             <div className='d-flex flex-row justify-content-center align-items-center'>
-                <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('update')}}>Update</Button>
+                <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e, 'update')}}>Update</Button>
             </div>
         )
     }
@@ -91,7 +93,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
 
     return (
         <>
-            <Card className='d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-shadow' style={{ width: '20rem', margin: '40px' }}>
+            <Card className='d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-shadow' style={{ width: '20rem', margin: '40px' }} onClick={(e) => {cardAction(e, 'update')}}>
                 <div className='nft-card-img bg-img bg-im-cover' style={tokenImg} />
                 <Card.Body className='d-flex flex-column justify-content-end align-items-center' style={{width: '90%'}}>
                     <Card.Title>{title}</Card.Title>
