@@ -18,7 +18,7 @@ import MyPortfolio from '../models/MyPortfolio';
 import '../styles/NFTCard.css'
 
 function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLocal}) {
-    const {id, title, price, image} = token
+    const {id, title, price, image, isListed} = token
     const dispatch = useDispatch()
     const myPortfolio = new MyPortfolio(dispatch)
 
@@ -100,7 +100,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
         return(
             <div className='d-flex flex-row justify-content-center align-items-center'>                
                 <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e, 'update')}}>Update</Button>
-                <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e, 'list')}}>List NFT</Button>
+                {!isListed ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e, 'list')}}>List NFT</Button> : <></>}
             </div>
         )
     }
@@ -109,7 +109,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
         return(
             <div className='d-flex flex-row justify-content-center align-items-center'>
                 <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('buy')}}>Buy</Button>
-                {isMember ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('bid')}}>Place Bid</Button> : ''}
+                {isMember ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('bid')}}>Place Bid</Button> : <></>}
             </div>
         )
     }

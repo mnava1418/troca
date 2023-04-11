@@ -22,7 +22,7 @@ function Portfolio () {
     const { isConnected, socket } = useSelector(connectionStatusSelector)
     const isProcessing = useSelector(isProcessingSelector)
     const [isProcessingLocal, setIsProcessingLocal] = useState(false)
-    const { nft } = useWeb3()
+    const { nft, troca } = useWeb3()
 
     const [showFilters, setShowFilters ] = useState(false)
 
@@ -41,7 +41,7 @@ function Portfolio () {
         if(!isConnected) {
             window.location.href = PATHS.wallet
         } else {      
-            myPortfolio.getTokens(nft)
+            myPortfolio.getTokens(nft, troca)
             user.getAllUsers()
             setPriceUpdateListeners(socket, setIsProcessingLocal, dispatch)
         } 

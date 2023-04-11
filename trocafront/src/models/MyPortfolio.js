@@ -11,7 +11,7 @@ class MyPortfolio {
         this.baseURL = BACK_URLS[process.env.NODE_ENV]
     }
 
-    async loadTokens(nft, catalog) {
+    async loadTokens(nft, troca, catalog) {
         const tokens = {}
 
         const tokenId = await nft.methods.tokenId().call()
@@ -22,12 +22,16 @@ class MyPortfolio {
                 const owner = await nft.methods.ownerOf(i).call()
                 const uri = await nft.methods.tokenURI(i).call()
                 const key = uri.split('/').pop()
-                
+
+                const isListed = await nft.methods.getApproved(i).call()
+                .then( operator => operator === troca._address)
+
                 tokens[i] = {
                     id: i, 
                     owner, 
                     uri,
                     key,
+                    isListed,
                     title: catalog[key].title,
                     image: catalog[key].image,
                     imageData: undefined,
@@ -41,14 +45,14 @@ class MyPortfolio {
         return tokens
     }
 
-    async getTokens(nft) {
+    async getTokens(nft, troca) {
         this.dispatch(setIsProcessing(true))
 
         const token = localStorage.getItem('jwt')
         const response = await get(this.baseURL, '/portfolio', token)
 
         if(response.status === 200) {
-            const tokens = await this.loadTokens(nft, response.data.tokens)
+            const tokens = await this.loadTokens(nft, troca, response.data.tokens)
             this.dispatch(loadTokens(tokens))
         } else {
             this.dispatch(setAlert({show: true, type: 'danger', text: response.data.error}))
