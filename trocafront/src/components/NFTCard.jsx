@@ -1,28 +1,37 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
 import NFTDetails from './NFTDetails';
+import TrocaModal from './helpers/TrocaModal';
 
 import { loadTokenImg } from '../store/slices/portfolioSlice';
 import { connectionStatusSelector } from '../store/slices/statusSlice';
 import { INFURA_URL } from '../config';
 import usePortfolio from '../hooks/usePortfolio';
 import useNFTActions from '../hooks/useNFTActions';
+import useNFTCard from '../hooks/useNFTCard';
+import useWeb3 from '../hooks/useWeb3';
+import MyPortfolio from '../models/MyPortfolio';
 
 import '../styles/NFTCard.css'
 
 function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLocal}) {
-    const {allTokens} = usePortfolio()
-    const [tokenImg, setTokenImage] = useState({})
     const {id, title, price, image} = token
+    const dispatch = useDispatch()
+    const myPortfolio = new MyPortfolio(dispatch)
+
+    const { isMember, account } = useSelector(connectionStatusSelector)
+    const { allTokens } = usePortfolio()
+    const { nft, troca } = useWeb3()
+    const { showDetails, setShowDetails } = useNFTActions()
 
     const {
-        showDetails, setShowDetails
-    } = useNFTActions()
-
-    const dispatch = useDispatch()
-    const { isMember } = useSelector(connectionStatusSelector)
+        listAll, setListAll,
+        showModal, setShowModal,
+        tokenImg, setTokenImage
+    } = useNFTCard()
 
     useEffect(() => {
         if(allTokens[id].imageData === undefined) {
@@ -68,16 +77,30 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
                 setShowDetails(true)
                 break;
     
+            case 'list':
+                setShowModal(true)
+                setListAll(false)
+                break;
+
             default:
                 alert('No estes chingando')
                 break;
         }
     }
 
+    const listNFT = () => {
+        if(listAll) {
+            myPortfolio.listAll()
+        } else {
+            myPortfolio.list(account, nft, troca, id)
+        }
+    }
+
     const getOwnerActions = () => {
         return(
-            <div className='d-flex flex-row justify-content-center align-items-center'>
+            <div className='d-flex flex-row justify-content-center align-items-center'>                
                 <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e, 'update')}}>Update</Button>
+                <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e, 'list')}}>List NFT</Button>
             </div>
         )
     }
@@ -85,8 +108,8 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
     const getUserActions = () => {
         return(
             <div className='d-flex flex-row justify-content-center align-items-center'>
-                {isMember ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('bid')}}>Place Bid</Button> : ''}
                 <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('buy')}}>Buy</Button>
+                {isMember ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('bid')}}>Place Bid</Button> : ''}
             </div>
         )
     }
@@ -112,9 +135,20 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
                 </Card.Body>
             </Card>
             {showDetails ? <NFTDetails setShowDetails={setShowDetails} token={token} tokenImg={tokenImg} onlyUser={onlyUser} owner={owner} isProcessingLocal={isProcessingLocal} setIsProcessingLocal={setIsProcessingLocal} /> : <></>}
+            <TrocaModal 
+                body={
+                    <>
+                        <span>After you list your NFT, users from the network will be able to interact with them.</span>
+                        <br /><br />
+                        <Form.Check type='checkbox' id='listAll' label='List all' defaultChecked={listAll} onChange={(e) => {setListAll(e.target.checked)}}/>
+                    </>} 
+                title={`List your NFTs`}
+                action={listNFT}
+                dispatch={dispatch}
+                setShowModal={setShowModal}
+                showModal={showModal} />
         </>
     );
   }
   
   export default NFTCard;
-  

@@ -74,6 +74,22 @@ class MyPortfolio {
 
         return mintPromise
     }
+
+    list (account, nft, troca, id) {
+        nft.methods.approve(troca._address, id).send({from: account})
+        .on('transactionHash', () => {
+            this.dispatch(setAlert({show: true, type: 'success', text: 'NFT listed!'}))
+        })
+        .on('error', (error) => {
+            console.error(error)
+            const errorMessage = parseError(error)
+            this.dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
+        })
+    }
+
+    listAll() {
+        console.log('List all my NFTs')
+    }
 }
 
 export default MyPortfolio
