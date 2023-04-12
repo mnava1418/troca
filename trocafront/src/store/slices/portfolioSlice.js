@@ -69,7 +69,7 @@ export const portfolioTokensSelector = (state) => {
         })
     } else {        
         tokens.forEach(element => {
-            if(element.owner !== account) {
+            if(element.owner !== account && element.isListed) {
                 result.push(element)
             }
         })
