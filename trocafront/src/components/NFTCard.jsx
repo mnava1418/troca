@@ -30,8 +30,9 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
     const {
         listAll, setListAll,
         showModal, setShowModal,
-        tokenImg, setTokenImage
-    } = useNFTCard()
+        tokenImg, setTokenImage,
+        nftIsListed, setNftIsListed
+    } = useNFTCard(isListed)
 
     useEffect(() => {
         if(allTokens[id].imageData === undefined) {
@@ -92,7 +93,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
         if(listAll) {
             myPortfolio.listAll()
         } else {
-            myPortfolio.list(account, nft, troca, id)
+            myPortfolio.list(account, nft, troca, id, setNftIsListed)
         }
     }
 
@@ -100,7 +101,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
         return(
             <div className='d-flex flex-row justify-content-center align-items-center'>                
                 <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e, 'update')}}>Update</Button>
-                {!isListed ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e, 'list')}}>List NFT</Button> : <></>}
+                {!nftIsListed ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e, 'list')}}>List NFT</Button> : <></>}
             </div>
         )
     }
