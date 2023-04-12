@@ -82,7 +82,7 @@ class MyPortfolio {
     list (account, nft, troca, id, setNftIsListed) {
         nft.methods.approve(troca._address, id).send({from: account})
         .on('transactionHash', () => {
-            this.dispatch(setAlert({show: true, type: 'success', text: 'NFT listed!'}))
+            this.dispatch(setAlert({show: true, type: 'success', text: `NFT #${id} listed!`}))
             setNftIsListed(true)
         })
         .on('error', (error) => {
@@ -90,10 +90,6 @@ class MyPortfolio {
             const errorMessage = parseError(error)
             this.dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
         })
-    }
-
-    listAll() {
-        console.log('List all my NFTs')
     }
 }
 

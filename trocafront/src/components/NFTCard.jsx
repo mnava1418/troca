@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
 import NFTDetails from './NFTDetails';
 import TrocaModal from './helpers/TrocaModal';
 
@@ -28,7 +27,6 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
     const { showDetails, setShowDetails } = useNFTActions()
 
     const {
-        listAll, setListAll,
         showModal, setShowModal,
         tokenImg, setTokenImage,
         nftIsListed, setNftIsListed
@@ -80,7 +78,6 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
     
             case 'list':
                 setShowModal(true)
-                setListAll(false)
                 break;
 
             default:
@@ -90,11 +87,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
     }
 
     const listNFT = () => {
-        if(listAll) {
-            myPortfolio.listAll()
-        } else {
-            myPortfolio.list(account, nft, troca, id, setNftIsListed)
-        }
+        myPortfolio.list(account, nft, troca, id, setNftIsListed)
     }
 
     const getOwnerActions = () => {
@@ -137,13 +130,8 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
             </Card>
             {showDetails ? <NFTDetails setShowDetails={setShowDetails} token={token} tokenImg={tokenImg} onlyUser={onlyUser} owner={owner} isProcessingLocal={isProcessingLocal} setIsProcessingLocal={setIsProcessingLocal} /> : <></>}
             <TrocaModal 
-                body={
-                    <>
-                        <span>After you list your NFT, users from the network will be able to interact with them.</span>
-                        <br /><br />
-                        <Form.Check type='checkbox' id='listAll' label='List all' defaultChecked={listAll} onChange={(e) => {setListAll(e.target.checked)}}/>
-                    </>} 
-                title={`List your NFTs`}
+                body={<span>After you list your NFT, users from the network will be able to interact with them.</span>}
+                title={`List your NFT #${id}`}
                 action={listNFT}
                 dispatch={dispatch}
                 setShowModal={setShowModal}
