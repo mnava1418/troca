@@ -33,7 +33,10 @@ export const portfolioSlice = createSlice({
         },
 
         updateTokenPrice: (state, action) => {
-            state.allTokens[action.payload.id].price = action.payload.price
+            if(state.allTokens[action.payload.id]) {
+                state.allTokens[action.payload.id].price = action.payload.price
+            }
+            
             state.selectedTokens.forEach(token => {
                 if(token.id === action.payload.id) {
                     token.price = action.payload.price
@@ -42,7 +45,10 @@ export const portfolioSlice = createSlice({
         },
 
         listToken: (state, action) => {
-            state.allTokens[action.payload.id].isListed = true
+            if(state.allTokens[action.payload.id]) {
+                state.allTokens[action.payload.id].isListed = true
+            }
+            
             state.selectedTokens.forEach(token => {
                 if(token.id === action.payload.id) {
                     token.isListed = true
