@@ -1,25 +1,29 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-//import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-//import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "./NFT.sol";
 
-/*contract Troca is ReentrancyGuard {
-    
-}*/
-
-contract Troca {
+contract Troca is ReentrancyGuard {
     address payable public immutable ownerAccount;
     mapping(address => bool) public members;
+    uint private immutable feePercent;
 
     /**EVENTS */
     event Subscription(
         address newMember
     );
+
+    event BuyToken(
+        address buyer,
+        address seller,
+        uint256 tokenId
+    );
     
     constructor(address _ownerAccount) {
         ownerAccount = payable(_ownerAccount);
         members[ownerAccount] = true;
+        feePercent = 2;
     }
 
     function subscribe () payable external {
@@ -30,5 +34,23 @@ contract Troca {
         members[msg.sender] = true;
 
         emit Subscription(msg.sender);
+    }
+
+    function buyToken (address _nft, address _nftOwner, uint256 _tokenId) payable external {
+        require(_tokenId > 0, "___Token id is mandatory.___");
+        
+        uint256 fee = _calculateFee(msg.value);
+        uint256 price = msg.value - fee;
+
+        payable(_nftOwner).transfer(price);
+        ownerAccount.transfer(fee);
+
+        NFT(_nft).safeTransferFrom(_nftOwner, msg.sender, _tokenId);
+
+        emit BuyToken(msg.sender, _nftOwner, _tokenId);
+    }
+
+    function _calculateFee(uint256 _amount) private view returns (uint256) {
+          return (_amount * feePercent / 100);
     }
 } 
