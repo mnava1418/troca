@@ -27,12 +27,16 @@ const mintingListeners = (io, socket) => {
     })
 }
 
-const priceUpdateListeners = (io, socket) => {
+const portfolioListeners = (io, socket) => {
     socket.on('update-token-price', async (uri, id, owner, price) => {
         if(socket.account === owner) {
             await socketService.updatePrice(uri, price)
             io.emit('refresh-token', id, price)
         }
+    })
+
+    socket.on('clien-list-token', (id) => {
+        io.emit('server-list-token', id)
     })
 }
 
@@ -50,7 +54,7 @@ const setListeners = (io, socket) => {
     })
 
     mintingListeners(io, socket) //set minting listeners
-    priceUpdateListeners(io, socket) // set price update listener
+    portfolioListeners(io, socket) //set portfolio listeners
 }
 
 module.exports = {

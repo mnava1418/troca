@@ -79,11 +79,11 @@ class MyPortfolio {
         return mintPromise
     }
 
-    list (account, nft, troca, id, setNftIsListed) {
+    list (account, nft, troca, id, socket) {
         nft.methods.approve(troca._address, id).send({from: account})
         .on('transactionHash', () => {
             this.dispatch(setAlert({show: true, type: 'success', text: `NFT #${id} listed!`}))
-            setNftIsListed(true)
+            socket.emit('clien-list-token', id)
         })
         .on('error', (error) => {
             console.error(error)

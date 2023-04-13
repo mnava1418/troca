@@ -39,6 +39,15 @@ export const portfolioSlice = createSlice({
                     token.price = action.payload.price
                 }
             })
+        },
+
+        listToken: (state, action) => {
+            state.allTokens[action.payload.id].isListed = true
+            state.selectedTokens.forEach(token => {
+                if(token.id === action.payload.id) {
+                    token.isListed = true
+                }
+            })
         }
     }
 })
@@ -50,7 +59,8 @@ export const {
     loadUsers,
     setSelectedTokens, 
     loadTokenImg,
-    updateTokenPrice
+    updateTokenPrice,
+    listToken
 } = portfolioSlice.actions
 
 //Selectors

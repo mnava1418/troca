@@ -16,7 +16,7 @@ import MyPortfolio from '../models/MyPortfolio';
 import User from '../models/User';
 import { PATHS } from '../config';
 import { parseAccount, parseUsername } from '../services/ethServices';
-import { setPriceUpdateListeners } from '../services/socketServices';
+import { setPortfolioListeners } from '../services/socketServices';
 
 function Portfolio () {
     const { isConnected, socket } = useSelector(connectionStatusSelector)
@@ -43,7 +43,7 @@ function Portfolio () {
         } else {      
             myPortfolio.getTokens(nft, troca)
             user.getAllUsers()
-            setPriceUpdateListeners(socket, setIsProcessingLocal, dispatch)
+            setPortfolioListeners(socket, setIsProcessingLocal, dispatch)
         } 
         
         // eslint-disable-next-line

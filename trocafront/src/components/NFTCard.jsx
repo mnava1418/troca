@@ -21,16 +21,15 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
     const dispatch = useDispatch()
     const myPortfolio = new MyPortfolio(dispatch)
 
-    const { isMember, account } = useSelector(connectionStatusSelector)
+    const { isMember, account, socket } = useSelector(connectionStatusSelector)
     const { allTokens } = usePortfolio()
     const { nft, troca } = useWeb3()
     const { showDetails, setShowDetails } = useNFTActions()
 
     const {
         showModal, setShowModal,
-        tokenImg, setTokenImage,
-        nftIsListed, setNftIsListed
-    } = useNFTCard(isListed)
+        tokenImg, setTokenImage
+    } = useNFTCard()
 
     useEffect(() => {
         if(allTokens[id].imageData === undefined) {
@@ -87,14 +86,14 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
     }
 
     const listNFT = () => {
-        myPortfolio.list(account, nft, troca, id, setNftIsListed)
+        myPortfolio.list(account, nft, troca, id, socket)
     }
 
     const getOwnerActions = () => {
         return(
             <div className='d-flex flex-row justify-content-center align-items-center'>                
                 <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e, 'update')}}>Update</Button>
-                {!nftIsListed ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e, 'list')}}>List NFT</Button> : <></>}
+                {!isListed ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e, 'list')}}>List NFT</Button> : <></>}
             </div>
         )
     }
