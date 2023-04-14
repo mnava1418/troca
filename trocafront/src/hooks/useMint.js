@@ -60,7 +60,7 @@ function useMint() {
     }
 
     const showMintingStatus = (status, total = 0, available = 0, newToken = false) => {
-        if(available === 0 && !newToken) {
+        if(status !==MINTING_STATUS.minting && available === 0 && !newToken) {
             setTitle('Unable to Mint')
             setSubtitle('Sorry, no more nfts to mint.')
         } 
