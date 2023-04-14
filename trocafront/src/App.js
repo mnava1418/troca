@@ -15,7 +15,7 @@ import Spinner from 'react-bootstrap/Spinner'
 
 import User from './models/User';
 import { PATHS } from './config'
-import { alertSelector } from './store/slices/statusSlice'
+import { alertSelector, closeAlert } from './store/slices/statusSlice'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css'
@@ -53,10 +53,18 @@ function App() {
     )
   }
 
+  const showAlert = () => {
+    setTimeout(() => {
+      dispatch(closeAlert())
+    }, 3000)
+
+    return(<CustomAlert type={alert.type} text={alert.text} />)
+  }
+
   return (
     <div className="App">
       <Menu />
-      {alert.show ? <CustomAlert type={alert.type} text={alert.text} /> : <></>}
+      {alert.show ? showAlert() : <></>}
       {localProcessing ? <Spinner animation='grow' variant='secondary'/> : showApp()}      
     </div>
   );
