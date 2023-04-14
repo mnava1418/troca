@@ -1,6 +1,7 @@
 import Web3 from 'web3/dist/web3.min'
 import { setAlert } from '../store/slices/statusSlice'
 import { loadContractData } from '../store/slices/contractsSlice'
+import { transferToken } from '../store/slices/portfolioSlice'
 import { SIGN_MESSAGE } from '../config'
 import { get } from './networkService'
 
@@ -176,4 +177,17 @@ export const parseError = (error) => {
 export const usdToEth = async(usdAmount) => {
     const ethPrice = await getETHPrice()
     return (usdAmount / ethPrice)
+}
+
+export const subscribeTrocaEvents = (troca, account, dispatch) => {    
+    troca.events.BuyToken()
+    .on('data', (event) => {
+        dispatch(transferToken({id: parseInt(event.returnValues.tokenId), newOwner: event.returnValues.buyer}))
+
+        if(event.returnValues.buyer === account) {
+            dispatch(setAlert({show: true, type: 'success', text: 'Congratulations! Your new NFT is ready. Go to your portfolio to start playing with it.'}))
+        } else if(event.returnValues.seller === account) {
+            dispatch(setAlert({show: true, type: 'success', text: `Congratulations! You just sold NFT #${event.returnValues.tokenId}`}))
+        }         
+    })
 }
