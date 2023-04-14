@@ -23,7 +23,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
 
     const { isMember, account, socket } = useSelector(connectionStatusSelector)
     const { allTokens } = usePortfolio()
-    const { nft, troca } = useWeb3()
+    const { nft, troca, web3 } = useWeb3()
     const { showDetails, setShowDetails } = useNFTActions()
 
     const {
@@ -64,7 +64,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
                 break;
 
             case 'buy':
-                alert('Vamo a comprar')
+                myPortfolio.buyToken(troca, nft, web3, token, account)
                 break;
 
             case 'mint':
@@ -101,7 +101,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
     const getUserActions = () => {
         return(
             <div className='d-flex flex-row justify-content-center align-items-center'>
-                <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('buy')}}>Buy</Button>
+                <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e, 'buy')}}>Buy</Button>
                 {isMember ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('bid')}}>Place Bid</Button> : <></>}
             </div>
         )
