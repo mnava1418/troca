@@ -7,7 +7,8 @@ import {
     getConnectedAccount, 
     accountListener,  
     loadContracts,
-    parseError
+    parseError,
+    subscribeTrocaEvents
 } from '../services/ethServices'
 
 import { 
@@ -97,6 +98,8 @@ class User {
         if(contracts.troca) {
             isMember = await this.isMember(contracts.troca, account)
             isOwner = await this.isOwner(contracts.troca, account)
+
+            subscribeTrocaEvents(contracts.troca, account, this.dispatch)
         }
 
         this.dispatch(connectUser({account, isMember, isOwner, socket}))
