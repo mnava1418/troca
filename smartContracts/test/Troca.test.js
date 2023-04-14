@@ -6,6 +6,8 @@ const NFT = artifacts.require('NFT')
 /*ERROR MESSAGES */
 const ERROR_FEE = "VM Exception while processing transaction: revert ___Membership fee is mandatory.___"
 const ERROR_MEMBER = "VM Exception while processing transaction: revert ___You are already a member.___"
+const ERROR_NOT_APPORVED = "VM Exception while processing transaction: revert ERC721: caller is not token owner or approved"
+const ERROR_INVALID_TOKEN = "VM Exception while processing transaction: revert ___Token id is mandatory.___"
 
 const getTokens = (tokens) => {
     return new web3.utils.BN(
@@ -140,6 +142,23 @@ contract('Troca', ([deployer, user1, user2]) => {
                 event.buyer.should.equal(user2)
                 event.seller.should.equal(user1)
                 event.tokenId.toString().should.equal("1")
+            })
+        })
+
+        describe('failure', () => {
+            const fee = getTokens(1)
+
+            beforeEach(async () => {
+                await troca.subscribe({from: user1, value: fee})
+                await nft.mint(troca.address, tokenURI, 500, {from: user1})
+            })
+            
+            it('invalid token id', async() => {
+                await troca.buyToken(nft.address, user1, 0, {from: user2, value: getTokens(1)}).should.be.rejectedWith(ERROR_INVALID_TOKEN)
+            })
+
+            it('token not approved', async() => {
+                await troca.buyToken(nft.address, user1, 1, {from: user2, value: getTokens(1)}).should.be.rejectedWith(ERROR_NOT_APPORVED)
             })
         })
     })
