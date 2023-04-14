@@ -54,6 +54,20 @@ export const portfolioSlice = createSlice({
                     token.isListed = true
                 }
             })
+        },
+
+        transferToken: (state, action) => {
+            if(state.allTokens[action.payload.id]) {
+                state.allTokens[action.payload.id].isListed = false
+                state.allTokens[action.payload.id].owner = action.payload.newOwner
+            }
+            
+            state.selectedTokens.forEach(token => {
+                if(token.id === action.payload.id) {
+                    token.isListed = false
+                    token.owner = action.payload.newOwner
+                }
+            })
         }
     }
 })
@@ -66,7 +80,8 @@ export const {
     setSelectedTokens, 
     loadTokenImg,
     updateTokenPrice,
-    listToken
+    listToken,
+    transferToken
 } = portfolioSlice.actions
 
 //Selectors
