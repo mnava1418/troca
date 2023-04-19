@@ -8,6 +8,8 @@ const ERROR_FEE = "VM Exception while processing transaction: revert ___Membersh
 const ERROR_MEMBER = "VM Exception while processing transaction: revert ___You are already a member.___"
 const ERROR_NOT_APPORVED = "VM Exception while processing transaction: revert ERC721: caller is not token owner or approved"
 const ERROR_INVALID_TOKEN = "VM Exception while processing transaction: revert ___Token id is mandatory.___"
+const ERROR_INVALID_SELLER = "VM Exception while processing transaction: revert ___Seller Token Id is mandatory.___"
+const ERROR_INVALID_BUYER = "VM Exception while processing transaction: revert ___Buyer Token Id is mandatory.___"
 
 const getTokens = (tokens) => {
     return new web3.utils.BN(
@@ -159,6 +161,148 @@ contract('Troca', ([deployer, user1, user2]) => {
 
             it('token not approved', async() => {
                 await troca.buyToken(nft.address, user1, 1, {from: user2, value: getTokens(1)}).should.be.rejectedWith(ERROR_NOT_APPORVED)
+            })
+        })
+    })
+
+    describe('switchToken', () => {
+        const tokenURI = "tokenURI"
+
+        describe('success', () => {
+            const fee = getTokens(0.01)
+
+            beforeEach(async () => {
+                await troca.subscribe({from: user1, value: fee}) //user 1 is a member
+                await troca.subscribe({from: user2, value: fee}) //user 2 is a member
+                
+                await nft.mint(troca.address, tokenURI, 500, {from: user1}) //user 1 owns token 1
+                await nft.mint(troca.address, tokenURI, 500, {from: user2}) //user 2 owns token 2
+
+                await nft.approve(troca.address, 1, {from: user1}) //user 1 approved Troca to spend token
+                await nft.approve(troca.address, 2, {from: user2}) //user 2 approved Troca to spend token
+            })
+    
+            it('user1 is owner of token 1', async() => {
+                const owner = await nft.ownerOf(1)
+                owner.should.equal(user1)
+            })
+
+            it('user2 is owner of token 2', async() => {
+                const owner = await nft.ownerOf(2)
+                owner.should.equal(user2)
+            })
+
+            describe('users will switch tokens with no payment', () => {
+                let result
+                let initialDeployerBalance
+                let initialUser1Balance
+
+                beforeEach(async() => {
+                    initialDeployerBalance = await eth.getBalance(deployer)
+                    initialUser1Balance = await eth.getBalance(user1)
+                    result = await troca.switchToken (nft.address, user1, 1, 2, {from: user2})
+                })
+
+                it('user1 is owner of token 2', async() => {
+                    const owner = await nft.ownerOf(2)
+                    owner.should.equal(user1)
+                })
+    
+                it('user2 is owner of token 1', async() => {
+                    const owner = await nft.ownerOf(1)
+                    owner.should.equal(user2)
+                })
+
+                it('no fee for deployer', async() => {
+                    const finalDeployerBalance = await eth.getBalance(deployer)
+                    finalDeployerBalance.toString().should.equal(initialDeployerBalance)
+                }) 
+
+                it('no payment for user1', async() => {
+                    const finallUser1Balance = await eth.getBalance(user1)
+                    finallUser1Balance.toString().should.equal(initialUser1Balance)
+                }) 
+
+                it('emit SwitchToken event', () => {
+                    const log = result.logs[0]
+                    const event = log.args
+        
+                    log.event.should.equal('SwitchToken')
+                    event.buyer.should.equal(user2)
+                    event.seller.should.equal(user1)
+                    event.sellerTokenId.toString().should.equal("1")
+                    event.buyerTokenId.toString().should.equal("2")
+                })
+            })
+
+            describe('users will switch tokens with payment', () => {
+                let result
+                let initialDeployerBalance
+                let initialUser1Balance
+
+                beforeEach(async() => {
+                    initialDeployerBalance = await eth.getBalance(deployer)
+                    initialUser1Balance = await eth.getBalance(user1)
+                    result = await troca.switchToken (nft.address, user1, 1, 2, {from: user2, value: getTokens(0.01)})
+                })
+
+                it('user1 is owner of token 2', async() => {
+                    const owner = await nft.ownerOf(2)
+                    owner.should.equal(user1)
+                })
+    
+                it('user2 is owner of token 1', async() => {
+                    const owner = await nft.ownerOf(1)
+                    owner.should.equal(user2)
+                })
+
+                it('fee for deployer', async() => {
+                    const finalDeployerBalance = await eth.getBalance(deployer)
+                    const payment = finalDeployerBalance - initialDeployerBalance
+                    payment.toString().should.equal(getTokens(0.0002).toString())
+                }) 
+
+                it('payment for user1', async() => {
+                    const finallUser1Balance = await eth.getBalance(user1)
+                    const payment = finallUser1Balance - initialUser1Balance
+                    payment.toString().should.equal(getTokens(0.0098).toString())
+                }) 
+
+                it('emit SwitchToken event', () => {
+                    const log = result.logs[0]
+                    const event = log.args
+        
+                    log.event.should.equal('SwitchToken')
+                    event.buyer.should.equal(user2)
+                    event.seller.should.equal(user1)
+                    event.sellerTokenId.toString().should.equal("1")
+                    event.buyerTokenId.toString().should.equal("2")
+                })
+            })
+        })
+
+        describe('failure', () => {
+
+            const fee = getTokens(1)
+
+            beforeEach(async () => {
+                await troca.subscribe({from: user1, value: fee}) //user 1 is a member
+                await troca.subscribe({from: user2, value: fee}) //user 2 is a member
+                
+                await nft.mint(troca.address, tokenURI, 500, {from: user1}) //user 1 owns token 1
+                await nft.mint(troca.address, tokenURI, 500, {from: user2}) //user 2 owns token 2
+            })
+            
+            it('invalid seller token id', async() => {
+                await troca.switchToken (nft.address, user1, 0, 0, {from: user2}).should.be.rejectedWith(ERROR_INVALID_SELLER)
+            })
+
+            it('invalid buyer token id', async() => {
+                await troca.switchToken (nft.address, user1, 1, 0, {from: user2}).should.be.rejectedWith(ERROR_INVALID_BUYER)
+            })
+
+            it('tokens not approved', async() => {
+                await troca.switchToken (nft.address, user1, 1, 2, {from: user2}).should.be.rejectedWith(ERROR_NOT_APPORVED)
             })
         })
     })
