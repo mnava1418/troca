@@ -84,7 +84,11 @@ const connectUserToChat = (account, isOnline) => {
     const dataPath = path.resolve(__dirname, '..', 'data')
     const dataFile = path.join(dataPath, 'chatUsers.json')
 
-    let data = fs.readFileSync(dataFile)
+    let data = '{}'
+    if(fs.existsSync(dataFile)) {
+        data = fs.readFileSync(dataFile)
+    }
+    
     const chatUsers = JSON.parse(data)
     chatUsers[account] = isOnline
 
