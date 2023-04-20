@@ -6,16 +6,18 @@ import Tooltip from 'react-bootstrap/Tooltip'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { connectionStatusSelector } from '../store/slices/statusSlice'
 import { parseAccount } from '../services/ethServices';
 import { PATHS } from '../config'
-
+import User from '../models/User';
 import logo from '../img/logoTransparent.png'
 
 function Menu() {
-    const { isConnected, isOnline, account, isMember, isOwner } = useSelector(connectionStatusSelector)
+    const { isConnected, isOnline, account, isMember, isOwner, socket } = useSelector(connectionStatusSelector)
+    const dispatch = useDispatch()
+    const user = new User(dispatch)
     
     const handleConnectWallet = () => {
         window.location.href = PATHS.wallet
@@ -58,7 +60,7 @@ function Menu() {
                         </Tooltip>
                     }
                 >
-                    <Nav.Link href="#"><Spinner animation='grow' variant={ isOnline ? 'success' : 'danger'} size='sm'/></Nav.Link>
+                    <Nav.Link href="#" onClick={() => {user.connectToChat(!isOnline, socket, account)}}><Spinner animation='grow' variant={ isOnline ? 'success' : 'danger'} size='sm'/></Nav.Link>
                 </OverlayTrigger>     
             </Nav>
         )

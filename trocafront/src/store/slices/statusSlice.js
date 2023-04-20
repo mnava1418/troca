@@ -70,6 +70,10 @@ export const statusSlice = createSlice({
 
         setIsMember: (state, action) => {
             state.connection.isMember = action.payload
+        },
+
+        connectChat: (state, action) => {
+            state.connection.isOnline = action.payload.isOnline
         }
     }
 })
@@ -83,7 +87,8 @@ export const {
     disconnectUser,
     setUserInfo,
     updateUserName,
-    setIsMember
+    setIsMember,
+    connectChat
 } = statusSlice.actions
 
 //Selectors

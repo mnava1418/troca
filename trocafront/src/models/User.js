@@ -17,13 +17,15 @@ import {
     connectUser, 
     disconnectUser,
     setUserInfo,
-    setIsMember
+    setIsMember,
+    connectChat
 } from '../store/slices/statusSlice'
 
 import { loadUsers } from '../store/slices/portfolioSlice'
 
 import { BACK_URLS } from '../config'
 import { post, get } from '../services/networkService'
+import { setChatListeners } from '../services/socketServices'
 
 class User {
     constructor (_dispatch) {
@@ -88,6 +90,7 @@ class User {
     async connect(account) {
         const contracts = await loadContracts(this.dispatch)
         const token = localStorage.getItem('jwt')
+        const isOnline = localStorage.getItem('isOnline')
         const socket = io(this.baseURL, {
             query: { token }
         })        
@@ -103,8 +106,10 @@ class User {
         }
 
         this.dispatch(connectUser({account, isMember, isOwner, socket}))
+        this.connectToChat(isOnline, socket, account)
 
         accountListener(account, this)
+        setChatListeners(socket)
     }
 
     async getUserInfo() {
@@ -172,6 +177,18 @@ class User {
         }
 
         this.dispatch(setIsProcessing(false))
+    }
+
+    connectToChat(isOnline, socket, account) {
+        if(isOnline === 'true' || isOnline === true) {
+            isOnline = true
+        } else {
+            isOnline = false
+        }
+
+        this.dispatch(connectChat({isOnline}))
+        localStorage.setItem('isOnline', isOnline)
+        socket.emit('connect-to-chat', account, isOnline)
     }
 }
 
