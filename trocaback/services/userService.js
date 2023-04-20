@@ -1,5 +1,7 @@
 const admin = require('firebase-admin')
 const validator = require('validator')
+const path = require('path')
+const fs = require('fs')
 
 const validateUserInfo = async (account, email, username) => {
     if(!email || email.trim() === '' || !username || username.trim() === '') {
@@ -78,9 +80,24 @@ const getUserInfo = async (account) => {
     return userInfo
 }
 
+const connectUserToChat = (account, isOnline) => {
+    const dataPath = path.resolve(__dirname, '..', 'data')
+    const dataFile = path.join(dataPath, 'chatUsers.json')
+
+    let data = fs.readFileSync(dataFile)
+    const chatUsers = JSON.parse(data)
+    chatUsers[account] = isOnline
+
+    data = JSON.stringify(chatUsers)
+    fs.writeFileSync(dataFile, data)
+    
+    return chatUsers
+}
+
 module.exports = {
     getUserInfo,
     updateUserInfo,
     validateUserInfo,
-    getAllUsers
+    getAllUsers,
+    connectUserToChat
 }

@@ -1,5 +1,6 @@
 const portfolioService = require('../services/portfolioService')
 const socketService = require('../services/socketService')
+const userService = require('../services/userService')
 
 const mintingListeners = (io, socket) => {
     socket.on('tokens-available', async () => {
@@ -40,6 +41,13 @@ const portfolioListeners = (io, socket) => {
     })
 }
 
+const chatListeners = (io, socket) => {
+    socket.on('connect-to-chat', (user, isOnline) => {
+        const chatUsers = userService.connectUserToChat(user, isOnline)
+        io.emit('update-chat-users', chatUsers);
+    })
+}
+
 const setListeners = (io, socket) => {
     socket.on('disconnect', async () => {            
         console.info(`Client disconnected: ${socket.account}`)
@@ -55,6 +63,7 @@ const setListeners = (io, socket) => {
 
     mintingListeners(io, socket) //set minting listeners
     portfolioListeners(io, socket) //set portfolio listeners
+    chatListeners(io, socket) //set chat listeners
 }
 
 module.exports = {
