@@ -60,8 +60,6 @@ contract Troca is ReentrancyGuard {
     function switchToken (address _nft, address _seller, uint256 _sellerTokenId, uint256 _buyerTokenId) payable external {
         require(_sellerTokenId > 0, "___Seller Token Id is mandatory.___");
         require(_buyerTokenId > 0, "___Buyer Token Id is mandatory.___");
-
-        require(members[_seller], "___Seller must be a member.___");
         require(members[msg.sender], "___Buyer must be a member.___");
         
         if(msg.value > 0) {
