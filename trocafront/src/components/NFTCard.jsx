@@ -7,6 +7,7 @@ import TrocaModal from './helpers/TrocaModal';
 
 import { loadTokenImg } from '../store/slices/portfolioSlice';
 import { connectionStatusSelector } from '../store/slices/statusSlice';
+import { showExchange } from '../store/slices/exchangeSlice';
 import { INFURA_URL } from '../config';
 import usePortfolio from '../hooks/usePortfolio';
 import useNFTActions from '../hooks/useNFTActions';
@@ -60,7 +61,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
 
         switch (action) {
             case 'bid':
-                alert('Vamo a ofertar')
+                dispatch(showExchange({show: true}))
                 break;
 
             case 'buy':
@@ -102,7 +103,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
         return(
             <div className='d-flex flex-row justify-content-center align-items-center'>
                 <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e, 'buy')}}>Buy</Button>
-                {isMember ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={() => {cardAction('bid')}}>Place Bid</Button> : <></>}
+                {isMember ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={(e) => {cardAction(e,'bid')}}>Place Bid</Button> : <></>}
             </div>
         )
     }
