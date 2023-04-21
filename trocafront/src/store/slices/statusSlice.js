@@ -19,7 +19,8 @@ const INITIAL_STATE = {
             email: '',
             img: ''
         }
-    }
+    },
+    chatUsers: {}
 }
 
 export const statusSlice = createSlice({
@@ -74,6 +75,10 @@ export const statusSlice = createSlice({
 
         connectChat: (state, action) => {
             state.connection.isOnline = action.payload.isOnline
+        },
+
+        updateChatUsers: (state, action) => {
+            state.chatUsers = action.payload.chatUsers
         }
     }
 })
@@ -88,7 +93,8 @@ export const {
     setUserInfo,
     updateUserName,
     setIsMember,
-    connectChat
+    connectChat,
+    updateChatUsers
 } = statusSlice.actions
 
 //Selectors

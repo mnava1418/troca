@@ -1,6 +1,6 @@
 import { MINTING_STATUS } from "../config"
 import MyPortfolio from "../models/MyPortfolio"
-import { setAlert } from "../store/slices/statusSlice"
+import { setAlert, updateChatUsers } from "../store/slices/statusSlice"
 import { INFURA_URL } from "../config"
 import { updateTokenPrice, listToken } from "../store/slices/portfolioSlice"
 
@@ -44,5 +44,11 @@ export const setPortfolioListeners = (socket, setIsProcessingLocal, dispatch) =>
 
     socket.on('server-list-token', (id) => {
         dispatch(listToken({id}))
+    })
+}
+
+export const setChatListeners = (socket, dispatch) => {
+    socket.on('update-chat-users', (chatUsers) => {
+        dispatch(updateChatUsers({chatUsers}))
     })
 }

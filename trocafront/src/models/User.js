@@ -109,7 +109,7 @@ class User {
         this.connectToChat(isOnline, socket, account)
 
         accountListener(account, this)
-        setChatListeners(socket)
+        setChatListeners(socket, this.dispatch)
     }
 
     async getUserInfo() {
