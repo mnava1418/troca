@@ -33,9 +33,9 @@ function Exchange() {
                     </div>
                 </div>
                 <div className='d-flex flex-row justify-content-center align-items-center' style={{marginTop: '40px'}}>
-                    <Button variant="outline-secondary" style={{marginRight: '40px'}}>Reject</Button>
-                    <Button variant="secondary">Accept</Button>
-                    <Button variant="outline-secondary" style={{marginLeft: '40px'}}>Update</Button>
+                    <Button variant="outline-light" style={{marginRight: '40px'}}>Reject</Button>
+                    <Button variant="primary">Accept</Button>
+                    <Button variant="outline-light" style={{marginLeft: '40px'}}>Update</Button>
                 </div>
             </div>
         </section>
