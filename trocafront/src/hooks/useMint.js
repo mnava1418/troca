@@ -35,7 +35,7 @@ function useMint() {
         reader.onloadend = () => {
             stopAnimation()
             setTitle('Congratulations!')
-            setSubtitle('Your new NFT is ready. Click on it or go to Portfolio to start playing with it.')
+            setSubtitle('Your new NFT is almost ready! Please wait for the transaction to be confirmed.')
             setTokenImg(reader.result)
             setShowNFT('nft-mint-container-animate')
         }
