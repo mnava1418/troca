@@ -11,7 +11,7 @@ import { connectionStatusSelector } from '../store/slices/statusSlice';
 
 import '../styles/Mint.css'
 
-function NFTDetails({setShowDetails, token, tokenImg, onlyUser, owner, isProcessingLocal, setIsProcessingLocal}) {
+function NFTDetails({setShowDetails, token, tokenImg, onlyUser, formatOwner, isProcessingLocal, setIsProcessingLocal}) {
     const [validated, setValidated] = useState(false)
     const {id, title, description, price, royalties, key} = token
     const [priceETH, setPriceETH] = useState(price)
@@ -46,7 +46,7 @@ function NFTDetails({setShowDetails, token, tokenImg, onlyUser, owner, isProcess
                     <Form id='detailsForm' noValidate validated={validated} autoComplete='off'>
                         <Form.Group controlId="mintTitle">
                             <h1>{`${title} #${id}`}</h1>
-                            <h4>{owner}</h4>
+                            <h4>{formatOwner}</h4>
                         </Form.Group>
                         <Form.Group controlId="mintDescription">
                             <Form.Label style={{fontWeight: '600'}}>Description</Form.Label>

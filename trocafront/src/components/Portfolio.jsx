@@ -113,7 +113,7 @@ function Portfolio () {
                     return(
                         <NFTCard key={token.id}
                             onlyUser={onlyUser}
-                            owner={owner}
+                            formatOwner={owner}
                             token={token}
                             isProcessingLocal={isProcessingLocal}
                             setIsProcessingLocal={setIsProcessingLocal}
