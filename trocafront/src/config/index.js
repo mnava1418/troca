@@ -24,3 +24,7 @@ export const TOKEN_STATUS = {
 export const MINTING_STATUS = {    
     minting: 'MINTING'
 }
+
+export const BID_STATUS = {
+    new: 'NEW'
+}
