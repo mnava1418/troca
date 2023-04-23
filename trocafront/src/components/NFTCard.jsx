@@ -6,23 +6,23 @@ import NFTDetails from './NFTDetails';
 import TrocaModal from './helpers/TrocaModal';
 
 import { loadTokenImg } from '../store/slices/portfolioSlice';
-import { connectionStatusSelector } from '../store/slices/statusSlice';
-import { showExchange } from '../store/slices/exchangeSlice';
+import { connectionStatusSelector, chatUsersSelector } from '../store/slices/statusSlice';
 import { INFURA_URL } from '../config';
 import usePortfolio from '../hooks/usePortfolio';
 import useNFTActions from '../hooks/useNFTActions';
 import useNFTCard from '../hooks/useNFTCard';
 import useWeb3 from '../hooks/useWeb3';
 import MyPortfolio from '../models/MyPortfolio';
+import Exchange from '../models/Exchange';
 
 import '../styles/NFTCard.css'
 
-function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLocal}) {
-    const {id, title, price, image, isListed} = token
-    const dispatch = useDispatch()
-    const myPortfolio = new MyPortfolio(dispatch)
+function NFTCard({formatOwner, onlyUser, token, isProcessingLocal, setIsProcessingLocal}) {
+    const {id, title, price, image, isListed, owner} = token
+    const dispatch = useDispatch()    
 
     const { isMember, account, socket } = useSelector(connectionStatusSelector)
+    const chatUsers = useSelector(chatUsersSelector)
     const { allTokens } = usePortfolio()
     const { nft, troca, web3 } = useWeb3()
     const { showDetails, setShowDetails } = useNFTActions()
@@ -32,6 +32,9 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
         modal, setModal,
         tokenImg, setTokenImage
     } = useNFTCard()
+
+    const myPortfolio = new MyPortfolio(dispatch)
+    const exchange = new Exchange(dispatch, troca, nft)
 
     useEffect(() => {
         if(allTokens[id].imageData === undefined) {
@@ -97,7 +100,16 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
     }
 
     const placeBid = () => {
-        dispatch(showExchange({show: true}))
+        if(chatUsers[owner]) {
+            exchange.prepareNewBid(owner, allTokens[id].imageData, account)
+        } else {
+            setModal({
+                body: <>Seems <b>{formatOwner}</b> is offline and you might need to wait longer for a response. Do you want to continue?`</>,
+                title: `Place a bid for token #${id}`,
+                action: () => {exchange.prepareNewBid(owner, allTokens[id].imageData, account)}
+            })
+            setShowModal(true)
+        }
     }
 
     const getOwnerActions = () => {
@@ -126,7 +138,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
                     <Card.Title>{title}</Card.Title>
                     <div className='d-flex flex-row justify-content-around' style={{width: '100%', marginTop: '24px'}}>
                         <div>
-                            <h6>{owner}</h6>
+                            <h6>{formatOwner}</h6>
                             <h6 style={{color: 'var(--secondary-color)'}}>Owner</h6>                        
                         </div>
                         <div>
@@ -138,7 +150,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
                     {onlyUser ? getOwnerActions() : getUserActions()}
                 </Card.Body>
             </Card>
-            {showDetails ? <NFTDetails setShowDetails={setShowDetails} token={token} tokenImg={tokenImg} onlyUser={onlyUser} owner={owner} isProcessingLocal={isProcessingLocal} setIsProcessingLocal={setIsProcessingLocal} /> : <></>}
+            {showDetails ? <NFTDetails setShowDetails={setShowDetails} token={token} tokenImg={tokenImg} onlyUser={onlyUser} formatOwner={formatOwner} isProcessingLocal={isProcessingLocal} setIsProcessingLocal={setIsProcessingLocal} /> : <></>}
             <TrocaModal 
                 body={<span>{modal.body}</span>}
                 title={modal.title}

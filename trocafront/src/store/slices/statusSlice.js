@@ -101,5 +101,6 @@ export const {
 export const alertSelector = (state) => state.status.alert
 export const isProcessingSelector = (state) => state.status.isProcessing
 export const connectionStatusSelector = (state) => state.status.connection
+export const chatUsersSelector = (state) => state.status.chatUsers
 
 export default statusSlice.reducer
