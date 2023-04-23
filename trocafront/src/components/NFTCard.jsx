@@ -29,6 +29,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
 
     const {
         showModal, setShowModal,
+        modal, setModal,
         tokenImg, setTokenImage
     } = useNFTCard()
 
@@ -61,7 +62,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
 
         switch (action) {
             case 'bid':
-                dispatch(showExchange({show: true}))
+                placeBid()
                 break;
 
             case 'buy':
@@ -77,7 +78,7 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
                 break;
     
             case 'list':
-                setShowModal(true)
+                listNFT()
                 break;
 
             default:
@@ -87,7 +88,16 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
     }
 
     const listNFT = () => {
-        myPortfolio.list(account, nft, troca, id, socket)
+        setModal({
+            body: 'After you list your NFT, users from the network will be able to interact with them.',
+            title: `List your NFT #${id}`,
+            action: () => {myPortfolio.list(account, nft, troca, id, socket)}
+        })
+        setShowModal(true)
+    }
+
+    const placeBid = () => {
+        dispatch(showExchange({show: true}))
     }
 
     const getOwnerActions = () => {
@@ -130,9 +140,9 @@ function NFTCard({owner, onlyUser, token, isProcessingLocal, setIsProcessingLoca
             </Card>
             {showDetails ? <NFTDetails setShowDetails={setShowDetails} token={token} tokenImg={tokenImg} onlyUser={onlyUser} owner={owner} isProcessingLocal={isProcessingLocal} setIsProcessingLocal={setIsProcessingLocal} /> : <></>}
             <TrocaModal 
-                body={<span>After you list your NFT, users from the network will be able to interact with them.</span>}
-                title={`List your NFT #${id}`}
-                action={listNFT}
+                body={<span>{modal.body}</span>}
+                title={modal.title}
+                action={modal.action}
                 dispatch={dispatch}
                 setShowModal={setShowModal}
                 showModal={showModal} />
