@@ -50,8 +50,6 @@ const chatListeners = (io, socket) => {
 
 const setListeners = (io, socket) => {
     socket.on('disconnect', async () => {            
-        console.info(`Client disconnected: ${socket.account}`)
-
         //Check if user was minting
         const userIsMinting = await socketService.userIsMinting(socket.account)
         if(userIsMinting.isMinting) {

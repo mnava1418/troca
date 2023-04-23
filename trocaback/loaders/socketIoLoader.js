@@ -27,8 +27,7 @@ module.exports = (httpServer) => {
         }        
     })
 
-    io.on('connection', (socket) => {
-        console.info(`Client connected: ${socket.account}`)
+    io.on('connection', (socket) => {        
         socketController.setListeners(io, socket)
     })    
 
