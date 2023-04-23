@@ -82,8 +82,7 @@ class MyPortfolio {
     list (account, nft, troca, id, socket) {
         nft.methods.approve(troca._address, id).send({from: account})
         .on('transactionHash', () => {
-            this.dispatch(setAlert({show: true, type: 'success', text: `NFT #${id} listed!`}))
-            socket.emit('clien-list-token', id)
+            this.dispatch(setAlert({show: true, type: 'success', text: `NFT #${id} listed! Please wait for the transaction to be confirmed.`}))            
         })
         .on('error', (error) => {
             console.error(error)

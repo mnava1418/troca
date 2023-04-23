@@ -35,10 +35,6 @@ const portfolioListeners = (io, socket) => {
             io.emit('refresh-token', id, price)
         }
     })
-
-    socket.on('clien-list-token', (id) => {
-        io.emit('server-list-token', id)
-    })
 }
 
 const chatListeners = (io, socket) => {
