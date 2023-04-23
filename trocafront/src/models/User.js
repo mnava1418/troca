@@ -98,11 +98,11 @@ class User {
         let isMember = false
         let isOwner = false
 
-        if(contracts.troca) {
+        if(contracts.troca && contracts.nft) {
             isMember = await this.isMember(contracts.troca, account)
             isOwner = await this.isOwner(contracts.troca, account)
 
-            subscribeTrocaEvents(contracts.troca, account, this.dispatch)
+            subscribeTrocaEvents(contracts.troca, contracts.nft, account, this.dispatch)
         }
 
         this.dispatch(connectUser({account, isMember, isOwner, socket}))
