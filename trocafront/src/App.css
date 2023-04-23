@@ -66,9 +66,9 @@ section h5 {
 }
 
 .custom-alert {
-  position: absolute;
+  position: fixed;
   top: var(--navBar-height);
-  z-index: 1000;
+  z-index: 2000;
 }
 
 .full-content {
