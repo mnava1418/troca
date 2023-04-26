@@ -6,8 +6,10 @@ const INITIAL_STATE = {
     order: {
         id: 0,
         seller: '',
+        sellerId: 0,
         sellerData: undefined,
         buyer: '',
+        buyerId: 0,
         buyerData: undefined,
         price: 0.0,
         status: '',
@@ -30,6 +32,11 @@ export const exchangeSlice = createSlice({
 
         updateCatalog: (state, action) => {
             state.catalog[action.payload.account] = action.payload.tokens
+        },
+
+        updateOrderToken: (state, action) => {
+            state.order.buyerId = action.payload.id
+            state.order.buyerData = action.payload.data
         }
     }
 })
@@ -37,7 +44,8 @@ export const exchangeSlice = createSlice({
 //Actions
 export const {
     showExchange,
-    updateCatalog
+    updateCatalog,
+    updateOrderToken
 } = exchangeSlice.actions
 
 //Selectors
