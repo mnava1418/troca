@@ -26,6 +26,7 @@ import { loadUsers } from '../store/slices/portfolioSlice'
 import { BACK_URLS } from '../config'
 import { post, get } from '../services/networkService'
 import { setChatListeners } from '../services/socketServices'
+import MyPortfolio from './MyPortfolio'
 
 class User {
     constructor (_dispatch) {
@@ -88,16 +89,37 @@ class User {
     }
 
     async connect(account) {
-        const contracts = await loadContracts(this.dispatch)
-        const token = localStorage.getItem('jwt')
+        const socket = this.connectToSocket()
+        const {isMember, isOwner, contracts} = await this.setContracts(account)
+        this.dispatch(connectUser({account, isMember, isOwner, socket}))
+        
         const isOnline = localStorage.getItem('isOnline')
+        this.connectToChat(isOnline, socket, account)
+             
+        const myPortfolio = new MyPortfolio(this.dispatch)
+        myPortfolio.getTokens(contracts.nft, contracts.troca)
+        
+        this.setListeners(account, socket)
+    }
+
+    connectToSocket() {
+        const token = localStorage.getItem('jwt')
         const socket = io(this.baseURL, {
             query: { token }
-        })        
+        })   
 
-        let isMember = false
-        let isOwner = false
+        return socket
+    }
 
+    setListeners(account, socket) {
+        accountListener(account, this)
+        setChatListeners(socket, this.dispatch)
+    }
+
+    async setContracts(account) {
+        const contracts = await loadContracts(this.dispatch)
+        let isMember, isOwner = false
+        
         if(contracts.troca && contracts.nft) {
             isMember = await this.isMember(contracts.troca, account)
             isOwner = await this.isOwner(contracts.troca, account)
@@ -105,11 +127,7 @@ class User {
             subscribeTrocaEvents(contracts.troca, contracts.nft, account, this.dispatch)
         }
 
-        this.dispatch(connectUser({account, isMember, isOwner, socket}))
-        this.connectToChat(isOnline, socket, account)
-
-        accountListener(account, this)
-        setChatListeners(socket, this.dispatch)
+        return {isMember, isOwner, contracts}
     }
 
     async getUserInfo() {
