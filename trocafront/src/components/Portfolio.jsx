@@ -11,8 +11,6 @@ import { connectionStatusSelector, isProcessingSelector } from '../store/slices/
 import { setOnlyUser, setSelectedTokens } from '../store/slices/portfolioSlice';
 
 import usePortfolio from '../hooks/usePortfolio';
-import useWeb3 from '../hooks/useWeb3';
-import MyPortfolio from '../models/MyPortfolio';
 import User from '../models/User';
 import { PATHS } from '../config';
 import { parseAccount, parseUsername } from '../services/ethServices';
@@ -22,7 +20,6 @@ function Portfolio () {
     const { isConnected, socket } = useSelector(connectionStatusSelector)
     const isProcessing = useSelector(isProcessingSelector)
     const [isProcessingLocal, setIsProcessingLocal] = useState(false)
-    const { nft, troca } = useWeb3()
 
     const [showFilters, setShowFilters ] = useState(false)
 
@@ -34,14 +31,12 @@ function Portfolio () {
     } = usePortfolio()
     
     const dispatch = useDispatch()
-    const myPortfolio = new MyPortfolio(dispatch)
     const user = new User(dispatch)
 
     useEffect(() => {
         if(!isConnected) {
             window.location.href = PATHS.wallet
         } else {      
-            myPortfolio.getTokens(nft, troca)
             user.getAllUsers()
             setPortfolioListeners(socket, setIsProcessingLocal, dispatch)
         } 
