@@ -34,6 +34,15 @@
     background-image: url('../img/logoTransparent.png');    
 }
 
+.catalog-item {
+    margin: 16px; 
+    width: 80px; 
+    height: 80px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
 /* Small devices (landscape phones, 576px and up)*/
 @media (min-width: 576px) { 
     .exchange-contents {

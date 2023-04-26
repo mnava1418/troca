@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const INITIAL_STATE = {
     show: false,
+    catalog: {},
     order: {
         id: 0,
         seller: '',
@@ -25,17 +26,23 @@ export const exchangeSlice = createSlice({
             } else {
                 state.order = {...INITIAL_STATE.order}
             }
+        },
+
+        updateCatalog: (state, action) => {
+            state.catalog[action.payload.account] = action.payload.tokens
         }
     }
 })
 
 //Actions
 export const {
-    showExchange
+    showExchange,
+    updateCatalog
 } = exchangeSlice.actions
 
 //Selectors
 export const showExchangeSelector = (state) => state.exchange.show
 export const bidOrderSelector = (state) => state.exchange.order
+export const catalogSelector = (state) => state.exchange.catalog
 
 export default exchangeSlice.reducer

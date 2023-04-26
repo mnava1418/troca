@@ -1,7 +1,7 @@
 import FormData from 'form-data'
 
 import { setAlert, setIsProcessing } from '../store/slices/statusSlice'
-import { showExchange } from '../store/slices/exchangeSlice'
+import { showExchange, updateCatalog } from '../store/slices/exchangeSlice'
 import { BACK_URLS, BID_STATUS } from '../config'
 import { post } from '../services/networkService'
 
@@ -38,6 +38,29 @@ class Exchange {
         const orderId = Date.now()
         const order = {id: orderId, seller, sellerData, buyer, buyerData: undefined, price: 0.0, status: BID_STATUS.new}
         this.dispatch(showExchange({show: true, order}))
+    }
+
+    async getTokensByAccount(account) {
+        const tokens = []
+
+        const tokenId = await this.nft.methods.tokenId().call()
+        .then(result => parseInt(result))
+        
+        if(tokenId !== 0) {
+            for(let i = 1; i <= tokenId; i++) {
+                const owner = await this.nft.methods.ownerOf(i).call()
+                const isListed = await this.nft.methods.getApproved(i).call()
+                .then( operator => operator === this.troca._address)
+
+                if(isListed && owner === account) {
+                    const uri = await this.nft.methods.tokenURI(i).call()
+                    const image = await (await fetch(uri)).json().then(data => data.image)
+                    tokens.push({id: i, image})
+                }
+            }
+        } 
+
+        this.dispatch(updateCatalog({account, tokens}))
     }
 }
 
