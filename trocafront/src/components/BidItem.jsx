@@ -19,7 +19,7 @@ function BidItem({actor, imgData, canUpdate}) {
         if(showCatalog) {
             return (
                 <div className='d-flex flex-column justify-content-center align-items-center exchange-item'>
-                    <BidCatalog owner={actor}/>
+                    <BidCatalog owner={actor} setShowCatalog={setShowCatalog}/>
                 </div>
             )
         } else {
