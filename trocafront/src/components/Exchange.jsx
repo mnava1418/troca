@@ -17,10 +17,10 @@ function Exchange() {
     const order = useSelector(bidOrderSelector)
     const {seller, sellerData, buyer, buyerData, price, status} = order
 
-    const userIsBuyer = buyer === account
+    const isBuyer = buyer === account
 
     const getActionBtn = () => {
-        if(status === BID_STATUS.new && userIsBuyer) {
+        if(status === BID_STATUS.new && isBuyer) {
             return(<Button variant="primary">Place Bid</Button>)
         } else {
             return(<></>)
@@ -31,12 +31,12 @@ function Exchange() {
         <section className='d-flex flex-column justify-content-center align-items-center nft-container' onClick={() => {dispatch(showExchange({show: false}))}}>
             <div className='exchange-container' onClick={(e) => {e.stopPropagation()}}>
                 <div className='exchange-contents'>
-                    <BidItem actor={buyer} imgData={buyerData} />
+                    <BidItem actor={buyer} imgData={buyerData} canUpdate={true} />
                     <div className='d-flex flex-column justify-content-center align-items-center exchange-info'>                        
                         <h4>{price} ETH</h4>
                         <div className='exchange-item-bg bg-img bg-im-contain' />
                     </div>
-                    <BidItem actor={seller} imgData={sellerData} />
+                    <BidItem actor={seller} imgData={sellerData} canUpdate={false} />
                 </div>
                 <div className='d-flex flex-row justify-content-center align-items-center' style={{marginTop: '40px'}}>
                     {status === BID_STATUS.new ? <></> : <Button variant="outline-light" style={{marginRight: '40px'}}>Reject</Button>}
