@@ -1,18 +1,42 @@
+import { useState } from 'react'
+
+import BidCatalog from './BidCatalog'
+
 import { parseAccount } from "../services/ethServices"
 
-function BidItem({actor, imgData}) {
+function BidItem({actor, imgData, canUpdate}) {
+    const [showCatalog, setShowCatalog] = useState(false)
+
+    const displayCatalog = (e) => {
+        e.stopPropagation()
+
+        if(canUpdate) {
+            setShowCatalog(true)
+        }
+    }
 
     const getImgCard = () => {
-        if(imgData !== undefined) {
-            return(
-                <div className='d-flex flex-column justify-content-center align-items-center exchange-item bg-img bg-im-cover' style={{backgroundImage: `url(${imgData})`}} />
-            ) 
-        } else {
-            return(
+        if(showCatalog) {
+            return (
                 <div className='d-flex flex-column justify-content-center align-items-center exchange-item'>
-                    <div className='exchange-item-bg bg-img bg-im-contain' />
+                    <BidCatalog owner={actor}/>
                 </div>
             )
+        } else {
+            if(imgData !== undefined) {
+                return(
+                    <div className='d-flex flex-column justify-content-center align-items-center exchange-item bg-img bg-im-cover' 
+                        style={{backgroundImage: `url(${imgData})`}}
+                        onClick={(e) => {displayCatalog(e)}} 
+                    />
+                ) 
+            } else {
+                return(
+                    <div className='d-flex flex-column justify-content-center align-items-center exchange-item' onClick={(e) => {displayCatalog(e)}}>
+                        <div className='exchange-item-bg bg-img bg-im-contain' />
+                    </div>
+                )
+            }
         }
     }
 
