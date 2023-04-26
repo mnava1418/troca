@@ -34,9 +34,9 @@ class Exchange {
         this.dispatch(setIsProcessing(false))
     }
 
-    prepareNewBid(seller, sellerData, buyer) {
+    prepareNewBid(seller, sellerId, sellerData, buyer) {
         const orderId = Date.now()
-        const order = {id: orderId, seller, sellerData, buyer, buyerData: undefined, price: 0.0, status: BID_STATUS.new}
+        const order = {id: orderId, seller, sellerId, sellerData, buyer, buyerData: undefined, price: 0.0, status: BID_STATUS.new}
         this.dispatch(showExchange({show: true, order}))
     }
 
