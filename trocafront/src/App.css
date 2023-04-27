@@ -68,7 +68,7 @@ section h5 {
 .custom-alert {
   position: fixed;
   top: var(--navBar-height);
-  z-index: 2000;
+  z-index: 3000;
 }
 
 .full-content {
