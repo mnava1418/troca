@@ -114,7 +114,7 @@ class User {
     setListeners(account, socket) {
         accountListener(account, this)
         setChatListeners(socket, this.dispatch)
-        setExchangeListeners(socket)
+        setExchangeListeners(socket, this.dispatch)
     }
 
     async setContracts(account) {

@@ -3,6 +3,7 @@ import MyPortfolio from "../models/MyPortfolio"
 import { setAlert, updateChatUsers } from "../store/slices/statusSlice"
 import { INFURA_URL } from "../config"
 import { updateTokenPrice } from "../store/slices/portfolioSlice"
+import { showExchange } from "../store/slices/exchangeSlice"
 
 export const setMintingListeners = (dispatch, account, socket, actions = {}, contracts = {}) => {
     socket.on('update-tokens-available', (info) => {
@@ -46,5 +47,16 @@ export const setPortfolioListeners = (socket, setIsProcessingLocal, dispatch) =>
 export const setChatListeners = (socket, dispatch) => {
     socket.on('update-chat-users', (chatUsers) => {
         dispatch(updateChatUsers({chatUsers}))
+    })
+}
+
+export const setExchangeListeners = (socket, dispatch) => {
+    socket.on('review-bid', (order) => {
+        const showOrder = localStorage.getItem('showOrder')
+        const isOnline = localStorage.getItem('isOnline')
+
+        if(isOnline == 'true' && showOrder == 'false') {
+            dispatch(showExchange({show: true, order}))
+        }
     })
 }
