@@ -13,12 +13,15 @@ const INITIAL_STATE = {
     }
 }
 
+localStorage.setItem('showOrder', INITIAL_STATE.show)
+
 export const exchangeSlice = createSlice({
     name: 'exchange',
     initialState: INITIAL_STATE,
     reducers: {
         showExchange: (state, action) => {
             state.show = action.payload.show
+            localStorage.setItem('showOrder', action.payload.show)
 
             if(action.payload.show && action.payload.order !== undefined) {
                 state.order = action.payload.order
