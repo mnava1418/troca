@@ -52,7 +52,10 @@ const setListeners = (io, socket) => {
             await socketService.cancelMinting(socket.account, userIsMinting.token)
             const availableTokens = await portfolioService.getAvailableTokens()
             io.emit('update-tokens-available', {totalCount: availableTokens.totalCount, availableTokens: availableTokens.available.length})            
-        } 
+        }
+        
+        const chatUsers = userService.connectUserToChat(socket.account, false)
+        io.emit('update-chat-users', chatUsers);
     })
 
     mintingListeners(io, socket) //set minting listeners
