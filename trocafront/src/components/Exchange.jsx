@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button'
-//import Alert from 'react-bootstrap/Alert'
 import BidItem from './BidItem'
 
 import { showExchange, bidOrderSelector } from '../store/slices/exchangeSlice'
@@ -15,7 +14,7 @@ function Exchange() {
     const { account } = useSelector(connectionStatusSelector)
     
     const order = useSelector(bidOrderSelector)
-    const {seller, sellerData, buyer, buyerData, price, status} = order
+    const {seller, sellerTokenId, buyer, buyerTokenId, price, status} = order
 
     const isBuyer = buyer === account
 
@@ -31,12 +30,12 @@ function Exchange() {
         <section className='d-flex flex-column justify-content-center align-items-center nft-container' onClick={() => {dispatch(showExchange({show: false}))}}>
             <div className='exchange-container' onClick={(e) => {e.stopPropagation()}}>
                 <div className='exchange-contents'>
-                    <BidItem actor={buyer} imgData={buyerData} canUpdate={true} />
+                    <BidItem actor={buyer} tokenId={buyerTokenId} canUpdate={true} />
                     <div className='d-flex flex-column justify-content-center align-items-center exchange-info'>                        
                         <h4>{price} ETH</h4>
                         <div className='exchange-item-bg bg-img bg-im-contain' />
                     </div>
-                    <BidItem actor={seller} imgData={sellerData} canUpdate={false} />
+                    <BidItem actor={seller} tokenId={sellerTokenId} canUpdate={false} />
                 </div>
                 <div className='d-flex flex-row justify-content-center align-items-center' style={{marginTop: '40px'}}>
                     {status === BID_STATUS.new ? <></> : <Button variant="outline-light" style={{marginRight: '40px'}}>Reject</Button>}
@@ -47,7 +46,5 @@ function Exchange() {
         </section>
     )
 }
-
-//<Alert key='exchangeAlert' variant='success'>Exchange!</Alert>
 
 export default Exchange
