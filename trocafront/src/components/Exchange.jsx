@@ -1,28 +1,55 @@
 import { useDispatch, useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button'
 import BidItem from './BidItem'
+import ExchangeModel from '../models/Exchange'
+import useWeb3 from '../hooks/useWeb3'
 
 import { showExchange, bidOrderSelector } from '../store/slices/exchangeSlice'
-import { connectionStatusSelector } from '../store/slices/statusSlice'
-import { BID_STATUS } from '../config'
+import { connectionStatusSelector, setAlert } from '../store/slices/statusSlice'
+import { BID_STATUS, BID_ACTIONS } from '../config'
 
 import '../styles/Mint.css'
 import '../styles/Exchange.css'
 
 function Exchange() {
     const dispatch = useDispatch()
-    const { account } = useSelector(connectionStatusSelector)
+    const { account, socket } = useSelector(connectionStatusSelector)
+    const { nft, troca} = useWeb3()
     
     const order = useSelector(bidOrderSelector)
     const {seller, sellerTokenId, buyer, buyerTokenId, price, status} = order
 
     const isBuyer = buyer === account
+    const exchange = new ExchangeModel(dispatch, troca, nft)
 
     const getActionBtn = () => {
         if(status === BID_STATUS.new && isBuyer) {
-            return(<Button variant="primary">Place Bid</Button>)
+            return(<Button variant="primary" onClick={() => {validateOrder(BID_ACTIONS.create)}}>Place Bid</Button>)
         } else {
             return(<></>)
+        }
+    }
+
+    const validateOrder = (action) => {
+        let orderValid = true
+
+        if(buyerTokenId === 0) {
+            orderValid = false
+        } else if(sellerTokenId === 0) {
+            orderValid = false
+        }
+
+        if(orderValid) {
+            switch (action) {
+                case BID_ACTIONS.create:
+                    exchange.placeBid(socket, {...order})
+                    break;
+            
+                default:
+                    break;
+            }
+        } else {
+            dispatch(setAlert({show: true, type: 'danger', text: 'Ivalid Bid. Both tokens are mandatory.'}))
         }
     }
 
@@ -40,7 +67,7 @@ function Exchange() {
                 <div className='d-flex flex-row justify-content-center align-items-center' style={{marginTop: '40px'}}>
                     {status === BID_STATUS.new ? <></> : <Button variant="outline-light" style={{marginRight: '40px'}}>Reject</Button>}
                     {getActionBtn()}
-                    {status === BID_STATUS.new ? <></> : <Button variant="outline-light" style={{marginLeft: '40px'}}>Update</Button>}
+                    {(status === BID_STATUS.seller && !isBuyer) || (status === BID_STATUS.buyer && isBuyer)  ? <Button variant="outline-light" style={{marginLeft: '40px'}}>Update</Button> : <></> }
                 </div>
             </div>
         </section>

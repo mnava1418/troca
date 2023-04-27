@@ -1,7 +1,7 @@
 import FormData from 'form-data'
 
 import { setAlert, setIsProcessing } from '../store/slices/statusSlice'
-import { showExchange } from '../store/slices/exchangeSlice'
+import { showExchange, updateOrderStatus } from '../store/slices/exchangeSlice'
 import { BACK_URLS, BID_STATUS } from '../config'
 import { post } from '../services/networkService'
 
@@ -38,6 +38,12 @@ class Exchange {
         const orderId = Date.now()
         const order = {id: orderId, seller, sellerTokenId, buyer, buyerTokenId: 0, price: 0.0, status: BID_STATUS.new}
         this.dispatch(showExchange({show: true, order}))
+    }
+
+    placeBid(socket, order) {
+        order.status = BID_STATUS.seller
+        this.dispatch(updateOrderStatus({status: order.status}))
+        socket.emit('update-bid', order)
     }
 }
 
