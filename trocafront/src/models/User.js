@@ -25,7 +25,7 @@ import { loadUsers } from '../store/slices/portfolioSlice'
 
 import { BACK_URLS } from '../config'
 import { post, get } from '../services/networkService'
-import { setChatListeners } from '../services/socketServices'
+import { setChatListeners, setExchangeListeners } from '../services/socketServices'
 import MyPortfolio from './MyPortfolio'
 
 class User {
@@ -114,6 +114,7 @@ class User {
     setListeners(account, socket) {
         accountListener(account, this)
         setChatListeners(socket, this.dispatch)
+        setExchangeListeners(socket)
     }
 
     async setContracts(account) {
