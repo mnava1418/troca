@@ -101,12 +101,12 @@ function NFTCard({formatOwner, onlyUser, token, isProcessingLocal, setIsProcessi
 
     const placeBid = () => {
         if(chatUsers[owner]) {
-            exchange.prepareNewBid(owner, id, allTokens[id].imageData, account)
+            exchange.prepareNewBid(owner, id, account)
         } else {
             setModal({
                 body: <>Seems <b>{formatOwner}</b> is offline and you might need to wait longer for a response. Do you want to continue?`</>,
                 title: `Place a bid for token #${id}`,
-                action: () => {exchange.prepareNewBid(owner, allTokens[id].imageData, account)}
+                action: () => {exchange.prepareNewBid(owner, id, account)}
             })
             setShowModal(true)
         }
