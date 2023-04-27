@@ -1,11 +1,14 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import BidCatalog from './BidCatalog'
 
 import { parseAccount } from "../services/ethServices"
+import { allTokensSelector } from '../store/slices/portfolioSlice'
 
-function BidItem({actor, imgData, canUpdate}) {
+function BidItem({actor, tokenId, canUpdate}) {
     const [showCatalog, setShowCatalog] = useState(false)
+    const allTokens = useSelector(allTokensSelector)
 
     const displayCatalog = (e) => {
         e.stopPropagation()
@@ -23,10 +26,10 @@ function BidItem({actor, imgData, canUpdate}) {
                 </div>
             )
         } else {
-            if(imgData !== undefined) {
+            if(tokenId !== 0) {
                 return(
                     <div className='d-flex flex-column justify-content-center align-items-center exchange-item bg-img bg-im-cover' 
-                        style={{backgroundImage: `url(${imgData})`}}
+                        style={{backgroundImage: `url(${allTokens[tokenId].imageData})`}}
                         onClick={(e) => {displayCatalog(e)}} 
                     />
                 ) 
