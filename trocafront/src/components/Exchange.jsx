@@ -60,7 +60,7 @@ function Exchange() {
                     <BidItem actor={buyer} tokenId={buyerTokenId} canUpdate={true} />
                     <div className='d-flex flex-column justify-content-center align-items-center exchange-info'>                        
                         <h4>{price} ETH</h4>
-                        <div className='exchange-item-bg bg-img bg-im-contain' />
+                        <div className={`exchange-item-bg bg-img bg-im-contain ${status === BID_STATUS.buyer || status === BID_STATUS.seller ? 'nft-card-back-animate' : ''}`} />
                     </div>
                     <BidItem actor={seller} tokenId={sellerTokenId} canUpdate={false} />
                 </div>
