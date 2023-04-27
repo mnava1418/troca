@@ -43,7 +43,7 @@ class Exchange {
     placeBid(socket, order) {
         order.status = BID_STATUS.seller
         this.dispatch(updateOrderStatus({status: order.status}))
-        socket.emit('update-bid', order)
+        socket.emit('update-bid', order, order.seller)
     }
 }
 
