@@ -1,6 +1,7 @@
 const portfolioService = require('../services/portfolioService')
 const socketService = require('../services/socketService')
 const userService = require('../services/userService')
+const exchangeService = require('../services/exchangeService')
 
 const mintingListeners = (io, socket) => {
     socket.on('tokens-available', async () => {
@@ -44,6 +45,14 @@ const chatListeners = (io, socket) => {
     })
 }
 
+const exchangeListeners = (io, socket) => {
+    socket.on('update-bid', (order, to) => {
+        console.info('order', order)
+        exchangeService.updateBid(order)
+        io.to(to).emit('review-bid', order);
+    })
+}
+
 const setListeners = (io, socket) => {
     socket.on('disconnect', async () => {            
         //Check if user was minting
@@ -61,6 +70,7 @@ const setListeners = (io, socket) => {
     mintingListeners(io, socket) //set minting listeners
     portfolioListeners(io, socket) //set portfolio listeners
     chatListeners(io, socket) //set chat listeners
+    exchangeListeners(io, socket) //set exchange listeners
 }
 
 module.exports = {
