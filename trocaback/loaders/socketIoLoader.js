@@ -27,7 +27,8 @@ module.exports = (httpServer) => {
         }        
     })
 
-    io.on('connection', (socket) => {        
+    io.on('connection', (socket) => {    
+        socket.join(socket.account)
         socketController.setListeners(io, socket)
     })    
 
