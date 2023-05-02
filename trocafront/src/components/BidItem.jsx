@@ -1,21 +1,50 @@
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import BidCatalog from './BidCatalog'
 
 import { parseAccount } from "../services/ethServices"
-import { allTokensSelector } from '../store/slices/portfolioSlice'
+import { allTokensSelector, loadTokenImg } from '../store/slices/portfolioSlice'
+import { INFURA_URL } from '../config'
 
 function BidItem({actor, tokenId, canUpdate}) {
-    const [showCatalog, setShowCatalog] = useState(false)
+    const dispatch = useDispatch()
     const allTokens = useSelector(allTokensSelector)
-
+    const [showCatalog, setShowCatalog] = useState(false)
+    const [imageData, setImageData] = useState(undefined)
+    
     const displayCatalog = (e) => {
         e.stopPropagation()
 
         if(canUpdate) {
             setShowCatalog(true)
         }
+    }
+
+    useEffect(() => {
+        if(allTokens[tokenId]){
+            if(!showCatalog && allTokens[tokenId].imageData === undefined) {                
+                loadImage(allTokens[tokenId].image)
+            } else {
+                setImageData(allTokens[tokenId].imageData)
+            }            
+        }
+        // eslint-disable-next-line
+    }, [showCatalog])
+
+    const loadImage = async(image) => {
+        const imgFile = await fetch(`${INFURA_URL}/${image}`)
+        const imgData = await imgFile.blob()
+
+        const reader = new FileReader()
+
+        reader.onloadend = () => {
+            const data = reader.result
+            dispatch(loadTokenImg({id: tokenId, data}))
+            setImageData(data)
+        }
+
+        reader.readAsDataURL(imgData)
     }
 
     const getImgCard = () => {
@@ -26,10 +55,10 @@ function BidItem({actor, tokenId, canUpdate}) {
                 </div>
             )
         } else {
-            if(tokenId !== 0) {
+            if(tokenId !== 0 && imageData) {
                 return(
                     <div className='d-flex flex-column justify-content-center align-items-center exchange-item bg-img bg-im-cover' 
-                        style={{backgroundImage: `url(${allTokens[tokenId].imageData})`}}
+                        style={{backgroundImage: `url(${imageData})`}}
                         onClick={(e) => {displayCatalog(e)}} 
                     />
                 ) 
