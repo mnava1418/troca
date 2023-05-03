@@ -28,9 +28,11 @@ export const MINTING_STATUS = {
 export const BID_STATUS = {
     new: 'NEW',
     seller: 'WAITING_ON_SELLER',
-    buyer: 'WAITING_ON_BUYER'
+    buyer: 'WAITING_ON_BUYER',
+    reject: 'REJECTED'
 }
 
 export const BID_ACTIONS = {
-    create: 'CREATE'
+    create: 'CREATE',
+    reject: 'REJECT'
 }

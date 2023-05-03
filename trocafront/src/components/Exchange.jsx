@@ -44,7 +44,9 @@ function Exchange() {
                 case BID_ACTIONS.create:
                     exchange.placeBid(socket, {...order})
                     break;
-            
+                case BID_ACTIONS.reject:
+                    exchange.reject(socket, {...order}, isBuyer)
+                    break;                
                 default:
                     break;
             }
@@ -65,7 +67,7 @@ function Exchange() {
                     <BidItem actor={seller} tokenId={sellerTokenId} canUpdate={false} />
                 </div>
                 <div className='d-flex flex-row justify-content-center align-items-center' style={{marginTop: '40px'}}>
-                    {status === BID_STATUS.new ? <></> : <Button variant="outline-light" style={{marginRight: '40px'}}>Reject</Button>}
+                    {status === BID_STATUS.new || status === BID_STATUS.reject ? <></> : <Button variant="outline-light" style={{marginRight: '40px'}} onClick={() => {validateOrder(BID_ACTIONS.reject)}}>Reject</Button>}
                     {getActionBtn()}
                     {(status === BID_STATUS.seller && !isBuyer) || (status === BID_STATUS.buyer && isBuyer)  ? <Button variant="outline-light" style={{marginLeft: '40px'}}>Update</Button> : <></> }
                 </div>

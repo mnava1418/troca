@@ -1,7 +1,7 @@
 import { MINTING_STATUS } from "../config"
 import MyPortfolio from "../models/MyPortfolio"
 import { setAlert, updateChatUsers } from "../store/slices/statusSlice"
-import { INFURA_URL } from "../config"
+import { INFURA_URL, BID_STATUS } from "../config"
 import { updateTokenPrice } from "../store/slices/portfolioSlice"
 import { showExchange } from "../store/slices/exchangeSlice"
 
@@ -55,8 +55,12 @@ export const setExchangeListeners = (socket, dispatch) => {
         const showOrder = localStorage.getItem('showOrder')
         const isOnline = localStorage.getItem('isOnline')
 
-        if(isOnline == 'true' && showOrder == 'false') {
-            dispatch(showExchange({show: true, order}))
-        }
+        if(order.status === BID_STATUS.reject) {
+            dispatch(setAlert({show: true, type: 'danger', text: `Order ${order.id} has been rejected.`}))
+        } 
+
+        if(isOnline === 'true' && showOrder === 'false') {
+                dispatch(showExchange({show: true, order}))
+        }        
     })
 }

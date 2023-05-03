@@ -45,6 +45,13 @@ class Exchange {
         this.dispatch(updateOrderStatus({status: order.status}))
         socket.emit('update-bid', order, order.seller)
     }
+
+    reject(socket, order, isBuyer) {
+        order.status = BID_STATUS.reject
+        const receiver = isBuyer ? order.seller : order.buyer
+        this.dispatch(updateOrderStatus({status: order.status}))
+        socket.emit('update-bid', order, receiver)
+    }
 }
 
 export default Exchange
