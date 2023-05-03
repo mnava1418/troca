@@ -6,7 +6,7 @@ import { allTokensSelector } from '../store/slices/portfolioSlice'
 function BidCatalog({owner, setShowCatalog}) {
     const dispatch = useDispatch()
     const allTokens = useSelector(allTokensSelector)
-    const catalog = Object.values(allTokens).filter(token => token.owner === owner)
+    const catalog = Object.values(allTokens).filter(token => token.owner === owner && token.isListed)
 
     const selectToken = async(e, id) => {
         e.stopPropagation()
