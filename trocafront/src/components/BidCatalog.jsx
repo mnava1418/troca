@@ -16,7 +16,7 @@ function BidCatalog({owner, setShowCatalog}) {
 
     const generateCatalog = () => {
         return (
-            <div className='d-flex flex-row justify-content-center align-items-center flex-wrap' style={{overflow: 'auto', width: '100%', height: '100%'}}>
+            <div className='d-flex flex-row justify-content-center align-items-center flex-wrap' style={{overflow: 'auto', width: '100%'}}>
                 {catalog.map(token => {
                     return(
                         <div key={token.id} className='catalog-item bg-img bg-im-cover' style={{backgroundImage: `url("${token.imageData}")`}} onClick={(e) =>{selectToken(e, token.id)}}/>
