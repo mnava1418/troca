@@ -1,17 +1,45 @@
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { updateOrderToken } from '../store/slices/exchangeSlice'
-import { allTokensSelector } from '../store/slices/portfolioSlice'
+import { allTokensSelector, loadTokenImg } from '../store/slices/portfolioSlice'
+import { INFURA_URL } from '../config'
 
 function BidCatalog({owner, setShowCatalog}) {
     const dispatch = useDispatch()
     const allTokens = useSelector(allTokensSelector)
-    const catalog = Object.values(allTokens).filter(token => token.owner === owner && token.isListed)
+    const [catalog, setCatalog] = useState([])
+    
+
+    useEffect(() => {
+        Object.values(allTokens).forEach(token => {
+            if(token.owner === owner && token.isListed && token.imageData === undefined) {
+                loadImage(token.image, token.id)
+            }
+        })
+        
+        setCatalog(Object.values(allTokens).filter(token => token.owner === owner && token.isListed))
+        // eslint-disable-next-line
+    }, [allTokens])
 
     const selectToken = async(e, id) => {
         e.stopPropagation()
         dispatch(updateOrderToken({id}))
         setShowCatalog(false)
+    }
+
+    const loadImage = async(image, id) => {
+        const imgFile = await fetch(`${INFURA_URL}/${image}`)
+        const imgData = await imgFile.blob()
+
+        const reader = new FileReader()
+
+        reader.onloadend = () => {
+            const data = reader.result
+            dispatch(loadTokenImg({id, data}))            
+        }
+
+        reader.readAsDataURL(imgData)
     }
 
     const generateCatalog = () => {
