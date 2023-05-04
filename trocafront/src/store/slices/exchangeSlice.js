@@ -14,6 +14,7 @@ const INITIAL_STATE = {
 }
 
 localStorage.setItem('showOrder', INITIAL_STATE.show)
+localStorage.setItem('orderId', INITIAL_STATE.order.id)
 
 export const exchangeSlice = createSlice({
     name: 'exchange',
@@ -25,8 +26,10 @@ export const exchangeSlice = createSlice({
 
             if(action.payload.show && action.payload.order !== undefined) {
                 state.order = action.payload.order
+                localStorage.setItem('orderId', action.payload.order.id)
             } else {
                 state.order = {...INITIAL_STATE.order}
+                localStorage.setItem('orderId', INITIAL_STATE.order.id)
             }
         },
 

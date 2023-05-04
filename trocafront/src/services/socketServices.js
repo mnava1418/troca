@@ -53,13 +53,14 @@ export const setChatListeners = (socket, dispatch) => {
 export const setExchangeListeners = (socket, dispatch) => {
     socket.on('review-bid', (order) => {
         const showOrder = localStorage.getItem('showOrder')
+        const orderId = parseInt(localStorage.getItem('orderId'))
         const isOnline = localStorage.getItem('isOnline')
 
         if(order.status === BID_STATUS.reject) {
             dispatch(setAlert({show: true, type: 'danger', text: `Order ${order.id} has been rejected.`}))
         } 
 
-        if(isOnline === 'true' && showOrder === 'false') {
+        if((isOnline === 'true' && showOrder === 'false') || (showOrder === 'true' && orderId === order.id)) {
                 dispatch(showExchange({show: true, order}))
         }        
     })
