@@ -51,7 +51,7 @@ function Exchange() {
                     break;
             }
         } else {
-            dispatch(setAlert({show: true, type: 'danger', text: 'Ivalid Bid. Both tokens are mandatory.'}))
+            dispatch(setAlert({show: true, type: 'danger', text: 'Invalid Bid. Both tokens are mandatory.'}))
         }
     }
 
