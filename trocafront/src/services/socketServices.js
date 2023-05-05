@@ -59,8 +59,8 @@ export const setExchangeListeners = (socket, dispatch) => {
         if(order.status === BID_STATUS.reject) {
             dispatch(setAlert({
                 show: true, 
-                type: 'danger', 
-                text: `Order <a id='orderId' href='#' style='color:#842029' }><b>${order.id}</b></a> has been rejected.`,
+                type: 'warning', 
+                text: `Order <a id='orderId' href='#' style='color:#634D03' }><b>${order.id}</b></a> has been rejected.`,
                 action: () => {dispatch(showExchange({show: true, order}))},
                 actionId: 'orderId'
             }))
