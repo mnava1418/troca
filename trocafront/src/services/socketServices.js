@@ -57,7 +57,13 @@ export const setExchangeListeners = (socket, dispatch) => {
         const isOnline = localStorage.getItem('isOnline')
 
         if(order.status === BID_STATUS.reject) {
-            dispatch(setAlert({show: true, type: 'danger', text: `Order ${order.id} has been rejected.`}))
+            dispatch(setAlert({
+                show: true, 
+                type: 'danger', 
+                text: `Order <a id='orderId' href='#' style='color:#842029' }><b>${order.id}</b></a> has been rejected.`,
+                action: () => {dispatch(showExchange({show: true, order}))},
+                actionId: 'orderId'
+            }))
         } 
 
         if((isOnline === 'true' && showOrder === 'false') || (showOrder === 'true' && orderId === order.id)) {
