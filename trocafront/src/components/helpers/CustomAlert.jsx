@@ -13,12 +13,13 @@ function CustomAlert({type, text, actionId, action}) {
         if(actionId) {
             document.getElementById(actionId).addEventListener('click', action);
         }
-        
+
         // eslint-disable-next-line
     }, [])
     
     return (
-        <Alert variant={type} onClose={() => dispatch(closeAlert())} dismissible className='custom-alert'>            
+        <Alert variant={type} onClose={() => dispatch(closeAlert())} dismissible className='custom-alert'>
+            <Alert.Heading>{type === 'danger' ? 'Oh snap! You got an error!' : type === 'success' ? 'You are on fire!' : 'Pay attention!'}</Alert.Heading>            
             <p id='alertText' />
         </Alert>
     );
