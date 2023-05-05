@@ -10,7 +10,8 @@ const INITIAL_STATE = {
         buyerTokenId: 0,
         price: 0.0,
         status: '',
-    }
+    },
+    orderBook: []
 }
 
 localStorage.setItem('showOrder', INITIAL_STATE.show)
@@ -39,6 +40,10 @@ export const exchangeSlice = createSlice({
 
         updateOrderStatus: (state, action) => {
             state.order.status = action.payload.status
+        },
+
+        loadOrderBook: (state, action) => {
+            state.orderBook = action.payload.orderBook
         }
     }
 })
@@ -47,7 +52,8 @@ export const exchangeSlice = createSlice({
 export const {
     showExchange,
     updateOrderToken,
-    updateOrderStatus
+    updateOrderStatus,
+    loadOrderBook
 } = exchangeSlice.actions
 
 //Selectors

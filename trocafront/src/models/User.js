@@ -22,6 +22,7 @@ import {
 } from '../store/slices/statusSlice'
 
 import { loadUsers } from '../store/slices/portfolioSlice'
+import { loadOrderBook } from '../store/slices/exchangeSlice'
 
 import { BACK_URLS } from '../config'
 import { post, get } from '../services/networkService'
@@ -100,6 +101,20 @@ class User {
         myPortfolio.getTokens(contracts.nft, contracts.troca)
         
         this.setListeners(account, socket)
+        this.getOrderBook()
+    }
+
+    getOrderBook() {
+        const token = localStorage.getItem('jwt')
+
+        get(this.baseURL, '/exchange/orderBook', token)
+        .then(response => {
+            if(response.status === 200) {
+                this.dispatch(loadOrderBook({orderBook: response.data.orderBook}))
+            } else {
+                this.dispatch(setAlert({show: true, type: 'danger', text: response.data.error}))
+            }
+        })
     }
 
     connectToSocket() {
