@@ -5,7 +5,9 @@ const INITIAL_STATE = {
     alert: {
         show: false,        
         text: '',
-        type: ''
+        type: '',
+        action: undefined,
+        actionId: undefined,
     },
     connection: {
         socket: undefined,

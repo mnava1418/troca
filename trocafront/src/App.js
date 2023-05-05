@@ -64,7 +64,7 @@ function App() {
       dispatch(closeAlert())
     }, 5000)
 
-    return(<CustomAlert type={alert.type} text={alert.text} />)
+    return(<CustomAlert type={alert.type} text={alert.text} action={alert.action} actionId={alert.actionId} />)
   }
 
   return (
