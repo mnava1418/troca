@@ -59,6 +59,6 @@ export const {
 //Selectors
 export const showExchangeSelector = (state) => state.exchange.show
 export const bidOrderSelector = (state) => state.exchange.order
-
+export const orderBookSelector = (state) => state.exchange.orderBook
 
 export default exchangeSlice.reducer

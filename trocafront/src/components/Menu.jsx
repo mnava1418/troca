@@ -93,6 +93,7 @@ function Menu() {
                     <Nav.Link href={PATHS.main}>Home</Nav.Link>
                     {isOwner ? <Nav.Link href={PATHS.create}>Create</Nav.Link> : <></>}
                     {isMember ? <Nav.Link href={PATHS.mint}>Mint</Nav.Link> : <></>}                    
+                    {isConnected ? <Nav.Link href={PATHS.orderBook}>Order Book</Nav.Link> : <></>}
                     {isConnected ? <Nav.Link href={PATHS.portfolio}>Portfolio</Nav.Link> : <></>}
                 </Nav>
                 {getMenuActions()}                
