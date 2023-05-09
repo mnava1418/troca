@@ -215,6 +215,17 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
+.page-item .page-link {
+  background: #212529;
+  border-color: #212529;
+  color: white;
+}
+
+.active .page-link{ 
+  background: #0d6efd !important 
+}
+
+
 /* Rounded sliders */
 .slider.round {
   border-radius: 34px;
