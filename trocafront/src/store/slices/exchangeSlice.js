@@ -59,6 +59,11 @@ export const {
 //Selectors
 export const showExchangeSelector = (state) => state.exchange.show
 export const bidOrderSelector = (state) => state.exchange.order
-export const orderBookSelector = (state) => state.exchange.orderBook
+
+export const orderBookSelector = (state) => { 
+    const orderBook = [...state.exchange.orderBook]
+    orderBook.sort((a, b) => a.id <= b.id ? 1 : -1)
+    return orderBook.slice(0,101)
+}
 
 export default exchangeSlice.reducer
