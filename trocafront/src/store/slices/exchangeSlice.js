@@ -44,6 +44,10 @@ export const exchangeSlice = createSlice({
 
         loadOrderBook: (state, action) => {
             state.orderBook = action.payload.orderBook
+        },
+
+        updateOrder: (state, action) => {
+            state.orderBook[action.payload.order.id] = action.payload.order
         }
     }
 })
@@ -53,7 +57,8 @@ export const {
     showExchange,
     updateOrderToken,
     updateOrderStatus,
-    loadOrderBook
+    loadOrderBook,
+    updateOrder
 } = exchangeSlice.actions
 
 //Selectors
