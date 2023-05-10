@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Table from 'react-bootstrap/Table'
 import Pagination from 'react-bootstrap/Pagination'
 
 import { PATHS } from '../config'
 import { connectionStatusSelector } from '../store/slices/statusSlice'
-import { orderBookSelector } from '../store/slices/exchangeSlice'
+import { orderBookSelector, showExchange } from '../store/slices/exchangeSlice'
 import { parseAccount } from '../services/ethServices'
 
 function OrderBook () {
     const { isConnected } = useSelector(connectionStatusSelector)
     const orderBook = useSelector(orderBookSelector)
     const [selectedPage, setSelectedPage] = useState(0)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if(!isConnected) {
@@ -67,7 +68,7 @@ function OrderBook () {
                         {orderBook.slice(selectedPage * 10, selectedPage * 10 + 10).map((order, index) => {
                             const orderDate = new Date(order.id)
                             return(
-                                <tr key={index}>
+                                <tr key={index} style={{cursor: 'pointer'}} onClick={() => {dispatch(showExchange({show: true, order}))}}>
                                     <td>{order.id}</td>
                                     <td>{`${orderDate.getDate()}/${orderDate.getMonth() + 1}/${orderDate.getFullYear()}`}</td>
                                     <td>{parseAccount(order.buyer)}</td>
