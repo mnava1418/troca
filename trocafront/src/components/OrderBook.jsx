@@ -54,6 +54,7 @@ function OrderBook () {
                     <thead>
                     <tr>
                         <th>Order Id</th>
+                        <th>Order Date (dd/mm/yyyy)</th>
                         <th>Buyer</th>
                         <th>Buyer Token Id</th>
                         <th>Seller</th>
@@ -64,9 +65,11 @@ function OrderBook () {
                     </thead>
                     <tbody>
                         {orderBook.slice(selectedPage * 10, selectedPage * 10 + 10).map((order, index) => {
+                            const orderDate = new Date(order.id)
                             return(
                                 <tr key={index}>
                                     <td>{order.id}</td>
+                                    <td>{`${orderDate.getDate()}/${orderDate.getMonth() + 1}/${orderDate.getFullYear()}`}</td>
                                     <td>{parseAccount(order.buyer)}</td>
                                     <td>{order.buyerTokenId}</td>
                                     <td>{parseAccount(order.seller)}</td>
