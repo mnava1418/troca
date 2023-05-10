@@ -10,13 +10,13 @@ const updateBid = (order) => {
 
 const getOrderBook = async(account) => {
     const query = admin.database().ref('/orders')
-    let orderBook = []
+    let orderBook = {}
 
     await query.once('value', (data) => {
         if(data.exists()) {
             Object.values(data.toJSON()).forEach(order => {
                 if(order.buyer === account || order.seller === account) {
-                    orderBook.push(order)
+                    orderBook[order.id] = order
                 }
             })
         }
