@@ -4,7 +4,7 @@ import BidItem from './BidItem'
 import ExchangeModel from '../models/Exchange'
 import useWeb3 from '../hooks/useWeb3'
 
-import { showExchange, bidOrderSelector } from '../store/slices/exchangeSlice'
+import { showExchange, bidOrderSelector, orderBookSelector } from '../store/slices/exchangeSlice'
 import { connectionStatusSelector, setAlert } from '../store/slices/statusSlice'
 import { BID_STATUS, BID_ACTIONS } from '../config'
 
@@ -16,6 +16,7 @@ function Exchange() {
     const { account, socket } = useSelector(connectionStatusSelector)
     const { nft, troca} = useWeb3()
     
+    const orderBook = useSelector(orderBookSelector)
     const order = useSelector(bidOrderSelector)
     const {seller, sellerTokenId, buyer, buyerTokenId, price, status} = order
 
@@ -32,11 +33,13 @@ function Exchange() {
 
     const validateOrder = (action) => {
         let orderValid = true
+        let validationError = 'Both tokens are mandatory.'
 
-        if(buyerTokenId === 0) {
+        if(buyerTokenId === 0 || sellerTokenId === 0) {
             orderValid = false
-        } else if(sellerTokenId === 0) {
+        } else if(action == BID_ACTIONS.create && !validateSellerToken(sellerTokenId)) {
             orderValid = false
+            validationError = `You have an open bid for token #${sellerTokenId}.`
         }
 
         if(orderValid) {
@@ -51,8 +54,20 @@ function Exchange() {
                     break;
             }
         } else {
-            dispatch(setAlert({show: true, type: 'danger', text: 'Invalid Bid. Both tokens are mandatory.'}))
+            dispatch(setAlert({show: true, type: 'danger', text: `Invalid Bid. ${validationError}`}))
         }
+    }
+
+    const validateSellerToken = (token) => {
+        const myOpenOrders = orderBook.filter(element => (element.buyer === account))
+
+        for (const openOrder of myOpenOrders) {
+            if(openOrder.sellerTokenId === token && (openOrder.status == BID_STATUS.buyer || openOrder.status == BID_STATUS.seller)) {
+                return false
+            }
+        }
+
+        return true
     }
 
     return(
