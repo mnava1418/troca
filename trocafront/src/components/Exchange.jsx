@@ -37,9 +37,12 @@ function Exchange() {
 
         if(buyerTokenId === 0 || sellerTokenId === 0) {
             orderValid = false
-        } else if(action == BID_ACTIONS.create && !validateSellerToken(sellerTokenId)) {
+        } else if(action === BID_ACTIONS.create && !validateToken(sellerTokenId, 'sellerTokenId')) {
             orderValid = false
             validationError = `You have an open bid for token #${sellerTokenId}.`
+        } else if(action === BID_ACTIONS.create && !validateToken(buyerTokenId, 'buyerTokenId')) {
+            orderValid = false
+            validationError = `Your token #${buyerTokenId} is part of an open bid.`
         }
 
         if(orderValid) {
@@ -58,11 +61,11 @@ function Exchange() {
         }
     }
 
-    const validateSellerToken = (token) => {
+    const validateToken = (token, key) => {
         const myOpenOrders = orderBook.filter(element => (element.buyer === account))
 
         for (const openOrder of myOpenOrders) {
-            if(openOrder.sellerTokenId === token && (openOrder.status == BID_STATUS.buyer || openOrder.status == BID_STATUS.seller)) {
+            if(openOrder[key] === token && (openOrder.status === BID_STATUS.buyer || openOrder.status === BID_STATUS.seller)) {
                 return false
             }
         }
