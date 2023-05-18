@@ -135,7 +135,7 @@ function NFTCard({formatOwner, onlyUser, token, isProcessingLocal, setIsProcessi
             <Card className='d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-shadow' style={{ width: '20rem', margin: '40px' }} onClick={(e) => {cardAction(e, 'update')}}>
                 <div className='nft-card-img bg-img bg-im-cover' style={tokenImg} />
                 <Card.Body className='d-flex flex-column justify-content-end align-items-center' style={{width: '90%'}}>
-                    <Card.Title>{title}</Card.Title>
+                    <Card.Title>{`#${id} ${title}`}</Card.Title>
                     <div className='d-flex flex-row justify-content-around' style={{width: '100%', marginTop: '24px'}}>
                         <div>
                             <h6>{formatOwner}</h6>
