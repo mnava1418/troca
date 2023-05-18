@@ -80,7 +80,7 @@ function Exchange() {
         <section className='d-flex flex-column justify-content-center align-items-center nft-container' onClick={() => {dispatch(showExchange({show: false}))}}>
             <div className='exchange-container' onClick={(e) => {e.stopPropagation()}}>
                 <div className='exchange-contents'>
-                    <BidItem actor={buyer} tokenId={buyerTokenId} canUpdate={true} />
+                    <BidItem actor={buyer} tokenId={buyerTokenId} canUpdate={status === BID_STATUS.new || status === BID_STATUS.buyer || status === BID_STATUS.seller} />
                     <div className='d-flex flex-column justify-content-center align-items-center exchange-info'>                        
                         <h4>{price} ETH</h4>
                         <div className={`exchange-item-bg bg-img bg-im-contain ${status === BID_STATUS.buyer || status === BID_STATUS.seller ? 'nft-card-back-animate' : ''}`} />
