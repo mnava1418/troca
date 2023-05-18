@@ -48,11 +48,14 @@ function Exchange() {
         if(orderValid) {
             switch (action) {
                 case BID_ACTIONS.create:
-                    exchange.placeBid(socket, {...order})
+                    exchange.updateBid(socket, {...order}, BID_STATUS.seller, isBuyer)
                     break;
                 case BID_ACTIONS.reject:
-                    exchange.reject(socket, {...order}, isBuyer)
-                    break;                
+                    exchange.updateBid(socket, {...order}, BID_STATUS.reject, isBuyer)
+                    break;
+                case BID_ACTIONS.update:
+                    const currentStatus = isBuyer ? BID_STATUS.seller : BID_STATUS.buyer
+                    exchange.updateBid(socket, {...order}, currentStatus, isBuyer)
                 default:
                     break;
             }
@@ -87,7 +90,7 @@ function Exchange() {
                 <div className='d-flex flex-row justify-content-center align-items-center' style={{marginTop: '40px'}}>
                     {status === BID_STATUS.new || status === BID_STATUS.reject ? <></> : <Button variant="outline-light" style={{marginRight: '40px'}} onClick={() => {validateOrder(BID_ACTIONS.reject)}}>Reject</Button>}
                     {getActionBtn()}
-                    {(status === BID_STATUS.seller && !isBuyer) || (status === BID_STATUS.buyer && isBuyer)  ? <Button variant="outline-light" style={{marginLeft: '40px'}}>Update</Button> : <></> }
+                    {(status === BID_STATUS.seller && !isBuyer) || (status === BID_STATUS.buyer && isBuyer)  ? <Button variant="outline-light" style={{marginLeft: '40px'}} onClick={() => {validateOrder(BID_ACTIONS.update)}}>Update</Button> : <></> }
                 </div>
             </div>
         </section>

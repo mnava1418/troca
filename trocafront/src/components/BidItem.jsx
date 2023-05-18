@@ -30,7 +30,7 @@ function BidItem({actor, tokenId, canUpdate}) {
             }            
         }
         // eslint-disable-next-line
-    }, [showCatalog])
+    }, [showCatalog, tokenId])
 
     const loadImage = async(image) => {
         const imgFile = await fetch(`${INFURA_URL}/${image}`)

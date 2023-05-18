@@ -35,5 +35,6 @@ export const BID_STATUS = {
 
 export const BID_ACTIONS = {
     create: 'CREATE',
-    reject: 'REJECT'
+    reject: 'REJECT',
+    update: 'UPDATE',
 }

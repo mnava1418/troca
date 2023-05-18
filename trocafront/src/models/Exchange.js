@@ -40,14 +40,8 @@ class Exchange {
         this.dispatch(showExchange({show: true, order}))
     }
 
-    placeBid(socket, order) {
-        order.status = BID_STATUS.seller
-        this.dispatch(updateOrderStatus({status: order.status}))
-        socket.emit('update-bid', order, order.seller)
-    }
-
-    reject(socket, order, isBuyer) {
-        order.status = BID_STATUS.reject
+    updateBid(socket, order, status, isBuyer) {
+        order.status = status
         const receiver = isBuyer ? order.seller : order.buyer
         this.dispatch(updateOrderStatus({status: order.status}))
         socket.emit('update-bid', order, receiver)
