@@ -19,7 +19,7 @@ function CustomAlert({type, text, actionId, action}) {
     
     return (
         <Alert variant={type} onClose={() => dispatch(closeAlert())} dismissible className='custom-alert'>
-            <Alert.Heading>{type === 'danger' ? 'Oh snap! You got an error!' : type === 'success' ? 'You are on fire!' : 'Pay attention!'}</Alert.Heading>            
+            <Alert.Heading>{type === 'danger' ? 'Oh snap! You got an error!' : type === 'success' ? 'You are on fire!' : 'Warning!'}</Alert.Heading>            
             <p id='alertText' />
         </Alert>
     );
