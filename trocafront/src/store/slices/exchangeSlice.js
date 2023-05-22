@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { BID_STATUS } from '../../config'
 
 const INITIAL_STATE = {
     show: false,
@@ -36,6 +37,10 @@ export const exchangeSlice = createSlice({
 
         updateOrderToken: (state, action) => {
             state.order.buyerTokenId = action.payload.id
+
+            if(state.order.status !== BID_STATUS.new) {
+                state.order.status = BID_STATUS.pending
+            }            
         },
 
         updateOrderStatus: (state, action) => {
