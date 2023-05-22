@@ -30,7 +30,8 @@ export const BID_STATUS = {
     new: 'NEW',
     seller: 'WAITING_ON_SELLER',
     buyer: 'WAITING_ON_BUYER',
-    reject: 'REJECTED'
+    reject: 'REJECTED',    
+    pending: 'PENDING'
 }
 
 export const BID_ACTIONS = {
