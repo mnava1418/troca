@@ -32,7 +32,7 @@ export const BID_STATUS = {
     buyer: 'WAITING_ON_BUYER',
     reject: 'REJECTED',    
     pending: 'PENDING',
-    accept: 'ACCEPTED'
+    accept: 'PENDING_CONFIRMATION'
 }
 
 export const BID_ACTIONS = {
