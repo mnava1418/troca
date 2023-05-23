@@ -66,6 +66,14 @@ export const setExchangeListeners = (socket, dispatch) => {
                 action: () => {dispatch(showExchange({show: true, order}))},
                 actionId: 'orderId'
             }))
+        } else if(order.status === BID_STATUS.accept) {
+            dispatch(setAlert({
+                show: true, 
+                type: 'success', 
+                text: `Order <a id='orderId' href='#' style='color:#0F5132' }><b>${order.id}</b></a> has been accepted. Please confirm the order to complete transaction.`,
+                action: () => {dispatch(showExchange({show: true, order}))},
+                actionId: 'orderId'
+            }))
         } 
 
         if((isOnline === 'true' && showOrder === 'false') || (showOrder === 'true' && orderId === order.id)) {
