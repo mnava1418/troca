@@ -31,11 +31,13 @@ export const BID_STATUS = {
     seller: 'WAITING_ON_SELLER',
     buyer: 'WAITING_ON_BUYER',
     reject: 'REJECTED',    
-    pending: 'PENDING'
+    pending: 'PENDING',
+    accept: 'ACCEPTED'
 }
 
 export const BID_ACTIONS = {
     create: 'CREATE',
     reject: 'REJECT',
     update: 'UPDATE',
+    accept: 'ACCEPT',
 }
