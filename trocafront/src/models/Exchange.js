@@ -59,6 +59,24 @@ class Exchange {
             this.dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
         })
     }
+
+    async validateOwnership(socket, order, isBuyer) {
+        const sellerTokenIdOwner = await this.nft.methods.ownerOf(order.sellerTokenId).call()
+        const buyerTokenIdOwner = await this.nft.methods.ownerOf(order.buyerTokenId).call()
+        
+        const isSellerTokenListed = await this.nft.methods.getApproved(order.sellerTokenId).call()
+        .then( operator => operator === this.troca._address)
+
+        const isBuyerTokenListed = await this.nft.methods.getApproved(order.buyerTokenId).call()
+        .then( operator => operator === this.troca._address)
+
+        if(sellerTokenIdOwner !== order.seller || buyerTokenIdOwner !== order.buyer || !isSellerTokenListed || !isBuyerTokenListed) {
+            this.updateBid(socket, order, BID_STATUS.reject, isBuyer)
+            return false
+        } else {
+            return true
+        }
+    }
 }
 
 export default Exchange

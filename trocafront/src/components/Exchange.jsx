@@ -35,7 +35,7 @@ function Exchange() {
         }
     }
 
-    const validateOrder = (action) => {
+    const validateOrder = async (action) => {
         let orderValid = true
         let validationError = 'Both tokens are mandatory.'
 
@@ -47,6 +47,15 @@ function Exchange() {
         } else if(action === BID_ACTIONS.create && !validateToken(buyerTokenId, 'buyerTokenId')) {
             orderValid = false
             validationError = `Your token #${buyerTokenId} is part of an open bid.`
+        }
+
+        if(action !== BID_ACTIONS.create && action !== BID_ACTIONS.reject) {
+            const isOwnershipValid = await exchange.validateOwnership(socket, {...order}, isBuyer)
+
+            if( !isOwnershipValid ) {
+                orderValid = false
+                validationError = `Your order is no longer valid. Auto rejecting.`
+            }
         }
 
         if(orderValid) {
