@@ -195,4 +195,11 @@ export const subscribeTrocaEvents = (troca, nft, account, dispatch) => {
     .on('data', (event) => {                
         dispatch(listToken({id: parseInt(event.returnValues.tokenId.toString())}))
     })    
+
+    troca.events.SwitchToken()
+    .on('data', (event) => {
+        dispatch(transferToken({id: parseInt(event.returnValues.buyerTokenId), newOwner: event.returnValues.seller}))
+        dispatch(transferToken({id: parseInt(event.returnValues.sellerTokenId), newOwner: event.returnValues.buyer}))
+        dispatch(setAlert({show: true, type: 'success', text: 'Congratulations! You have exchanged a token. Go to your order book to find more details.'}))
+    })
 }
