@@ -26,7 +26,7 @@ function Exchange() {
     const getActionBtn = () => {
         if(status === BID_STATUS.new && isBuyer) {
             return(<Button variant="primary" onClick={() => {validateOrder(BID_ACTIONS.create)}}>Place Bid</Button>)
-        } else if ((status === BID_STATUS.buyer && isBuyer) || (status === BID_STATUS.seller && !isBuyer)) {
+        } else if (status === BID_STATUS.seller && !isBuyer) {
             return(<Button variant="primary" onClick={() => {validateOrder(BID_ACTIONS.accept)}}>Accept</Button>)
         } else {
             return(<></>)
