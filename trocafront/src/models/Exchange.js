@@ -4,6 +4,7 @@ import { setAlert, setIsProcessing } from '../store/slices/statusSlice'
 import { showExchange, updateOrderStatus } from '../store/slices/exchangeSlice'
 import { BACK_URLS, BID_STATUS } from '../config'
 import { post } from '../services/networkService'
+import { parseError } from '../services/ethServices'
 
 class Exchange {
     constructor (_dispatch, _troca, _nft) {
@@ -45,6 +46,18 @@ class Exchange {
         const receiver = isBuyer ? order.seller : order.buyer
         this.dispatch(updateOrderStatus({status: order.status}))
         socket.emit('update-bid', order, receiver)
+    }
+
+    confirmOrder(order) {
+        this.troca.methods.switchToken(this.nft._address, order.seller, order.sellerTokenId, order.buyerTokenId).send({from: order.buyer})
+        .on('transactionHash', () => {
+            this.dispatch(setAlert({show: true, type: 'warning', text: 'Please wait for the transaction to be confirmed.'}))
+        })
+        .on('error', (error) => {
+            console.error(error)
+            const errorMessage = parseError(error)
+            this.dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
+        })
     }
 }
 

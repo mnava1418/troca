@@ -40,4 +40,5 @@ export const BID_ACTIONS = {
     reject: 'REJECT',
     update: 'UPDATE',
     accept: 'ACCEPT',
+    confirm: 'CONFIRM'
 }

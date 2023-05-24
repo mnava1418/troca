@@ -28,7 +28,9 @@ function Exchange() {
             return(<Button variant="primary" onClick={() => {validateOrder(BID_ACTIONS.create)}}>Place Bid</Button>)
         } else if (status === BID_STATUS.seller && !isBuyer) {
             return(<Button variant="primary" onClick={() => {validateOrder(BID_ACTIONS.accept)}}>Accept</Button>)
-        } else {
+        } else if(status === BID_STATUS.accept && isBuyer) {
+            return(<Button variant="primary" onClick={() => {validateOrder(BID_ACTIONS.confirm)}}>Confirm</Button>)
+        }else {
             return(<></>)
         }
     }
@@ -61,6 +63,9 @@ function Exchange() {
                     break;
                 case BID_ACTIONS.accept:
                     exchange.updateBid(socket, {...order}, BID_STATUS.accept, isBuyer)
+                    break;
+                case BID_ACTIONS.confirm:
+                    exchange.confirmOrder(order)
                     break;
                 default:
                     break;
