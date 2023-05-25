@@ -74,7 +74,7 @@ function Exchange() {
                     exchange.updateBid(socket, {...order}, BID_STATUS.accept, isBuyer)
                     break;
                 case BID_ACTIONS.confirm:
-                    exchange.confirmOrder(order)
+                    exchange.confirmOrder(socket, {...order}, isBuyer)
                     break;
                 default:
                     break;
@@ -108,7 +108,7 @@ function Exchange() {
                     <BidItem actor={seller} tokenId={sellerTokenId} canUpdate={false} />
                 </div>
                 <div className='d-flex flex-row justify-content-center align-items-center' style={{marginTop: '40px'}}>
-                    {status === BID_STATUS.new || status === BID_STATUS.reject ? <></> : <Button variant="outline-light" style={{marginRight: '40px'}} onClick={() => {validateOrder(BID_ACTIONS.reject)}}>Reject</Button>}
+                    {status === BID_STATUS.new || status === BID_STATUS.reject || status === BID_STATUS.complete ? <></> : <Button variant="outline-light" style={{marginRight: '40px'}} onClick={() => {validateOrder(BID_ACTIONS.reject)}}>Reject</Button>}
                     {getActionBtn()}
                     {((status === BID_STATUS.seller || status === BID_STATUS.pending) && !isBuyer) || ((status === BID_STATUS.buyer || status === BID_STATUS.pending) && isBuyer)  ? <Button variant="outline-light" style={{marginLeft: '40px'}} onClick={() => {validateOrder(BID_ACTIONS.update)}}>Update</Button> : <></> }
                 </div>

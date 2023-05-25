@@ -48,10 +48,11 @@ class Exchange {
         socket.emit('update-bid', order, receiver)
     }
 
-    confirmOrder(order) {
+    confirmOrder(socket, order, isBuyer) {
         this.troca.methods.switchToken(this.nft._address, order.seller, order.sellerTokenId, order.buyerTokenId).send({from: order.buyer})
         .on('transactionHash', () => {
             this.dispatch(setAlert({show: true, type: 'warning', text: 'Please wait for the transaction to be confirmed.'}))
+            this.updateBid(socket, order, BID_STATUS.complete, isBuyer)
         })
         .on('error', (error) => {
             console.error(error)
