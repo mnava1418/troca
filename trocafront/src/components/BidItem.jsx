@@ -7,7 +7,7 @@ import { parseAccount } from "../services/ethServices"
 import { allTokensSelector, loadTokenImg } from '../store/slices/portfolioSlice'
 import { INFURA_URL } from '../config'
 
-function BidItem({actor, tokenId, canUpdate}) {
+function BidItem({actor, tokenId, canUpdate, animation}) {
     const dispatch = useDispatch()
     const allTokens = useSelector(allTokensSelector)
     const [showCatalog, setShowCatalog] = useState(false)
@@ -60,7 +60,9 @@ function BidItem({actor, tokenId, canUpdate}) {
                     <div className='d-flex flex-column justify-content-center align-items-center exchange-item bg-img bg-im-cover' 
                         style={{backgroundImage: `url(${imageData})`}}
                         onClick={(e) => {displayCatalog(e)}} 
-                    />
+                    >
+                        <div className={animation}></div>
+                    </div>
                 ) 
             } else {
                 return(

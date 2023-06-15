@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button'
 import BidItem from './BidItem'
@@ -22,6 +23,8 @@ function Exchange() {
 
     const isBuyer = buyer === account
     const exchange = new ExchangeModel(dispatch, troca, nft)
+
+    const [animation, setAnimation] = useState('')
 
     const getActionBtn = () => {
         if(status === BID_STATUS.new && isBuyer) {
@@ -74,7 +77,7 @@ function Exchange() {
                     exchange.updateBid(socket, {...order}, BID_STATUS.accept, isBuyer)
                     break;
                 case BID_ACTIONS.confirm:
-                    exchange.confirmOrder(socket, {...order}, isBuyer)
+                    exchange.confirmOrder(socket, {...order}, isBuyer, setAnimation)
                     break;
                 default:
                     break;
@@ -100,12 +103,12 @@ function Exchange() {
         <section className='d-flex flex-column justify-content-center align-items-center nft-container' onClick={() => {dispatch(showExchange({show: false}))}}>
             <div className='exchange-container' onClick={(e) => {e.stopPropagation()}}>
                 <div className='exchange-contents'>
-                    <BidItem actor={buyer} tokenId={buyerTokenId} canUpdate={status === BID_STATUS.new || ((status === BID_STATUS.seller || status === BID_STATUS.pending) && !isBuyer) || ((status === BID_STATUS.buyer || status === BID_STATUS.pending) && isBuyer)} />
+                    <BidItem actor={buyer} tokenId={buyerTokenId} animation={animation} canUpdate={status === BID_STATUS.new || ((status === BID_STATUS.seller || status === BID_STATUS.pending) && !isBuyer) || ((status === BID_STATUS.buyer || status === BID_STATUS.pending) && isBuyer)} />
                     <div className='d-flex flex-column justify-content-center align-items-center exchange-info'>                        
                         <h4>{price} ETH</h4>
                         <div className={`exchange-item-bg bg-img bg-im-contain ${status === BID_STATUS.buyer || status === BID_STATUS.seller || status === BID_STATUS.pending ? 'nft-card-back-animate' : ''}`} />
                     </div>
-                    <BidItem actor={seller} tokenId={sellerTokenId} canUpdate={false} />
+                    <BidItem actor={seller} tokenId={sellerTokenId} animation={animation} canUpdate={false} />
                 </div>
                 <div className='d-flex flex-row justify-content-center align-items-center' style={{marginTop: '40px'}}>
                     {status === BID_STATUS.new || status === BID_STATUS.reject || status === BID_STATUS.complete ? <></> : <Button variant="outline-light" style={{marginRight: '40px'}} onClick={() => {validateOrder(BID_ACTIONS.reject)}}>Reject</Button>}
