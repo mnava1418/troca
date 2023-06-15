@@ -31,10 +31,14 @@
 
 .exchange-item-animation {
     position: absolute;
-    top: 0;
+    top: -5;
     left: 0;
-    bottom: 0;
+    bottom: -5;
     right: 0;
+    width: 305px;
+    height: 305px;
+    border: 1px solid transparent;
+    border-radius: 25px;
     animation: fade 1 1s;
     animation-fill-mode: forwards;
 }
