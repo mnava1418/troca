@@ -75,7 +75,7 @@ function Menu() {
     }
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg" fixed='top'>
+        <Navbar variant="dark" expand="lg" fixed='top'>
         <Container>
             <Navbar.Brand href={PATHS.main} style={{fontWeight: 'bold'}}>
                 <img
