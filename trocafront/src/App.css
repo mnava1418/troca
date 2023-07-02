@@ -19,6 +19,7 @@
 
 nav {
   min-height: var(--navBar-height) !important;
+  background-color: var(--bg-color) !important;
 }
 
 .bg-img {
