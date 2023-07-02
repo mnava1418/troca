@@ -6,12 +6,11 @@ function CardLink({id, title, text, iconStyle}) {
     return (
         <Card
             id={id}
-            bg='secondary'
             key='walletCard'
             text='white'
             style={{ width: '18rem'}}
             className="mb-2 card-link-cust"
-            border="light"
+            border="secondary"
         >
             <Card.Body className='d-flex flex-column justify-content-center align-items-center'>
             <div className='card-img-cust d-flex flex-column justify-content-center align-items-center' style={{marginBottom: '8px'}}>

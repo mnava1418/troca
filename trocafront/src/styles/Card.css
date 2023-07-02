@@ -15,10 +15,11 @@ background-image: url('../img/metamask.png');
 }
 
 .card-link-cust {
+    background-color: var(--bg-color) !important;
     cursor: pointer;
 }
 
 .card-link-cust:hover {
-    background-color: white !important;
+    background-color: var(--secondary-color) !important;
     color: black !important;
 }
