@@ -106,7 +106,7 @@ section h5 {
   background-color: var(--bg-color);
   color: white;
   border-color: var(--bg-color);
-  box-shadow: 0px 0px 0px 4px rgb(33 37 41)
+  box-shadow: 0px 0px 0px 4px rgb(108,117,125)
 }
 
 .form-container-row {
@@ -160,8 +160,8 @@ section h5 {
 }
 
 .dark-container {
-  background-color: var(--contrast-color);    
-  border: 1px solid var(--contrast-color);
+  background-color: var(--bg-color);    
+  border: 1px solid var(--bg-color);
   border-radius: 25px;
 }
 

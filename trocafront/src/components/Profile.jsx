@@ -89,7 +89,7 @@ function Profile() {
         return(
             <>
                 <Form.Group controlId="saveBtn">
-                    <Button variant="primary" style={{fontWeight: '600'}} onClick={() => handleSubmit('save')}>Save Info</Button>
+                    <Button variant="warning" style={{fontWeight: '600'}} onClick={() => handleSubmit('save')}>Save Info</Button>
                 </Form.Group>
                 {getMembetButton()}
             </>
@@ -113,7 +113,7 @@ function Profile() {
 
     const showPage = () => {
         return (
-            <section className="profile-background full-screen full-screen-transparency bg-img bg-im-cover d-flex flex-column justify-content-center align-items-center">
+            <section className="profile-background full-screen bg-img bg-im-cover d-flex flex-column justify-content-center align-items-center">
               <div className="d-flex flex-column justify-content-center align-items-center main-container" style={{width: '100%'}}>
                 <div className='d-flex flex-column justify-content-center align-items-center dark-container profile-container form-container form-container-dark'>
                     <div id="profileImg" className='d-flex flex-column justify-content-center align-items-center profile-img bg-img bg-im-cover' onClick={() => {document.getElementById('profileImgFile').click()}}>
