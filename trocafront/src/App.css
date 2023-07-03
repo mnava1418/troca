@@ -1,9 +1,9 @@
 :root {
-  --primary-color: white;
-  --secondary-color: #6c757d;
+  --primary-color: #ef84f5;
+  --secondary-color: #2ee09a;
   --navBar-height: 65px;
-  --contrast-color: #212529;  
-  --bg-color: #223077;
+  --contrast-color: #6c757d;  
+  --bg-color: #15265C;
 }
 
 .App {
@@ -13,13 +13,23 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
-  background-image: url('./img/background.jpeg');
+  color: #ffffff;
+  background-image: linear-gradient(to bottom right, rgba(46,224,154,0.3) 0%, rgba(21,38,92,1) 90%);
 }
 
 nav {
   min-height: var(--navBar-height) !important;
   background-color: var(--bg-color) !important;
+}
+
+.btn-primary {
+  background-color: var(--primary-color) !important;
+  border-color: transparent;
+}
+
+.btn-primary:hover {
+  transform: scale(1.03);
+  border-color: transparent;
 }
 
 .bg-img {
@@ -60,7 +70,7 @@ section {
 }
 
 section h4 {
-  color: var(--secondary-color);
+  color: var(--contrast-color);
 }
 
 section h5 {

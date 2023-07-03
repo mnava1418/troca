@@ -70,7 +70,7 @@ function App() {
   }
 
   return (
-    <div className="App bg-img bg-im-cover">
+    <div className="App">
       <Menu />
       {alert.show ? showAlert() : <></>}
       {localProcessing ? <Spinner animation='grow' variant='secondary'/> : showApp()}      

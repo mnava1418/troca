@@ -26,7 +26,7 @@ function Menu() {
     const getWalletAction = () => {
         return(
             <Form className="d-flex">
-                <Button variant="warning" style={{fontWeight: '600', color: '#212529'}} onClick={handleConnectWallet}><i className="bi bi-wallet-fill" style={{marginRight: '8px'}}/>Wallet</Button>
+                <Button variant="primary" style={{fontWeight: '600'}} onClick={handleConnectWallet}><i className="bi bi-wallet-fill" style={{marginRight: '8px'}}/>Wallet</Button>
             </Form>
         )
     }
