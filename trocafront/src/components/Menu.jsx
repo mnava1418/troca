@@ -45,7 +45,7 @@ function Menu() {
                 >
                     <Nav.Link href={PATHS.profile}>{
                         isMember ? 
-                            <>{parseAccount(account)} <i className='bi bi-patch-check-fill' style={ isOwner ? {color: 'gold'} : {}} /></>
+                            <>{parseAccount(account)} <i className='bi bi-patch-check-fill' style={ isOwner ? {color: 'gold'} : {color: '#2ee09a'}} /></>
                         :
                             parseAccount(account) 
                         }
