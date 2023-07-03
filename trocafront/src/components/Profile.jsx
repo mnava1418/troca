@@ -89,7 +89,7 @@ function Profile() {
         return(
             <>
                 <Form.Group controlId="saveBtn">
-                    <Button variant="warning" style={{fontWeight: '600'}} onClick={() => handleSubmit('save')}>Save Info</Button>
+                    <Button variant="primary" style={{fontWeight: '600'}} onClick={() => handleSubmit('save')}>Save Info</Button>
                 </Form.Group>
                 {getMembetButton()}
             </>

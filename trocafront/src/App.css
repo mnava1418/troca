@@ -24,12 +24,24 @@ nav {
 
 .btn-primary {
   background-color: var(--primary-color) !important;
-  border-color: transparent;
+  border-color: transparent !important;
 }
 
 .btn-primary:hover {
-  transform: scale(1.03);
-  border-color: transparent;
+  transform: scale(1.03) !important;
+  border-color: transparent !important;
+}
+
+.btn-outline-light {
+  border-color: var(--secondary-color) !important;
+  color: var(--secondary-color) !important;
+}
+
+.btn-outline-light:hover {
+  transform: scale(1.03) !important;
+  border-color: var(--secondary-color) !important;
+  background-color: transparent !important;
+  color: var(--secondary-color) !important;
 }
 
 .bg-img {
@@ -102,8 +114,8 @@ section h5 {
 .form-container form input, .form-container form select, .form-container form textarea
 {
   background-color: transparent;
-  border-color: var(--secondary-color);
-  color: white;
+  border-color: var(--contrast-color);
+  color: #ffffff;
 }
 
 .form-container-light form input:focus, .form-container-light form select:focus, .form-container-light form textarea:focus {
