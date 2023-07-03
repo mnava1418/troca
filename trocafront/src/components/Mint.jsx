@@ -52,7 +52,7 @@ function Mint() {
     }, [isConnected, isMember])
 
     return(
-        <section className='mint-background bg-img bg-im-cover d-flex flex-column justify-content-center align-items-center full-screen'>
+        <section className='d-flex flex-column justify-content-center align-items-center full-screen'>
             <h1>{title}</h1>            
             <h4 style={{marginBottom: '60px'}}>{subtitle}</h4>
             <div className={`nft-mint-container ${showNFT}`}>

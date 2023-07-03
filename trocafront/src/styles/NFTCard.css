@@ -1,7 +1,3 @@
-.mint-background {
-    background-image: url('../img//mintBackground.jpg');
-}
-
 .nft-card-container {
     background-color: var(--bg-color) !important;
     border: 1px solid transparent !important;
