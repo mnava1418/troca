@@ -17,7 +17,7 @@ import OrderBook from './components/OrderBook';
 
 import User from './models/User';
 import { PATHS } from './config'
-import { alertSelector, closeAlert } from './store/slices/statusSlice'
+import { alertSelector, closeAlert, setShowNftFilter } from './store/slices/statusSlice'
 import { showExchangeSelector } from './store/slices/exchangeSlice';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -35,8 +35,9 @@ function App() {
       const currentUser = new User(dispatch)
       await currentUser.isConnected()
       setLocalProcessing(false)
+      dispatch(setShowNftFilter(false))
     }
-
+    
     checkConnectionStatus()
     // eslint-disable-next-line
   }, [])
