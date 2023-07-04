@@ -26,6 +26,7 @@ function Profile() {
     const [imgFile, setImgFile] = useState(undefined)
     const [showModal, setShowModal] = useState(false)
     const [fee, setFee] = useState('0')
+    const [isRegistered, setIsRegistered] = useState(false)
 
     const { isConnected, account, userInfo, isMember } = useSelector(connectionStatusSelector)
     const isProcessing = useSelector(isProcessingSelector)
@@ -37,7 +38,11 @@ function Profile() {
 
     useEffect(() => {
         const getInfo = async() => {
-            const {img} = await user.getUserInfo()
+            const {img, email} = await user.getUserInfo()
+
+            if(email !== undefined && email !== '') {
+                setIsRegistered(true)
+            }
             
             if(img && img.trim() !== '') {
                 document.getElementById('profileImg').style.backgroundImage = `url("${INFURA_URL}/${img}")`
@@ -63,7 +68,7 @@ function Profile() {
             if(action === 'save') {
                 const email = document.getElementById('userEmail').value
                 const username = document.getElementById('userName').value
-                user.updateUserInfo(email, username, userInfo.img, imgFile)
+                user.updateUserInfo(email, username, userInfo.img, imgFile, setIsRegistered)
             } else {
                 const currentFee = await usdToEth(MEMBERSHIP_FEE).then(result => result.toFixed(5))
                 setFee(currentFee.toString())
@@ -75,7 +80,7 @@ function Profile() {
     };
 
     const getMembetButton = () => {
-        if(!isMember) {
+        if(!isMember && isRegistered) {
             return(
                 <Form.Group controlId="memberBtn">
                     <Button variant="outline-light" style={{fontWeight: '600'}} onClick={() => handleSubmit('member')}>Become a Member</Button>

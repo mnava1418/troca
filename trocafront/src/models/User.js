@@ -159,7 +159,7 @@ class User {
         }        
     }
 
-    async updateUserInfo(email, username, img, imgFile) {
+    async updateUserInfo(email, username, img, imgFile, setIsRegistered) {
         const token = localStorage.getItem('jwt')
 
         const userInfo = new FormData()
@@ -176,6 +176,7 @@ class User {
         if(response.status === 200) {
             this.dispatch(setUserInfo(response.data.userInfo))
             this.dispatch(setAlert({show: true, type: 'success', text: 'User info saved.'}))
+            setIsRegistered(true)
         } else {
             this.dispatch(setAlert({show: true, type: 'danger', text: response.data.error}))
         }
