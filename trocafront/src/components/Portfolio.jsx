@@ -7,8 +7,8 @@ import Button from 'react-bootstrap/Button'
 import Offcanvas from 'react-bootstrap/Offcanvas'
 import NFTCard from './NFTCard';
 
-import { connectionStatusSelector, isProcessingSelector } from '../store/slices/statusSlice';
-import { setOnlyUser, setSelectedTokens } from '../store/slices/portfolioSlice';
+import { connectionStatusSelector, isProcessingSelector, setShowNftFilter } from '../store/slices/statusSlice';
+import { setSelectedTokens } from '../store/slices/portfolioSlice';
 
 import usePortfolio from '../hooks/usePortfolio';
 import User from '../models/User';
@@ -39,6 +39,7 @@ function Portfolio () {
         } else {      
             user.getAllUsers()
             setPortfolioListeners(socket, setIsProcessingLocal, dispatch)
+            dispatch(setShowNftFilter(true))
         } 
         
         // eslint-disable-next-line
@@ -153,33 +154,7 @@ function Portfolio () {
 
     const showPage = () => {
         return(
-            <section className='full-screen d-flex flex-column justify-content-start align-items-center'>
-                <div className='d-flex flex-column justify-content-center align-items-center search-bar-fixed'>
-                    <div className='dark-container form-container form-container-dark' style={{width: '90%'}}>
-                        <Form autoComplete='off'>
-                            <div className='d-flex align-items-center search-bar'>
-                                <div className='d-flex flex-row align-items-center search-bar-check'>
-                                    <div className='d-flex flex-row justify-content-center align-items-center'>
-                                        <label className='switch' style={{marginRight: '12px'}}>
-                                            <input type="checkbox" className='form-check-input' defaultChecked={onlyUser} 
-                                                onChange={(e) => {
-                                                    dispatch(setOnlyUser(e.target.checked))
-                                                    search('')
-                                                }} 
-                                            />
-                                            <span className='slider round'></span>
-                                        </label>
-                                        <label className="form-check-label">My NFTs</label>
-                                    </div>
-                                    <div className='search-bar-btn'>
-                                        <Button variant="secondary" onClick={() => {setShowFilters(true)}}><i className='bi bi-filter'/></Button>
-                                    </div>
-                                </div>
-                                {getFilterInputs()}
-                            </div>
-                        </Form>
-                    </div>
-                </div>
+            <section className='full-screen d-flex flex-column justify-content-start align-items-center'>                
                 {selectedTokens.length > 0 ? generateCatalog() : emptyCatalog()}
                 <Offcanvas show={showFilters} onHide={() => {setShowFilters(false)}}>
                     <Offcanvas.Header closeButton style={{backgroundColor: 'var(--contrast-color)', color:'white'}}>
@@ -207,3 +182,33 @@ function Portfolio () {
 }
 
 export default Portfolio
+
+/*
+
+<div className='d-flex flex-column justify-content-center align-items-center search-bar-fixed'>
+                    <div className='dark-container form-container form-container-dark' style={{width: '90%'}}>
+                        <Form autoComplete='off'>
+                            <div className='d-flex align-items-center search-bar'>
+                                <div className='d-flex flex-row align-items-center search-bar-check'>
+                                    <div className='d-flex flex-row justify-content-center align-items-center'>
+                                        <label className='switch' style={{marginRight: '12px'}}>
+                                            <input type="checkbox" className='form-check-input' defaultChecked={onlyUser} 
+                                                onChange={(e) => {
+                                                    dispatch(setOnlyUser(e.target.checked))
+                                                    search('')
+                                                }} 
+                                            />
+                                            <span className='slider round'></span>
+                                        </label>
+                                        <label className="form-check-label">My NFTs</label>
+                                    </div>
+                                    <div className='search-bar-btn'>
+                                        <Button variant="secondary" onClick={() => {setShowFilters(true)}}><i className='bi bi-filter'/></Button>
+                                    </div>
+                                </div>
+                                {getFilterInputs()}
+                            </div>
+                        </Form>
+                    </div>
+                </div>
+*/
