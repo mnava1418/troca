@@ -132,7 +132,7 @@ function NFTCard({formatOwner, onlyUser, token, isProcessingLocal, setIsProcessi
 
     return (
         <>
-            <Card className='d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-shadow' style={{ width: '20rem', margin: '40px' }} onClick={(e) => {cardAction(e, 'update')}}>
+            <Card className='d-flex flex-column justify-content-center align-items-center nft-card-container nft-card-portfolio nft-card-shadow' style={{ width: '20rem', margin: '40px' }} onClick={(e) => {cardAction(e, 'update')}}>
                 <div className='nft-card-img bg-img bg-im-cover' style={tokenImg} />
                 <Card.Body className='d-flex flex-column justify-content-end align-items-center' style={{width: '90%'}}>
                     <Card.Title>{`#${id} ${title}`}</Card.Title>

@@ -1,8 +1,12 @@
 .nft-card-container {
-    background-color: var(--bg-color) !important;
+    background-color: var(--bg-color) !important;        
     border: 1px solid transparent !important;
     border-radius: 25px !important;
     cursor: pointer;
+}
+
+.nft-card-portfolio {
+    background-image: radial-gradient(circle, rgba(239,132,245,0.3) 0%, rgba(21,38,92,1) 100%) !important;
 }
 
 .nft-card-shadow {
