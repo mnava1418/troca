@@ -2,15 +2,18 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Offcanvas from 'react-bootstrap/Offcanvas'
 import Tooltip from 'react-bootstrap/Tooltip'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner'
+import InputGroup from 'react-bootstrap/InputGroup'
 import { useSelector, useDispatch } from 'react-redux';
+import { useState } from 'react'
 
 import usePortfolio from '../hooks/usePortfolio';
 import { connectionStatusSelector, showNftFilterSelector } from '../store/slices/statusSlice'
-import { setOnlyUser } from '../store/slices/portfolioSlice';
+import { setOnlyUser, setSelectedTokens } from '../store/slices/portfolioSlice';
 import { parseAccount } from '../services/ethServices';
 import { PATHS } from '../config'
 import User from '../models/User';
@@ -21,8 +24,9 @@ function Menu() {
     const dispatch = useDispatch()
     const user = new User(dispatch)
 
-    const { onlyUser } = usePortfolio()
+    const { onlyUser, selectedTokens, allUsers, allTokens } = usePortfolio()
     const showNftFilter = useSelector(showNftFilterSelector)
+    const [showFilters, setShowFilters ] = useState(false)
     
     const handleConnectWallet = () => {
         window.location.href = PATHS.wallet
@@ -44,18 +48,61 @@ function Menu() {
                         <input type="checkbox" className='form-check-input' defaultChecked={onlyUser} 
                             onChange={(e) => {
                                 dispatch(setOnlyUser(e.target.checked))
-                                //search('')
+                                search('')
                             }} 
                         />
                         <span className='slider round'></span>
                     </label>
                     <label className="form-check-label">My NFTs</label>
+                    <Button variant="outline-light" onClick={() => setShowFilters(true)} style={{marginLeft: '16px'}}><i className="bi bi-search"/></Button>
                 </div>      
             )
 
         } else {
             return(<></>)
         }
+    }
+
+    const sortTokens = (sortBy) => {
+        const currentTokens = [...selectedTokens]
+
+        switch (sortBy) {
+            case 'topPrice':
+                currentTokens.sort((a, b) => (parseFloat(a.price) <= parseFloat(b.price)) ? 1 : -1 )
+                break;
+            case 'lowPrice':
+                currentTokens.sort((a, b) => (parseFloat(a.price) >= parseFloat(b.price)) ? 1 : -1 )
+                break;                      
+            case 'newest':
+                currentTokens.sort((a, b) => (parseInt(a.id) <= parseInt(b.id)) ? 1 : -1 )
+                break;      
+            case 'oldest':
+                currentTokens.sort((a, b) => (parseInt(a.id) >= parseInt(b.id)) ? 1 : -1 )
+                break;      
+            default:                
+                break;
+        }
+
+        dispatch(setSelectedTokens(currentTokens))        
+    }
+
+    const search = (text) => {
+        
+        let currentTokens = [...Object.values(allTokens)].filter(
+            element => {
+                let userName = ''
+
+                if(allUsers[element.owner] !== undefined ) {
+                    userName = allUsers[element.owner].username
+                }
+
+                return element.title.toUpperCase().includes(text) || 
+                    element.owner.toUpperCase().includes(text) ||
+                    userName.toUpperCase().includes(text)
+            }
+        )
+        
+        dispatch(setSelectedTokens(currentTokens))
     }
 
     const getUserActions = () => {
@@ -102,7 +149,47 @@ function Menu() {
         }
     }
 
+    const onKeyDown = (e) => {
+        if(e.keyCode === 13) {
+            e.preventDefault()
+        }
+    }
+
+    const generateSideMenu = () => {
+        return(
+            <Offcanvas show={showFilters} onHide={() => {setShowFilters(false)}} placement='end'>
+                <Offcanvas.Header closeButton style={{color:'white'}}>
+                    <h5>Portfolio Filters</h5>
+                </Offcanvas.Header>
+                <Offcanvas.Body className='d-flex flex-column justify-content-start align-items-center' style={{color: 'white'}}>
+                    <div className='dark-container form-container form-container-dark' style={{width: '90%'}}>
+                        <Form autoComplete='off' className='d-flex flex-column justify-content-center align-items-center'>
+                            <div className='d-flex flex-column justify-content-center align-items-center'>
+                                <Form.Label style={{fontWeight: '600'}}>Sort</Form.Label>
+                                <InputGroup style={{marginTop: '0px'}}>
+                                    <Form.Select id='portfolioSort' onChange={(e) => {sortTokens(e.target.value)}}>
+                                        <option value=''>Sort by</option>
+                                        <option value='topPrice'>Top Price</option>
+                                        <option value='lowPrice'>Low Price</option>
+                                        <option value='newest'>Newest</option>
+                                        <option value='oldest'>Oldest</option>
+                                    </Form.Select>
+                                </InputGroup>
+                                <br/>
+                                <Form.Label style={{fontWeight: '600'}}>Search</Form.Label>
+                                <InputGroup style={{marginTop: '0px'}}>
+                                    <Form.Control type="text" id='searchInput' placeholder="address, username or title." onKeyDown={onKeyDown} onKeyUp={(e) => {search(e.target.value.toUpperCase())}} />
+                                </InputGroup>
+                            </div>
+                        </Form>
+                    </div>
+                </Offcanvas.Body>
+            </Offcanvas>
+        )
+    }
+
     return (
+        <>
         <Navbar variant="dark" expand="lg" fixed='top'>
         <Container>
             <Navbar.Brand href={PATHS.main} style={{fontWeight: 'bold'}}>
@@ -128,6 +215,8 @@ function Menu() {
             </Navbar.Collapse>
         </Container>
         </Navbar>
+        {generateSideMenu()}
+        </>
     );
 }
 

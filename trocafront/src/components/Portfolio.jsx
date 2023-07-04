@@ -1,15 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup'
 import Spinner from 'react-bootstrap/Spinner'
-import Button from 'react-bootstrap/Button'
-import Offcanvas from 'react-bootstrap/Offcanvas'
 import NFTCard from './NFTCard';
 
 import { connectionStatusSelector, isProcessingSelector, setShowNftFilter } from '../store/slices/statusSlice';
-import { setSelectedTokens } from '../store/slices/portfolioSlice';
-
 import usePortfolio from '../hooks/usePortfolio';
 import User from '../models/User';
 import { PATHS } from '../config';
@@ -21,13 +15,10 @@ function Portfolio () {
     const isProcessing = useSelector(isProcessingSelector)
     const [isProcessingLocal, setIsProcessingLocal] = useState(false)
 
-    const [showFilters, setShowFilters ] = useState(false)
-
     const { 
         onlyUser, 
         selectedTokens, 
-        allUsers,
-        allTokens
+        allUsers,        
     } = usePortfolio()
     
     const dispatch = useDispatch()
@@ -44,56 +35,7 @@ function Portfolio () {
         
         // eslint-disable-next-line
     }, [isConnected])
-
-    const onKeyDown = (e) => {
-        if(e.keyCode === 13) {
-            e.preventDefault()
-        }
-    }
-
-    const search = (text) => {
-        
-        let currentTokens = [...Object.values(allTokens)].filter(
-            element => {
-                let userName = ''
-
-                if(allUsers[element.owner] !== undefined ) {
-                    userName = allUsers[element.owner].username
-                }
-
-                return element.title.toUpperCase().includes(text) || 
-                    element.owner.toUpperCase().includes(text) ||
-                    userName.toUpperCase().includes(text)
-            }
-        )
-        
-        dispatch(setSelectedTokens(currentTokens))
-    }
-
-    const sortTokens = (sortBy) => {
-        const currentTokens = [...selectedTokens]
-
-        switch (sortBy) {
-            case 'topPrice':
-                currentTokens.sort((a, b) => (parseFloat(a.price) <= parseFloat(b.price)) ? 1 : -1 )
-                break;
-            case 'lowPrice':
-                currentTokens.sort((a, b) => (parseFloat(a.price) >= parseFloat(b.price)) ? 1 : -1 )
-                break;                      
-            case 'newest':
-                currentTokens.sort((a, b) => (parseInt(a.id) <= parseInt(b.id)) ? 1 : -1 )
-                break;      
-            case 'oldest':
-                currentTokens.sort((a, b) => (parseInt(a.id) >= parseInt(b.id)) ? 1 : -1 )
-                break;      
-            default:                
-                break;
-        }
-
-        dispatch(setSelectedTokens(currentTokens))
-        setShowFilters(false)
-    }
-
+    
     const generateCatalog = () => {     
         return(
             <div className='d-flex flex-row justify-content-center flex-wrap fixed-container' style={{width: '90%'}}>
@@ -127,49 +69,12 @@ function Portfolio () {
                 <i className="bi bi-emoji-frown" style={{fontSize: '100px', color: 'var(--secondary-color)'}}></i>        
             </div>
         )
-    }
-
-    const getFilterInputs = () => {
-        return(
-            <>
-                {showFilters ? <Form.Label style={{fontWeight: '600'}}>Sort</Form.Label> : <></>}
-                <InputGroup className={!showFilters ? 'search-bar-input' : ''} style={{marginRight: '0px'}}>
-                    <Form.Select id='portfolioSort' onChange={(e) => {sortTokens(e.target.value)}}>
-                        <option value=''>Sort by</option>
-                        <option value='topPrice'>Top Price</option>
-                        <option value='lowPrice'>Low Price</option>
-                        <option value='newest'>Newest</option>
-                        <option value='oldest'>Oldest</option>
-                    </Form.Select>
-                </InputGroup>
-                {showFilters ? <><br/><Form.Label style={{fontWeight: '600'}}>Search</Form.Label></> : <></>}
-                <InputGroup className={!showFilters ? 'search-bar-input' : ''}>
-                    <Form.Control type="text" id='searchInput' placeholder="address, username or title." onKeyDown={onKeyDown} onKeyUp={(e) => {search(e.target.value.toUpperCase())}} />
-                    <InputGroup.Text><i className='bi bi-search' /></InputGroup.Text>
-                </InputGroup>
-                {showFilters ? <><br/><Button variant="primary" onClick={() => {setShowFilters(false)}}>Search</Button></> : <></>}
-            </>
-        )
-    }
+    }    
 
     const showPage = () => {
         return(
             <section className='full-screen d-flex flex-column justify-content-start align-items-center'>                
-                {selectedTokens.length > 0 ? generateCatalog() : emptyCatalog()}
-                <Offcanvas show={showFilters} onHide={() => {setShowFilters(false)}}>
-                    <Offcanvas.Header closeButton style={{backgroundColor: 'var(--contrast-color)', color:'white'}}>
-                        <h5>Portfolio Filters</h5>
-                    </Offcanvas.Header>
-                    <Offcanvas.Body className='d-flex flex-column justify-content-start align-items-center' style={{backgroundColor: 'var(--contrast-color)', color: 'white'}}>
-                        <div className='dark-container form-container form-container-dark' style={{width: '90%'}}>
-                            <Form autoComplete='off'>
-                                <div className='d-flex flex-column justify-content-center align-items-center'>
-                                    {getFilterInputs()}
-                                </div>
-                            </Form>
-                        </div>
-                    </Offcanvas.Body>
-                </Offcanvas>
+                {selectedTokens.length > 0 ? generateCatalog() : emptyCatalog()}                
             </section>
         )
     }
@@ -182,33 +87,3 @@ function Portfolio () {
 }
 
 export default Portfolio
-
-/*
-
-<div className='d-flex flex-column justify-content-center align-items-center search-bar-fixed'>
-                    <div className='dark-container form-container form-container-dark' style={{width: '90%'}}>
-                        <Form autoComplete='off'>
-                            <div className='d-flex align-items-center search-bar'>
-                                <div className='d-flex flex-row align-items-center search-bar-check'>
-                                    <div className='d-flex flex-row justify-content-center align-items-center'>
-                                        <label className='switch' style={{marginRight: '12px'}}>
-                                            <input type="checkbox" className='form-check-input' defaultChecked={onlyUser} 
-                                                onChange={(e) => {
-                                                    dispatch(setOnlyUser(e.target.checked))
-                                                    search('')
-                                                }} 
-                                            />
-                                            <span className='slider round'></span>
-                                        </label>
-                                        <label className="form-check-label">My NFTs</label>
-                                    </div>
-                                    <div className='search-bar-btn'>
-                                        <Button variant="secondary" onClick={() => {setShowFilters(true)}}><i className='bi bi-filter'/></Button>
-                                    </div>
-                                </div>
-                                {getFilterInputs()}
-                            </div>
-                        </Form>
-                    </div>
-                </div>
-*/

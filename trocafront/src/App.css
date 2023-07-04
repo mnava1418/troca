@@ -266,6 +266,11 @@ input:checked + .slider:before {
   color: #ffffff !important;
 }
 
+.offcanvas {
+  background-color: var(--bg-color) !important;
+  background-image: radial-gradient(circle, rgba(239,132,245,0.3) 0%, rgba(21,38,92,1) 100%) !important;
+}
+
 /* Small devices (landscape phones, 576px and up)*/
 @media (min-width: 576px) { 
   .form-container form div {
