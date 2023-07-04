@@ -21,10 +21,10 @@ function TrocaModal({showModal, setShowModal, action, title, body, dispatch}) {
             </Modal.Header>
             <Modal.Body>{body}</Modal.Body>
             <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="outline-light" onClick={handleClose} style={{fontWeight: '600'}}>
                 Close
             </Button>
-            <Button variant="primary" onClick={handleContinue}>
+            <Button variant="primary" onClick={handleContinue} style={{fontWeight: '600'}}>
                 Continue
             </Button>
             </Modal.Footer>

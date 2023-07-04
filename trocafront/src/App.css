@@ -259,6 +259,12 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+.modal-content {
+  background-color: var(--bg-color) !important;
+  background-image: radial-gradient(circle, rgba(239,132,245,0.3) 0%, rgba(21,38,92,1) 100%) !important;
+  color: #ffffff !important;
+}
+
 /* Small devices (landscape phones, 576px and up)*/
 @media (min-width: 576px) { 
   .form-container form div {
