@@ -4,7 +4,7 @@
     width: 90%;
     max-width: 1200px;
     padding: 32px;
-    background-color: var(--contrast-color);    
+    background-color: var(--bg-color);    
     border: 1px solid var(--contrast-color);
     border-radius: 25px;
     overflow-y: auto;
