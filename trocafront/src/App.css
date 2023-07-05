@@ -23,6 +23,10 @@ nav {
   background-color: var(--bg-color) !important;
 }
 
+.btn {
+  font-weight: 600 !important;
+}
+
 .btn-primary {
   background-color: var(--primary-color) !important;
   border-color: transparent !important;
