@@ -41,6 +41,7 @@ export const setPortfolioListeners = (socket, setIsProcessingLocal, dispatch) =>
     socket.on('refresh-token', (id, price) => {
         setIsProcessingLocal(false)
         dispatch(updateTokenPrice({id, price}))
+        dispatch(setAlert({show: true, type: 'success', text: 'Token updated.'}))
     })   
 }
 
