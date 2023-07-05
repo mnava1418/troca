@@ -54,7 +54,7 @@ function Menu() {
                         <span className='slider round'></span>
                     </label>
                     <label className="form-check-label">My NFTs</label>
-                    <Button variant="outline-light" onClick={() => setShowFilters(true)} style={{marginLeft: '16px'}}><i className="bi bi-search"/></Button>
+                    <Button variant="outline-light" onClick={() => setShowFilters(true)} style={{marginLeft: '16px'}}><i className="bi bi-funnel-fill"/></Button>
                 </div>      
             )
 
