@@ -76,7 +76,7 @@ function BidItem({actor, tokenId, canUpdate, animation}) {
 
     return(
         <div className='d-flex flex-column justify-content-center align-items-center'>
-            <h4>{parseAccount(actor)}</h4>
+            <h4 style={{color: '#ffffff'}}>{parseAccount(actor)}</h4>
             {getImgCard()}
         </div>
     )
