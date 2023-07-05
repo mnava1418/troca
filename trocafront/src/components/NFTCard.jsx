@@ -72,10 +72,6 @@ function NFTCard({formatOwner, onlyUser, token, isProcessingLocal, setIsProcessi
                 myPortfolio.buyToken(troca, nft, web3, token, account)
                 break;
 
-            case 'mint':
-                alert('Vamo a mintear')
-                break;
-
             case 'update':
                 setShowDetails(true)
                 break;
@@ -85,7 +81,6 @@ function NFTCard({formatOwner, onlyUser, token, isProcessingLocal, setIsProcessi
                 break;
 
             default:
-                alert('No estes chingando')
                 break;
         }
     }
