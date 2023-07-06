@@ -321,8 +321,7 @@ input:checked + .slider:before {
   }
 }
 
-/*Large Devices*/
-@media (min-width: 1200px) { 
+@media (min-width: 1500px) { 
   .fixed-container {
     margin-top: var(--two-navBar-height);
   }
