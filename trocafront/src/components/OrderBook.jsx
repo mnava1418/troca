@@ -51,7 +51,7 @@ function OrderBook () {
     const showOrderBook = () => {
         return (
             <div style={{width: '90%', overflow: 'auto'}}>
-                <Table responsive striped bordered hover variant="dark" style={{marginTop: '24px'}}>
+                <Table responsive striped hover style={{marginTop: '24px'}}>
                     <thead>
                     <tr>
                         <th>Order Id</th>

@@ -245,13 +245,13 @@ input:checked + .slider:before {
 }
 
 .page-item .page-link {
-  background: #212529;
-  border-color: #212529;
+  background: var(--bg-color);
+  border-color: var(--bg-color);
   color: white;
 }
 
 .active .page-link{ 
-  background: #0d6efd !important 
+  background: var(--primary-color) !important 
 }
 
 
@@ -273,6 +273,16 @@ input:checked + .slider:before {
 .offcanvas {
   background-color: var(--bg-color) !important;
   background-image: radial-gradient(circle, rgba(239,132,245,0.3) 0%, rgba(21,38,92,1) 100%) !important;
+}
+
+.table {
+  background-color: var(--bg-color) !important;
+  background-image: radial-gradient(circle, rgba(239,132,245,0.3) 0%, rgba(21,38,92,1) 100%) !important;
+  color: #ffffff !important;
+}
+
+.table tr td {
+  color: #ffffff !important;
 }
 
 /* Small devices (landscape phones, 576px and up)*/
