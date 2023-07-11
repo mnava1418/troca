@@ -200,6 +200,9 @@ export const subscribeTrocaEvents = (troca, nft, account, dispatch) => {
     .on('data', (event) => {
         dispatch(transferToken({id: parseInt(event.returnValues.buyerTokenId), newOwner: event.returnValues.seller}))
         dispatch(transferToken({id: parseInt(event.returnValues.sellerTokenId), newOwner: event.returnValues.buyer}))
-        dispatch(setAlert({show: true, type: 'success', text: 'Congratulations! You have exchanged a token. Go to your order book to find more details.'}))
+
+        if(event.returnValues.buyer === account || event.returnValues.seller === account) {
+            dispatch(setAlert({show: true, type: 'success', text: 'Congratulations! You have exchanged a token. Go to your order book to find more details.'}))
+        }
     })
 }
