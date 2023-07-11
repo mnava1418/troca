@@ -51,7 +51,6 @@ class Exchange {
     confirmOrder(socket, order, isBuyer, setAnimation) {
         this.troca.methods.switchToken(this.nft._address, order.seller, order.sellerTokenId, order.buyerTokenId).send({from: order.buyer})
         .on('transactionHash', () => {
-            this.dispatch(setAlert({show: true, type: 'warning', text: 'Please wait for the transaction to be confirmed.'}))
             this.updateBid(socket, order, BID_STATUS.complete, isBuyer)
             setAnimation('exchange-item-animation')
 
