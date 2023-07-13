@@ -48,8 +48,8 @@ class Exchange {
         socket.emit('update-bid', order, receiver)
     }
 
-    confirmOrder(socket, order, isBuyer, setAnimation) {
-        this.troca.methods.switchToken(this.nft._address, order.seller, order.sellerTokenId, order.buyerTokenId).send({from: order.buyer})
+    confirmOrder(socket, order, isBuyer, setAnimation, web3) {
+        this.troca.methods.switchToken(this.nft._address, order.seller, order.sellerTokenId, order.buyerTokenId).send({from: order.buyer, value: web3.utils.toWei(order.price.toString(), 'ether')})
         .on('transactionHash', () => {
             this.updateBid(socket, order, BID_STATUS.complete, isBuyer)
             setAnimation('exchange-item-animation')

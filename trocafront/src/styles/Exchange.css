@@ -30,6 +30,15 @@
     position: relative;
 }
 
+.exchange-price {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    font-size: 40Px !important;
+    text-align: center !important;
+    width: 200px !important;
+    color: white !important;
+}
+
 .exchange-item-animation {
     position: absolute;
     top: -5;

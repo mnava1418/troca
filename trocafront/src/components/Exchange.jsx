@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form';
 import BidItem from './BidItem'
 import ExchangeModel from '../models/Exchange'
 import useWeb3 from '../hooks/useWeb3'
 
-import { showExchange, bidOrderSelector, orderBookSelector } from '../store/slices/exchangeSlice'
+import { showExchange, bidOrderSelector, orderBookSelector, updateOrderPrice } from '../store/slices/exchangeSlice'
 import { connectionStatusSelector, setAlert } from '../store/slices/statusSlice'
 import { BID_STATUS, BID_ACTIONS } from '../config'
 
@@ -15,7 +16,7 @@ import '../styles/Exchange.css'
 function Exchange() {
     const dispatch = useDispatch()
     const { account, socket } = useSelector(connectionStatusSelector)
-    const { nft, troca} = useWeb3()
+    const { nft, troca, web3} = useWeb3()
     
     const orderBook = useSelector(orderBookSelector)
     const order = useSelector(bidOrderSelector)
@@ -25,6 +26,10 @@ function Exchange() {
     const exchange = new ExchangeModel(dispatch, troca, nft)
 
     const [animation, setAnimation] = useState('')
+
+    useEffect(() => {
+        document.getElementById('exchangePrice').value = (price !== 0 ? price.toString() : '')
+    }, [price])
 
     const getActionBtn = () => {
         if(status === BID_STATUS.new && isBuyer) {
@@ -42,7 +47,10 @@ function Exchange() {
         let orderValid = true
         let validationError = 'Both tokens are mandatory.'
 
-        if(buyerTokenId === 0 || sellerTokenId === 0) {
+        if(price < 0) {
+            orderValid = false
+            validationError = 'Price must be positive.'
+        } else if(buyerTokenId === 0 || sellerTokenId === 0) {
             orderValid = false
         } else if(action === BID_ACTIONS.create && !validateToken(sellerTokenId, 'sellerTokenId')) {
             orderValid = false
@@ -77,7 +85,7 @@ function Exchange() {
                     exchange.updateBid(socket, {...order}, BID_STATUS.accept, isBuyer)
                     break;
                 case BID_ACTIONS.confirm:
-                    exchange.confirmOrder(socket, {...order}, isBuyer, setAnimation)
+                    exchange.confirmOrder(socket, {...order}, isBuyer, setAnimation, web3)
                     break;
                 default:
                     break;
@@ -105,7 +113,20 @@ function Exchange() {
                 <div className='exchange-contents'>
                     <BidItem actor={buyer} tokenId={buyerTokenId} animation={animation} canUpdate={status === BID_STATUS.new || ((status === BID_STATUS.seller || status === BID_STATUS.pending) && !isBuyer) || ((status === BID_STATUS.buyer || status === BID_STATUS.pending) && isBuyer)} />
                     <div className='d-flex flex-column justify-content-center align-items-center exchange-info'>                        
-                        <h4>{price} ETH</h4>
+                        <Form id='exchangeForm' autoComplete='off'>
+                            <Form.Group controlId="exchangePrice" style={{marginLeft: '0px'}}>
+                                <Form.Control
+                                    className='exchange-price'
+                                    type='number'
+                                    step='0.00001'
+                                    min='0'
+                                    placeholder="0 ETH"
+                                    onChange={(e) => dispatch(updateOrderPrice(e.target.value))}
+                                />
+                                <Form.Control.Feedback type="invalid" style={{margin: '8px 0px 0px 0px'}}>Invalid price.</Form.Control.Feedback>
+                            </Form.Group>
+                        </Form>
+                        <br />
                         <div className={`exchange-item-bg bg-img bg-im-contain ${status === BID_STATUS.buyer || status === BID_STATUS.seller || status === BID_STATUS.pending ? 'nft-card-back-animate' : ''}`} />
                     </div>
                     <BidItem actor={seller} tokenId={sellerTokenId} animation={animation} canUpdate={false} />

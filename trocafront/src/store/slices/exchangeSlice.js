@@ -43,6 +43,14 @@ export const exchangeSlice = createSlice({
             }            
         },
 
+        updateOrderPrice: (state, action) => {
+            state.order.price = parseFloat(action.payload)
+
+            if(state.order.status !== BID_STATUS.new) {
+                state.order.status = BID_STATUS.pending
+            }            
+        },
+
         updateOrderStatus: (state, action) => {
             state.order.status = action.payload.status
         },
@@ -67,6 +75,7 @@ export const exchangeSlice = createSlice({
 export const {
     showExchange,
     updateOrderToken,
+    updateOrderPrice,
     updateOrderStatus,
     loadOrderBook,
     updateOrder,
