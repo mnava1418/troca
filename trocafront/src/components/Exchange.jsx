@@ -121,6 +121,7 @@ function Exchange() {
                                     step='0.00001'
                                     min='0'
                                     placeholder="0 ETH"
+                                    disabled={!(status === BID_STATUS.new || ((status === BID_STATUS.seller || status === BID_STATUS.pending) && !isBuyer) || ((status === BID_STATUS.buyer || status === BID_STATUS.pending) && isBuyer))}
                                     onChange={(e) => dispatch(updateOrderPrice(e.target.value))}
                                 />
                                 <Form.Control.Feedback type="invalid" style={{margin: '8px 0px 0px 0px'}}>Invalid price.</Form.Control.Feedback>
