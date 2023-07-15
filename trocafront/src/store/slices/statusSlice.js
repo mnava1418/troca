@@ -24,6 +24,7 @@ const INITIAL_STATE = {
     },
     chatUsers: {},
     showNftFilter: false,
+    styleAnimation: ''
 }
 
 export const statusSlice = createSlice({
@@ -86,6 +87,10 @@ export const statusSlice = createSlice({
 
         setShowNftFilter: (state, action) => {
             state.showNftFilter = action.payload
+        },
+
+        setStyleAnimation: (state, action) => {
+            state.styleAnimation = action.payload
         }
     }
 })
@@ -102,7 +107,8 @@ export const {
     setIsMember,
     connectChat,
     updateChatUsers,
-    setShowNftFilter
+    setShowNftFilter,
+    setStyleAnimation,
 } = statusSlice.actions
 
 //Selectors
@@ -111,5 +117,6 @@ export const isProcessingSelector = (state) => state.status.isProcessing
 export const connectionStatusSelector = (state) => state.status.connection
 export const chatUsersSelector = (state) => state.status.chatUsers
 export const showNftFilterSelector = (state) => state.status.showNftFilter
+export const styleAnimationSelector = (state) => state.status.styleAnimation
 
 export default statusSlice.reducer

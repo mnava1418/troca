@@ -1,7 +1,7 @@
 import FormData from 'form-data'
 
 import { setAlert, setIsProcessing } from '../store/slices/statusSlice'
-import { showExchange, updateOrderStatus, switchTokens } from '../store/slices/exchangeSlice'
+import { showExchange, updateOrderStatus } from '../store/slices/exchangeSlice'
 import { BACK_URLS, BID_STATUS } from '../config'
 import { post } from '../services/networkService'
 import { parseError } from '../services/ethServices'
@@ -48,15 +48,10 @@ class Exchange {
         socket.emit('update-bid', order, receiver)
     }
 
-    confirmOrder(socket, order, isBuyer, setAnimation, web3) {
+    confirmOrder(socket, order, isBuyer, web3) {
         this.troca.methods.switchToken(this.nft._address, order.seller, order.sellerTokenId, order.buyerTokenId).send({from: order.buyer, value: web3.utils.toWei(order.price.toString(), 'ether')})
         .on('transactionHash', () => {
-            this.updateBid(socket, order, BID_STATUS.complete, isBuyer)
-            setAnimation('exchange-item-animation')
-
-            setTimeout(() => {
-                this.dispatch(switchTokens())
-            }, 500)
+            this.updateBid(socket, order, BID_STATUS.complete, isBuyer)            
         })
         .on('error', (error) => {
             console.error(error)

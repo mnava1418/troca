@@ -1,7 +1,8 @@
 import Web3 from 'web3/dist/web3.min'
-import { setAlert } from '../store/slices/statusSlice'
+import { setAlert, setStyleAnimation } from '../store/slices/statusSlice'
 import { loadContractData } from '../store/slices/contractsSlice'
 import { transferToken, listToken } from '../store/slices/portfolioSlice'
+import { switchTokens } from '../store/slices/exchangeSlice'
 import { SIGN_MESSAGE } from '../config'
 import { get } from './networkService'
 
@@ -203,6 +204,11 @@ export const subscribeTrocaEvents = (troca, nft, account, dispatch) => {
 
         if(event.returnValues.buyer === account || event.returnValues.seller === account) {
             dispatch(setAlert({show: true, type: 'success', text: 'Congratulations! You have exchanged a token. Go to your order book to find more details.'}))
+            dispatch(setStyleAnimation('exchange-item-animation'))
+
+            setTimeout(() => {
+                dispatch(switchTokens())
+            }, 500)
         }
     })
 }

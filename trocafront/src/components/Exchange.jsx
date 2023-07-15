@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
@@ -7,7 +7,7 @@ import ExchangeModel from '../models/Exchange'
 import useWeb3 from '../hooks/useWeb3'
 
 import { showExchange, bidOrderSelector, orderBookSelector, updateOrderPrice } from '../store/slices/exchangeSlice'
-import { connectionStatusSelector, setAlert } from '../store/slices/statusSlice'
+import { connectionStatusSelector, setAlert, setStyleAnimation } from '../store/slices/statusSlice'
 import { BID_STATUS, BID_ACTIONS } from '../config'
 
 import '../styles/Mint.css'
@@ -25,10 +25,11 @@ function Exchange() {
     const isBuyer = buyer === account
     const exchange = new ExchangeModel(dispatch, troca, nft)
 
-    const [animation, setAnimation] = useState('')
-
     useEffect(() => {
         document.getElementById('exchangePrice').value = (price !== 0 ? price.toString() : '')
+        dispatch(setStyleAnimation(''))
+
+        // eslint-disable-next-line
     }, [price])
 
     const getActionBtn = () => {
@@ -85,7 +86,7 @@ function Exchange() {
                     exchange.updateBid(socket, {...order}, BID_STATUS.accept, isBuyer)
                     break;
                 case BID_ACTIONS.confirm:
-                    exchange.confirmOrder(socket, {...order}, isBuyer, setAnimation, web3)
+                    exchange.confirmOrder(socket, {...order}, isBuyer, web3)
                     break;
                 default:
                     break;
@@ -111,7 +112,7 @@ function Exchange() {
         <section className='d-flex flex-column justify-content-center align-items-center nft-container' onClick={() => {dispatch(showExchange({show: false}))}}>
             <div className='exchange-container' onClick={(e) => {e.stopPropagation()}}>
                 <div className='exchange-contents'>
-                    <BidItem actor={buyer} tokenId={buyerTokenId} animation={animation} canUpdate={status === BID_STATUS.new || ((status === BID_STATUS.seller || status === BID_STATUS.pending) && !isBuyer) || ((status === BID_STATUS.buyer || status === BID_STATUS.pending) && isBuyer)} />
+                    <BidItem actor={buyer} tokenId={buyerTokenId} canUpdate={status === BID_STATUS.new || ((status === BID_STATUS.seller || status === BID_STATUS.pending) && !isBuyer) || ((status === BID_STATUS.buyer || status === BID_STATUS.pending) && isBuyer)} />
                     <div className='d-flex flex-column justify-content-center align-items-center exchange-info'>                        
                         <Form id='exchangeForm' autoComplete='off'>
                             <Form.Group controlId="exchangePrice" style={{marginLeft: '0px'}}>
@@ -130,7 +131,7 @@ function Exchange() {
                         <br />
                         <div className={`exchange-item-bg bg-img bg-im-contain ${status === BID_STATUS.buyer || status === BID_STATUS.seller || status === BID_STATUS.pending ? 'nft-card-back-animate' : ''}`} />
                     </div>
-                    <BidItem actor={seller} tokenId={sellerTokenId} animation={animation} canUpdate={false} />
+                    <BidItem actor={seller} tokenId={sellerTokenId} canUpdate={false} />
                 </div>
                 <div className='d-flex flex-row justify-content-center align-items-center' style={{marginTop: '40px'}}>
                     {status === BID_STATUS.new || status === BID_STATUS.reject || status === BID_STATUS.complete ? <></> : <Button variant="outline-light" style={{marginRight: '40px'}} onClick={() => {validateOrder(BID_ACTIONS.reject)}}>Reject</Button>}

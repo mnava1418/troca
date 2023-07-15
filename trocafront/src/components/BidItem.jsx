@@ -5,11 +5,13 @@ import BidCatalog from './BidCatalog'
 
 import { parseAccount } from "../services/ethServices"
 import { allTokensSelector, loadTokenImg } from '../store/slices/portfolioSlice'
+import { styleAnimationSelector } from '../store/slices/statusSlice'
 import { INFURA_URL } from '../config'
 
-function BidItem({actor, tokenId, canUpdate, animation}) {
+function BidItem({actor, tokenId, canUpdate}) {
     const dispatch = useDispatch()
     const allTokens = useSelector(allTokensSelector)
+    const animation = useSelector(styleAnimationSelector)
     const [showCatalog, setShowCatalog] = useState(false)
     const [imageData, setImageData] = useState(undefined)
     
