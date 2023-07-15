@@ -21,7 +21,7 @@ require('chai')
     .use(require('chai-as-promised'))
     .should()
 
-contract('Troca', ([deployer, user1, user2]) => {
+contract('Troca', ([deployer, user1, user2, user3]) => {
     let troca
     let nft
 
@@ -93,57 +93,107 @@ contract('Troca', ([deployer, user1, user2]) => {
     describe('buyToken', () => {
         const tokenURI = "tokenURI"
 
-        describe('success', () => {
-            let result
+        describe('success', () => {           
+            const memberFee = getTokens(1)
             let initialDeployerBalance
-            let initialUser1Balance
-            const fee = getTokens(1)
 
             beforeEach(async () => {
-                await troca.subscribe({from: user1, value: fee})
+                await troca.subscribe({from: user1, value: memberFee})
                 await nft.mint(troca.address, tokenURI, 500, {from: user1})
-                await nft.approve(troca.address, 1, {from: user1})
-
-                initialDeployerBalance = await eth.getBalance(deployer)
-                initialUser1Balance = await eth.getBalance(user1)
-                result = await troca.buyToken(nft.address, user1, 1, {from: user2, value: getTokens(1)})
+                await nft.approve(troca.address, 1, {from: user1})     
             })
 
-            it('user1 has 0 nft', async() => {
-                const balance = await nft.balanceOf(user1)
-                balance.toString().should.equal('0')
-            })
+            describe('member sells token', () => {                
+                let initialUser1Balance            
+                let result                            
+                
+                beforeEach(async () => {
+                    initialDeployerBalance = await eth.getBalance(deployer)
+                    initialUser1Balance = await eth.getBalance(user1)
+                    result = await troca.buyToken(nft.address, user1, 1, {from: user2, value: getTokens(1)})                    
+                })
+
+                it('user1 has 0 nft', async() => {
+                    const balance = await nft.balanceOf(user1)
+                    balance.toString().should.equal('0')
+                })
+        
+                it('user2 has 1 nft', async() => {
+                    const balance = await nft.balanceOf(user2)
+                    balance.toString().should.equal('1')
+                })
+        
+                it('user2 is owner of token 1', async() => {
+                    const owner = await nft.ownerOf(1)
+                    owner.should.equal(user2)
+                })
     
-            it('user2 has 1 nft', async() => {
-                const balance = await nft.balanceOf(user2)
-                balance.toString().should.equal('1')
-            })
-    
-            it('user2 is owner of token 1', async() => {
-                const owner = await nft.ownerOf(1)
-                owner.should.equal(user2)
+                it('fee does not apply to members', async() => {     
+                    const finalDeployerBalance = await eth.getBalance(deployer)
+                    finalDeployerBalance.toString().should.equal(initialDeployerBalance.toString())
+                })
+
+                it('user1 receives payment - no fee applied', async() => {
+                    const finalUser1Balance = await eth.getBalance(user1)
+                    const payment = finalUser1Balance - initialUser1Balance
+                    payment.toString().should.equal(getTokens(1).toString())
+                })           
+        
+                it('emit BuyToken event', () => {
+                    const log = result.logs[0]
+                    const event = log.args
+        
+                    log.event.should.equal('BuyToken')
+                    event.buyer.should.equal(user2)
+                    event.seller.should.equal(user1)
+                    event.tokenId.toString().should.equal("1")
+                })
             })
 
-            it('deployer receives fee', async() => {
-                const finalDeployerBalance = await eth.getBalance(deployer)
-                const receivedFee = finalDeployerBalance - initialDeployerBalance
-                receivedFee.toString().should.equal(getTokens(0.02).toString())
-            })
+            describe('no member sells token', () => {
+                let initialUser2Balance            
 
-            it('user1 receives payment', async() => {
-                const finalUser1Balance = await eth.getBalance(user1)
-                const payment = finalUser1Balance - initialUser1Balance
-                payment.toString().should.equal(getTokens(0.98).toString())
-            })
-    
-            it('emit BuyToken event', () => {
-                const log = result.logs[0]
-                const event = log.args
-    
-                log.event.should.equal('BuyToken')
-                event.buyer.should.equal(user2)
-                event.seller.should.equal(user1)
-                event.tokenId.toString().should.equal("1")
+                beforeEach(async () => {                    
+                    await troca.buyToken(nft.address, user1, 1, {from: user2, value: getTokens(1)})
+                    await nft.approve(troca.address, 1, {from: user2})
+
+                    initialDeployerBalance = await eth.getBalance(deployer)
+                    initialUser2Balance = await eth.getBalance(user2)
+
+                    await troca.buyToken(nft.address, user2, 1, {from: user3, value: getTokens(1)})
+                })
+
+                it('user1 has 0 nft', async() => {
+                    const balance = await nft.balanceOf(user1)
+                    balance.toString().should.equal('0')
+                })
+        
+                it('user2 has 0 nft', async() => {
+                    const balance = await nft.balanceOf(user2)
+                    balance.toString().should.equal('0')
+                })
+
+                it('user3 has 1 nft', async() => {
+                    const balance = await nft.balanceOf(user3)
+                    balance.toString().should.equal('1')
+                })
+
+                it('user3 is owner of token 1', async() => {
+                    const owner = await nft.ownerOf(1)
+                    owner.should.equal(user3)
+                })
+
+                it('deployer receives fee from no members', async() => {  
+                    const finalDeployerBalance = await eth.getBalance(deployer)
+                    const receivedFee = finalDeployerBalance - initialDeployerBalance
+                    receivedFee.toString().should.equal(getTokens(0.02).toString())
+                })
+
+                it('user2 receives payment - fee applied', async() => {
+                    const finalUser2Balance = await eth.getBalance(user2)
+                    const payment = finalUser2Balance - initialUser2Balance
+                    payment.toString().should.equal(getTokens(0.98).toString())
+                })
             })
         })
 
@@ -256,16 +306,15 @@ contract('Troca', ([deployer, user1, user2]) => {
                     owner.should.equal(user2)
                 })
 
-                it('fee for deployer', async() => {
-                    const finalDeployerBalance = await eth.getBalance(deployer)
-                    const payment = finalDeployerBalance - initialDeployerBalance
-                    payment.toString().should.equal(getTokens(0.0002).toString())
+                it('fee does not apply to members', async() => {
+                    const finalDeployerBalance = await eth.getBalance(deployer)                    
+                    finalDeployerBalance.toString().should.equal(initialDeployerBalance.toString())
                 }) 
 
                 it('payment for user1', async() => {
                     const finallUser1Balance = await eth.getBalance(user1)
                     const payment = finallUser1Balance - initialUser1Balance
-                    payment.toString().should.equal(getTokens(0.0098).toString())
+                    payment.toString().should.equal(getTokens(0.01).toString())
                 }) 
 
                 it('emit SwitchToken event', () => {

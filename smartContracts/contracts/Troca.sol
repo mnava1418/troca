@@ -46,11 +46,14 @@ contract Troca is ReentrancyGuard {
     function buyToken (address _nft, address _nftOwner, uint256 _tokenId) payable external {
         require(_tokenId > 0, "___Token id is mandatory.___");
         
-        uint256 fee = _calculateFee(msg.value);
+        uint256 fee = _calculateFee(msg.value, _nftOwner);
         uint256 price = msg.value - fee;
 
         payable(_nftOwner).transfer(price);
-        ownerAccount.transfer(fee);
+
+        if(fee > 0) {
+            ownerAccount.transfer(fee);
+        }        
 
         NFT(_nft).safeTransferFrom(_nftOwner, msg.sender, _tokenId);
 
@@ -63,11 +66,14 @@ contract Troca is ReentrancyGuard {
         require(members[msg.sender], "___Buyer must be a member.___");
         
         if(msg.value > 0) {
-            uint256 fee = _calculateFee(msg.value);
+            uint256 fee = _calculateFee(msg.value, _seller);
             uint256 price = msg.value - fee;
 
             payable(_seller).transfer(price);
-            ownerAccount.transfer(fee);
+
+            if(fee > 0) {
+                ownerAccount.transfer(fee);
+            }  
         }
 
         NFT(_nft).safeTransferFrom(_seller, msg.sender, _sellerTokenId);
@@ -76,7 +82,11 @@ contract Troca is ReentrancyGuard {
         emit SwitchToken(msg.sender, _seller, _buyerTokenId, _sellerTokenId);
     }
 
-    function _calculateFee(uint256 _amount) private view returns (uint256) {
-          return (_amount * feePercent / 100);
+    function _calculateFee(uint256 _amount, address _account) private view returns (uint256) {
+        if(members[_account] == true) {
+            return 0;
+        } else {
+            return (_amount * feePercent / 100);
+        }        
     }
 } 
