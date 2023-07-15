@@ -6,7 +6,7 @@ import BidItem from './BidItem'
 import ExchangeModel from '../models/Exchange'
 import useWeb3 from '../hooks/useWeb3'
 
-import { showExchange, bidOrderSelector, orderBookSelector, updateOrderPrice } from '../store/slices/exchangeSlice'
+import { showExchange, bidOrderSelector, orderBookSelector, updateOrderPrice, orderChangedSelector } from '../store/slices/exchangeSlice'
 import { connectionStatusSelector, setAlert, setStyleAnimation } from '../store/slices/statusSlice'
 import { BID_STATUS, BID_ACTIONS } from '../config'
 
@@ -20,6 +20,7 @@ function Exchange() {
     
     const orderBook = useSelector(orderBookSelector)
     const order = useSelector(bidOrderSelector)
+    const orderChanged = useSelector(orderChangedSelector)
     const {seller, sellerTokenId, buyer, buyerTokenId, price, status} = order
 
     const isBuyer = buyer === account
@@ -39,6 +40,8 @@ function Exchange() {
             return(<Button variant="primary" onClick={() => {validateOrder(BID_ACTIONS.accept)}}>Accept</Button>)
         } else if(status === BID_STATUS.accept && isBuyer) {
             return(<Button variant="primary" onClick={() => {validateOrder(BID_ACTIONS.confirm)}}>Confirm</Button>)
+        } else if(status === BID_STATUS.buyer && isBuyer && !orderChanged) {
+            return(<Button variant="primary" onClick={() => {validateOrder(BID_ACTIONS.confirm)}}>Accept</Button>)
         }else {
             return(<></>)
         }

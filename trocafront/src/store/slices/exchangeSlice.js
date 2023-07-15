@@ -12,7 +12,8 @@ const INITIAL_STATE = {
         price: 0.0,
         status: '',
     },
-    orderBook: {}
+    orderBook: {},
+    orderChanged: false,
 }
 
 localStorage.setItem('showOrder', INITIAL_STATE.show)
@@ -37,6 +38,7 @@ export const exchangeSlice = createSlice({
 
         updateOrderToken: (state, action) => {
             state.order.buyerTokenId = action.payload.id
+            state.orderChanged = true
 
             if(state.order.status !== BID_STATUS.new) {
                 state.order.status = BID_STATUS.pending
@@ -45,6 +47,7 @@ export const exchangeSlice = createSlice({
 
         updateOrderPrice: (state, action) => {
             state.order.price = parseFloat(action.payload)
+            state.orderChanged = true
 
             if(state.order.status !== BID_STATUS.new) {
                 state.order.status = BID_STATUS.pending
@@ -53,6 +56,7 @@ export const exchangeSlice = createSlice({
 
         updateOrderStatus: (state, action) => {
             state.order.status = action.payload.status
+            state.orderChanged = false
         },
 
         loadOrderBook: (state, action) => {
@@ -85,6 +89,7 @@ export const {
 //Selectors
 export const showExchangeSelector = (state) => state.exchange.show
 export const bidOrderSelector = (state) => state.exchange.order
+export const orderChangedSelector = (state) => state.exchange.orderChanged
 
 export const orderBookSelector = (state) => { 
     const orderBook = [...Object.values(state.exchange.orderBook)]
