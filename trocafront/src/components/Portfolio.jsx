@@ -9,6 +9,7 @@ import User from '../models/User';
 import { PATHS } from '../config';
 import { parseAccount, parseUsername } from '../services/ethServices';
 import { setPortfolioListeners } from '../services/socketServices';
+import { subscribeUser } from '../services/notificationServices'
 
 function Portfolio () {
     const { isConnected, socket } = useSelector(connectionStatusSelector)
@@ -31,6 +32,7 @@ function Portfolio () {
             user.getAllUsers()
             setPortfolioListeners(socket, setIsProcessingLocal, dispatch)
             dispatch(setShowNftFilter(true))
+            subscribeUser()
         } 
         
         // eslint-disable-next-line
