@@ -1,4 +1,4 @@
-const notificationService = require('../services/notificationServuce')
+const notificationService = require('../services/notificationService')
 
 const subscribeUser = async (req, res) => {
     const {originalAccount, body} = req

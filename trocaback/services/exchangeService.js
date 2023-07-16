@@ -1,8 +1,12 @@
 const admin = require('firebase-admin')
+const notificationService = require('./notificationService')
 
-const updateBid = (order) => {
+const updateBid = (order, account, webPush) => {
     const query = admin.database().ref(`/orders/${order.id}`)
     query.update(order)
+    .then(() => {
+        notificationService.sendNotification(account, order, webPush)
+    })
     .catch(error => {
         console.error(error)
     })

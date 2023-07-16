@@ -6,7 +6,7 @@ const portfolioListeners = require('../listeners/portfolioListeners')
 const chatListeners = require('../listeners/chatListeners')
 const exchangeListeners = require('../listeners/exchangeListeners')
 
-const setListeners = (io, socket) => {
+const setListeners = (io, socket, webPush) => {
     socket.on('disconnect', async () => {            
         //Check if user was minting
         const userIsMinting = await socketService.userIsMinting(socket.account)
@@ -23,7 +23,7 @@ const setListeners = (io, socket) => {
     mintingListeners(io, socket) //set minting listeners
     portfolioListeners(io, socket) //set portfolio listeners
     chatListeners(io, socket) //set chat listeners
-    exchangeListeners(io, socket) //set exchange listeners
+    exchangeListeners(io, socket, webPush) //set exchange listeners
 }
 
 module.exports = {

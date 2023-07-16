@@ -1,4 +1,5 @@
 const { Server } = require('socket.io')
+const webpush = require('web-push')
 const authConfig = require('../config/auth')
 const authService = require('../services/authService')
 const socketController = require('../controllers/socketController')
@@ -29,7 +30,8 @@ module.exports = (httpServer) => {
 
     io.on('connection', (socket) => {    
         socket.join(socket.account)
-        socketController.setListeners(io, socket)
+        webpush.setVapidDetails(authConfig.webPush.contact, authConfig.webPush.publicKey, authConfig.webPush.privateKey)
+        socketController.setListeners(io, socket, webpush)
     })    
 
     console.info('Socket-io ready!')
