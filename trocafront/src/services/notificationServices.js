@@ -1,4 +1,5 @@
 import { BACK_URLS } from '../config'
+import { post } from './networkService'
 
 const urlBase64ToUint8Array = (base64String) => {
   const padding = "=".repeat((4 - base64String.length % 4) % 4)
@@ -15,13 +16,8 @@ const urlBase64ToUint8Array = (base64String) => {
 }
 
 const sendSubscription = (subscription) => {
-  return fetch(`${BACK_URLS[process.env.NODE_ENV]}/notifications/subscribe`, {
-    method: 'POST',
-    body: JSON.stringify(subscription),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
+  const token = localStorage.getItem('jwt')
+  return post(BACK_URLS[process.env.NODE_ENV], '/notifications/subscribe', subscription, token)
 }
 
 export const subscribeUser = () => {
