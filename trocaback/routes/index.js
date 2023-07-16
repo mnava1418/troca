@@ -4,6 +4,7 @@ const userRoutes = require('./userRoutes')
 const ethRoutes = require('./ethRoutes')
 const portfolioRoutes = require('./portfolioRoutes')
 const exchangeRoutes = require('./exchangeRoutes')
+const notificationRoutes = require('./notificationRoutes')
 const router = express.Router();
 
 module.exports = () => {
@@ -17,6 +18,7 @@ module.exports = () => {
   router.use('/eth', ethRoutes())
   router.use('/portfolio', portfolioRoutes())
   router.use('/exchange', exchangeRoutes())
+  router.use('/notifications', notificationRoutes())
 
   return router
 }
