@@ -20,8 +20,14 @@ module.exports = {
         dbURL: process.env.FIREBASE_DB_URL
     },
 
-    infura : {
+    infura: {
         projectId: process.env.INFURA_PROJECT_ID,
         secret: process.env.INFURA_PROJECT_SECRET
-    }
+    },
+
+    webPush: {
+        publicKey: process.env.PUBLIC_VAPID_KEY,
+        privateKey: process.env.PRIVATE_VAPID_KEY,
+        contact: 'mailto:mnavapena@gmail.com'
+    },
 }
