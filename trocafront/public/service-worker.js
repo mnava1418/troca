@@ -26,7 +26,6 @@ function openPushNotification(event) {
                 const url = new URL(client.url);
                 
                 if(url.host === targetURL.host) {
-                    client.navigate(event.notification.data)
                     client.focus()
                     clientFounded = true
                     break
