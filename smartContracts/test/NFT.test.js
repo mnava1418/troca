@@ -45,7 +45,7 @@ contract('NFT', ([deployer, user1, user2]) => {
 
             beforeEach(async () => {
                 await troca.subscribe({from: user1, value: fee})
-                result = await nft.mint(troca.address, tokenURI, 500, {from: user1})
+                result = await nft.mint(troca.address, tokenURI, {from: user1})
             })
 
             it('deployer has 0 nft', async() => {
@@ -75,30 +75,12 @@ contract('NFT', ([deployer, user1, user2]) => {
                 log.event.should.equal('Transfer')
                 event.to.should.equal(user1)
                 event.tokenId.toString().should.equal("1")
-            })
-    
-            describe('validate royalty info', () => {
-                let royaltyInfo
-    
-                beforeEach(async() => {
-                    royaltyInfo = await nft.royaltyInfo(1, 100)
-                })
-    
-                it('user1 will receive royalty', async() => {
-                    const receiver = royaltyInfo['0']
-                    receiver.should.equal(user1)
-                })
-    
-                it('royalty is 5 percent', async() => {
-                    const percent = royaltyInfo['1']
-                    percent.toString().should.equal("5")
-                })
-            })
+            })    
         })
 
         describe('failure', () => {
             it('user2 is not a member', async () => {
-                await nft.mint(troca.address, tokenURI, 500, {from: user2}).should.be.rejectedWith(ERROR_OWNER_MEMBER)
+                await nft.mint(troca.address, tokenURI, {from: user2}).should.be.rejectedWith(ERROR_OWNER_MEMBER)
 
                 const balance = await nft.balanceOf(user2)
                 balance.toString().should.equal('0')

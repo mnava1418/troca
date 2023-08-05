@@ -99,7 +99,7 @@ contract('Troca', ([deployer, user1, user2, user3]) => {
 
             beforeEach(async () => {
                 await troca.subscribe({from: user1, value: memberFee})
-                await nft.mint(troca.address, tokenURI, 500, {from: user1})
+                await nft.mint(troca.address, tokenURI, {from: user1})
                 await nft.approve(troca.address, 1, {from: user1})     
             })
 
@@ -202,7 +202,7 @@ contract('Troca', ([deployer, user1, user2, user3]) => {
 
             beforeEach(async () => {
                 await troca.subscribe({from: user1, value: fee})
-                await nft.mint(troca.address, tokenURI, 500, {from: user1})
+                await nft.mint(troca.address, tokenURI, {from: user1})
             })
             
             it('invalid token id', async() => {
@@ -225,8 +225,8 @@ contract('Troca', ([deployer, user1, user2, user3]) => {
                 await troca.subscribe({from: user1, value: fee}) //user 1 is a member
                 await troca.subscribe({from: user2, value: fee}) //user 2 is a member
                 
-                await nft.mint(troca.address, tokenURI, 500, {from: user1}) //user 1 owns token 1
-                await nft.mint(troca.address, tokenURI, 500, {from: user2}) //user 2 owns token 2
+                await nft.mint(troca.address, tokenURI, {from: user1}) //user 1 owns token 1
+                await nft.mint(troca.address, tokenURI, {from: user2}) //user 2 owns token 2
 
                 await nft.approve(troca.address, 1, {from: user1}) //user 1 approved Troca to spend token
                 await nft.approve(troca.address, 2, {from: user2}) //user 2 approved Troca to spend token
@@ -338,8 +338,8 @@ contract('Troca', ([deployer, user1, user2, user3]) => {
                 await troca.subscribe({from: user1, value: fee}) //user 1 is a member
                 await troca.subscribe({from: user2, value: fee}) //user 2 is a member
                 
-                await nft.mint(troca.address, tokenURI, 500, {from: user1}) //user 1 owns token 1
-                await nft.mint(troca.address, tokenURI, 500, {from: user2}) //user 2 owns token 2
+                await nft.mint(troca.address, tokenURI, {from: user1}) //user 1 owns token 1
+                await nft.mint(troca.address, tokenURI, {from: user2}) //user 2 owns token 2
             })
             
             it('invalid seller token id', async() => {
