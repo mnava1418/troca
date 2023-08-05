@@ -33,7 +33,7 @@ const ipfsUploadImg = async (imgData, client = undefined) => {
     return path
 }
 
-const saveNFTMetaData = async (title, description, price, royalties, imgData) => {
+const saveNFTMetaData = async (title, description, price, imgData) => {
     const client = await getClient()
     const image = await ipfsUploadImg(imgData, client)
 
@@ -56,7 +56,7 @@ const saveNFTMetaData = async (title, description, price, royalties, imgData) =>
 
     if(uri === '') return false
 
-    const result = await updateMetaData(uri, {title, description, image, royalties, price, status: config.tokenStatus.available})
+    const result = await updateMetaData(uri, {title, description, image, price, status: config.tokenStatus.available})
     return result
 }
 
