@@ -36,8 +36,7 @@ class MyPortfolio {
                     image: catalog[key].image,
                     imageData: undefined,
                     price: catalog[key].price,
-                    description: catalog[key].description,
-                    royalties: catalog[key].royalties
+                    description: catalog[key].description,                    
                 }
             }
         } 
@@ -62,10 +61,9 @@ class MyPortfolio {
 
     mint(account, nft, troca, token) {
         const mintPromise = new Promise((resolve, reject) => {
-            const uri = `${INFURA_URL}/${token.uri}`
-            const royalties = parseInt(token.royalties) * 100 //In basis points
+            const uri = `${INFURA_URL}/${token.uri}`            
 
-            nft.methods.mint(troca._address, uri, royalties).send({from: account})
+            nft.methods.mint(troca._address, uri).send({from: account})
             .on('transactionHash', () => {
                 resolve()
             })

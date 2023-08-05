@@ -13,7 +13,7 @@ import '../styles/Mint.css'
 
 function NFTDetails({setShowDetails, token, tokenImg, onlyUser, formatOwner, isProcessingLocal, setIsProcessingLocal}) {
     const [validated, setValidated] = useState(false)
-    const {id, title, description, price, royalties, key} = token
+    const {id, title, description, price, key} = token
     const [priceETH, setPriceETH] = useState(price)
         
     const {nft} = useWeb3()
@@ -67,11 +67,7 @@ function NFTDetails({setShowDetails, token, tokenImg, onlyUser, formatOwner, isP
                                     style={{backgroundColor: 'transparent'}}
                                 />
                                 <Form.Control.Feedback type="invalid" style={{margin: '8px 0px 0px 0px'}}>Invalid price.</Form.Control.Feedback>
-                            </Form.Group>
-                            <Form.Group controlId="mintRoyalties" style={{marginRight: '0px'}}>
-                                <Form.Label style={{fontWeight: '600'}}>Royalties</Form.Label>
-                                <Form.Control type='number' disabled={true} defaultValue={royalties} style={{backgroundColor: 'transparent'}} />
-                            </Form.Group>
+                            </Form.Group>                            
                         </div>          
                         <Accordion className='nft-details'>
                             <Accordion.Item eventKey="0">

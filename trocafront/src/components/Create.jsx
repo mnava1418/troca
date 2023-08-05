@@ -29,8 +29,7 @@ function Create() {
     const {
         title, setTitle,
         description, setDescription,
-        price, setPrice,
-        royalties, setRoyalties,
+        price, setPrice,        
         imgFile, setImgFile
     } = useCreate('', '', '', '', undefined)
 
@@ -53,7 +52,7 @@ function Create() {
             dispatch(closeAlert())
 
             const exchange = new Exchange(dispatch, troca, nft)
-            exchange.createItem(title, description, price, royalties, imgFile)
+            exchange.createItem(title, description, price, imgFile)
         } else {
             setValidated(true);
         }
@@ -136,19 +135,7 @@ function Create() {
                                         onChange={(e) => setPrice(e.target.value)}
                                     />
                                     <Form.Control.Feedback type="invalid" style={{margin: '8px 0px 0px 0px'}}>Invalid price.</Form.Control.Feedback>
-                                </Form.Group>
-                                <Form.Group controlId="mintRoyalties" style={{marginRight: '0px'}}>
-                                    <Form.Label style={{fontWeight: '600'}}>Royalties</Form.Label>
-                                    <Form.Control
-                                        required
-                                        type='number'
-                                        min='0'
-                                        max='100'
-                                        placeholder="5%"
-                                        onChange={(e) => setRoyalties(e.target.value)}
-                                    />
-                                    <Form.Control.Feedback type="invalid" style={{margin: '8px 0px 0px 0px'}}>Invalid royalties.</Form.Control.Feedback>
-                                </Form.Group>
+                                </Form.Group>                                
                             </div>
                             {isProcessing ? <div className='d-flex flex-column justify-content-center align-items-center' style={{margin: '0px'}}><Spinner animation='grow' variant='secondary' style={{margin: '0px'}}/> </div>: getActionBtn()}
                         </Form>

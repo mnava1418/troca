@@ -14,14 +14,13 @@ class Exchange {
         this.baseURL = BACK_URLS[process.env.NODE_ENV]
     }
 
-    async createItem(title, description, price, royalties, imgFile) {
+    async createItem(title, description, price, imgFile) {
         const token = localStorage.getItem('jwt')
 
         const userInfo = new FormData()
         userInfo.append('title', title)
         userInfo.append('description', description)
-        userInfo.append('price', price)
-        userInfo.append('royalties', royalties)
+        userInfo.append('price', price)        
         userInfo.append('imgData', imgFile)
 
         const response = await post(this.baseURL, '/eth/metaData', userInfo, token, {'Content-Type': 'multipart/form-data'})
