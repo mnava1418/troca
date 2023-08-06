@@ -1,7 +1,6 @@
 const express = require('express');
 const authRoutes = require('./authRoutes')
 const userRoutes = require('./userRoutes')
-const ethRoutes = require('./ethRoutes')
 const portfolioRoutes = require('./portfolioRoutes')
 const exchangeRoutes = require('./exchangeRoutes')
 const notificationRoutes = require('./notificationRoutes')
@@ -15,7 +14,6 @@ module.exports = () => {
 
   router.use('/auth', authRoutes())
   router.use('/user', userRoutes())
-  router.use('/eth', ethRoutes())
   router.use('/portfolio', portfolioRoutes())
   router.use('/exchange', exchangeRoutes())
   router.use('/notifications', notificationRoutes())
