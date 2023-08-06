@@ -1,9 +1,6 @@
-import FormData from 'form-data'
-
-import { setAlert, setIsProcessing } from '../store/slices/statusSlice'
+import { setAlert } from '../store/slices/statusSlice'
 import { showExchange, updateOrderStatus } from '../store/slices/exchangeSlice'
 import { BACK_URLS, BID_STATUS } from '../config'
-import { post } from '../services/networkService'
 import { parseError } from '../services/ethServices'
 
 class Exchange {
@@ -12,27 +9,7 @@ class Exchange {
         this.troca = _troca
         this.nft = _nft
         this.baseURL = BACK_URLS[process.env.NODE_ENV]
-    }
-
-    async createItem(title, description, price, imgFile) {
-        const token = localStorage.getItem('jwt')
-
-        const userInfo = new FormData()
-        userInfo.append('title', title)
-        userInfo.append('description', description)
-        userInfo.append('price', price)        
-        userInfo.append('imgData', imgFile)
-
-        const response = await post(this.baseURL, '/eth/metaData', userInfo, token, {'Content-Type': 'multipart/form-data'})
-
-        if(response.status === 200) {
-            this.dispatch(setAlert({show: true, type: 'success', text: response.data.message}))
-        } else {
-            this.dispatch(setAlert({show: true, type: 'danger', text: response.data.error}))
-        }
-
-        this.dispatch(setIsProcessing(false))
-    }
+    }    
 
     prepareNewBid(seller, sellerTokenId, buyer) {
         const orderId = Date.now()
