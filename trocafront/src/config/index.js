@@ -23,7 +23,8 @@ export const TOKEN_STATUS = {
 }
 
 export const MINTING_STATUS = {    
-    minting: 'MINTING'
+    minting: 'MINTING',
+    waiting_confirmation: 'WAITING_CONFIRMATION'
 }
 
 export const BID_STATUS = {

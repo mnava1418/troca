@@ -14,8 +14,8 @@ function useMint() {
 
     const startMinting = () => {
         setIsMinting(true)        
-        setHeader('In Progress...')
-        setSubtitle('Please DO NOT LEAVE this page until transaction is confirmed!')
+        setHeader('Please wait!')
+        setSubtitle('Our AI is generating your NFT :)')
         startAnimation()
     }
 
@@ -69,7 +69,10 @@ function useMint() {
             case MINTING_STATUS.minting:
                 setStatus('Someone else is minting!')
                 break;
-        
+            case MINTING_STATUS.waiting_confirmation:
+                setHeader('Ready to Mint!')
+                setSubtitle('Please DO NOT LEAVE this page until transaction is confirmed.')
+                break;        
             default:
                 setStatus(`NFTs remaining to mint: ${available}/${total}`)
                 break;

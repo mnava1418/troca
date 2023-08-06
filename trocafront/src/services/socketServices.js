@@ -7,12 +7,13 @@ import { showExchange, updateOrder } from "../store/slices/exchangeSlice"
 
 export const setMintingListeners = (dispatch, account, socket, actions = {}, contracts = {}) => {
     socket.on('update-tokens-available', (info) => {
-        actions.showMintingStatus('', info.totalCount, info.availableTokens, info.newToken)
+        actions.showMintingStatus('', 10, 10, info.newToken)
     })
 
     socket.on('minting-token', (newToken, mintingAccount) => {
         if(newToken !== undefined && newToken !== null) {
             if(mintingAccount === account) {
+                actions.showMintingStatus(MINTING_STATUS.waiting_confirmation)
                 const portfolio = new MyPortfolio(dispatch)
                 
                 portfolio.mint(account, contracts.nft, contracts.troca, newToken)
