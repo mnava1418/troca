@@ -1,6 +1,7 @@
 const portfolioService = require('../services/portfolioService')
 const socketService = require('../services/socketService')
 const mintService = require('../services/mintService')
+const userService = require('../services/userService')
 
 module.exports = (io, socket) => {
     socket.on('tokens-available', async () => {
@@ -20,10 +21,8 @@ module.exports = (io, socket) => {
         io.emit('update-tokens-available', {totalCount: availableTokens.totalCount, availableTokens: availableTokens.available.length})            
     })
 
-    socket.on('complete-minting', async (tokenURI) => {
+    socket.on('complete-minting', async () => {
         console.info(`${socket.account} minted a new token`)
-        await socketService.completeMinting(socket.account, tokenURI)
-        const availableTokens = await portfolioService.getAvailableTokens()
-        io.emit('update-tokens-available', {totalCount: availableTokens.totalCount, availableTokens: availableTokens.available.length, newToken: true})
+        await userService.updateUserInfo(socket.account, {isMinting: null})        
     })
 }
