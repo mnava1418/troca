@@ -7,14 +7,14 @@ function useMint() {
     const [animateCard, setAnimateCard] = useState('')
     const [animateLogo, setAnimateLogo] = useState('')
     const [status, setStatus] = useState('')    
-    const [title, setTitle] = useState('Mint an NFT')
-    const [subtitle, setSubtitle] = useState('Click to mint your next NFT.')
+    const [header, setHeader] = useState('Mint an NFT')
+    const [subtitle, setSubtitle] = useState('')
     const [tokenImg, setTokenImg] = useState('')
     const [availableTokens, setAvailableTokens] = useState(0)
 
     const startMinting = () => {
         setIsMinting(true)        
-        setTitle('In Progress...')
+        setHeader('In Progress...')
         setSubtitle('Please DO NOT LEAVE this page until transaction is confirmed!')
         startAnimation()
     }
@@ -22,8 +22,8 @@ function useMint() {
     const stopMinting = () => {
         setIsMinting(false)        
         stopAnimation()
-        setTitle('Mint an NFT')
-        setSubtitle('Click to mint your next NFT.')
+        setHeader('Mint an NFT')
+        setSubtitle('')
     }
 
     const displayNFT = async (uri) => {        
@@ -34,7 +34,7 @@ function useMint() {
 
         reader.onloadend = () => {
             stopAnimation()
-            setTitle('Congratulations!')
+            setHeader('Congratulations!')
             setSubtitle('Your new NFT is almost ready! Please wait for the transaction to be confirmed.')
             setTokenImg(reader.result)
             setShowNFT('nft-mint-container-animate')
@@ -54,14 +54,14 @@ function useMint() {
     }
 
     const showError = () => {
-        setTitle('Ooops, Something went wrong')
+        setHeader('Ooops, Something went wrong')
         setSubtitle(`Please check your balance and try again later. We haven't charged anything.`)
         stopAnimation()
     }
 
     const showMintingStatus = (status, total = 0, available = 0, newToken = false) => {
         if(status !==MINTING_STATUS.minting && available === 0 && !newToken) {
-            setTitle('Unable to Mint')
+            setHeader('Unable to Mint')
             setSubtitle('Sorry, no more nfts to mint.')
         } 
 
@@ -83,7 +83,7 @@ function useMint() {
         showNFT, availableTokens,
         animateCard, animateLogo,
         status, showMintingStatus, showError,
-        title, subtitle, tokenImg
+        header, subtitle, tokenImg
     }
 }
 
