@@ -1,6 +1,9 @@
 const admin = require('firebase-admin')
-const infuraAuth = require('../config/auth').infura
+const auth = require('../config/auth')
 const config = require('../config')
+
+const infuraAuth = auth.infura
+const huggingFaceAuth = auth.huggingFace
 
 const getClient = async () => {
     const { create } = await import('ipfs-http-client')
@@ -37,7 +40,7 @@ const saveNFTMetaData = async (title, description, price, imgData) => {
     const client = await getClient()
     const image = await ipfsUploadImg(imgData, client)
 
-    if(image === '') return false
+    if(image === '') return undefined
 
     const metaData = {
         name: title,
@@ -54,10 +57,13 @@ const saveNFTMetaData = async (title, description, price, imgData) => {
         return ''
     })
 
-    if(uri === '') return false
+    if(uri === '') return undefined
 
-    const result = await updateMetaData(uri, {title, description, image, price, status: config.tokenStatus.available})
-    return result
+    const result = await updateMetaData(uri, {title, description, image, price})
+
+    if(result) return {uri, title, description, image, price}
+
+    return undefined
 }
 
 const updateMetaData = async (uri, metaData) => {
@@ -72,8 +78,31 @@ const updateMetaData = async (uri, metaData) => {
     return result
 }
 
+const generateTokenImage = async (description) => {
+    const tokenImage = await fetch(config.huggingFaceURL, {
+        headers: { Authorization: `Bearer ${huggingFaceAuth.token}`},
+        method: 'POST',
+        body: JSON.stringify({
+            inputs: description,
+            options: {wait_for_model: true}
+        })
+    })
+    .then(async response => {        
+        response = await response.blob()
+        response = await response.arrayBuffer()
+        return response
+    })
+    .catch(error => {
+        console.error(error)
+        return undefined
+    })
+
+    return tokenImage    
+}
+
 module.exports = {
     ipfsUploadImg,
     saveNFTMetaData,
-    updateMetaData
+    updateMetaData,
+    generateTokenImage
 }

@@ -30,4 +30,8 @@ module.exports = {
         privateKey: process.env.PRIVATE_VAPID_KEY,
         contact: 'mailto:mnavapena@gmail.com'
     },
+
+    huggingFace: {
+        token: process.env.HUGGING_FACE_TOKEN
+    }
 }
