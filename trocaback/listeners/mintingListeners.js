@@ -15,14 +15,13 @@ module.exports = (io, socket) => {
         io.emit('minting-token', newToken, socket.account)
     })
 
-    socket.on('cancel-minting', async (tokenURI) => {
-        await socketService.cancelMinting(socket.account, tokenURI)
-        const availableTokens = await portfolioService.getAvailableTokens()
-        io.emit('update-tokens-available', {totalCount: availableTokens.totalCount, availableTokens: availableTokens.available.length})            
+    socket.on('cancel-minting', async (token) => {
+        console.info(`${socket.account} did not mint the token ${token.uri}`)
+        await mintService.cancelMinting(socket.account, token)        
     })
 
-    socket.on('complete-minting', async () => {
+    socket.on('complete-minting', async (token) => {
         console.info(`${socket.account} minted a new token`)
-        await userService.updateUserInfo(socket.account, {isMinting: null})        
+        await mintService.completeMinting(socket.account, token)
     })
 }

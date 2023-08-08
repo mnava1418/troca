@@ -12,17 +12,11 @@ const userIsMinting = async (account) => {
     }
 }
 
-const cancelMinting = async(account, token) => {
-    await ethService.updateMetaData(token, {status: config.tokenStatus.available})
-    await userService.updateUserInfo(account, {isMinting: null, token: null})
-}
-
 const updatePrice = async(uri, price) => {
     await ethService.updateMetaData(uri, {price})
 }
 
 module.exports = {
-    userIsMinting,
-    cancelMinting,    
-    updatePrice,
+    userIsMinting,    
+    updatePrice,    
 }

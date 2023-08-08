@@ -16,6 +16,19 @@ const mintToken = async (account, tokenInfo) => {
     return undefined    
 }
 
+const completeMinting = async(account, token) => {
+    const { title, description, image, price } = token   
+    await userService.updateUserInfo(account, {isMinting: null})
+    await ethService.updateMetaData(token.uri, {title, description, image, price})
+}
+
+const cancelMinting = async(account, token) => {
+    await userService.updateUserInfo(account, {isMinting: null})
+    await ethService.unPinToken(token)
+}
+
 module.exports = {
-    mintToken
+    mintToken,
+    completeMinting,
+    cancelMinting
 }

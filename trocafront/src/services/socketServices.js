@@ -18,12 +18,12 @@ export const setMintingListeners = (dispatch, account, socket, actions = {}, con
                 
                 portfolio.mint(account, contracts.nft, contracts.troca, newToken)
                 .then(() => {
-                    socket.emit('complete-minting')
+                    socket.emit('complete-minting', newToken)
                     actions.displayNFT(`${INFURA_URL}/${newToken.image}`)
                 })
                 .catch( errorMessage => {
                     dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
-                    socket.emit('cancel-minting', newToken.uri)
+                    socket.emit('cancel-minting', newToken)
                     actions.stopMinting()
                 })
 
