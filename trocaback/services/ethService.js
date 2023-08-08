@@ -59,11 +59,21 @@ const saveNFTMetaData = async (title, description, price, imgData) => {
 
     if(uri === '') return undefined
 
-    const result = await updateMetaData(uri, {title, description, image, price})
+    return {uri, title, description, image, price}
+}
 
-    if(result) return {uri, title, description, image, price}
+const unPinToken = async(token) => {
+    const client = await getClient()
+    
+    await client.pin.rm(token.uri)
+    .catch(error => {
+        console.error(error)      
+    })
 
-    return undefined
+    await client.pin.rm(token.image)
+    .catch(error => {
+        console.error(error)      
+    })
 }
 
 const updateMetaData = async (uri, metaData) => {
@@ -104,5 +114,6 @@ module.exports = {
     ipfsUploadImg,
     saveNFTMetaData,
     updateMetaData,
-    generateTokenImage
+    generateTokenImage,
+    unPinToken
 }
