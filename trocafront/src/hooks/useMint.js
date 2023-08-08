@@ -34,13 +34,15 @@ function useMint() {
 
         reader.onloadend = () => {
             stopAnimation()
-            setHeader('Congratulations!')
-            setSubtitle('Your new NFT is almost ready! Please wait for the transaction to be confirmed.')
+            setIsMinting(false)        
+            setHeader('Your new NFT is ready!')
+            setSubtitle('Please wait for the transaction to be confirmed.')
             setTokenImg(reader.result)
             setShowNFT('nft-mint-container-animate')
         }
 
         reader.readAsDataURL(imageData)
+
     }
 
     const startAnimation = () => {
@@ -57,6 +59,7 @@ function useMint() {
         setHeader('Ooops, Something went wrong')
         setSubtitle(`Please check your balance and try again later. We haven't charged anything.`)
         stopAnimation()
+        setIsMinting(false)        
     }
 
     const showMintingStatus = (status, total = 0, available = 0, newToken = false) => {
