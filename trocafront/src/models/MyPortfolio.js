@@ -26,6 +26,10 @@ class MyPortfolio {
                 const isListed = await nft.methods.getApproved(i).call()
                 .then( operator => operator === troca._address)
 
+                if(catalog[key] === undefined) {
+                    continue
+                }
+
                 tokens[i] = {
                     id: i, 
                     owner, 
