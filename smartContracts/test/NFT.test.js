@@ -57,11 +57,6 @@ contract('NFT', ([deployer, user1, user2]) => {
                 const balance = await nft.balanceOf(user1)
                 balance.toString().should.equal('1')
             })
-
-            it('user1 has less available tokens', async() => {
-                const mintedTokens = await troca.tokensByMember(user1)
-                mintedTokens.toString().should.equal("1")
-            })
     
             it('user1 is owner of token 1', async() => {
                 const owner = await nft.ownerOf(1)

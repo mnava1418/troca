@@ -71,11 +71,6 @@ contract('Troca', ([deployer, user1, user2, user3]) => {
                 log.event.should.equal('Subscription')
                 event.newMember.should.equal(user1)
             })
-
-            it('member has available tokens', async () => {
-                const mintedTokens = await troca.tokensByMember(user1)
-                mintedTokens.toString().should.equal("0")
-            })
         })
 
         describe('failure', () => {

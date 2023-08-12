@@ -9,8 +9,6 @@ contract Troca is ReentrancyGuard {
     mapping(address => bool) public members;
     uint private immutable feePercent;
 
-    mapping(address => uint256) public tokensByMember;
-
     /**EVENTS */
     event Subscription(
         address newMember
@@ -41,8 +39,7 @@ contract Troca is ReentrancyGuard {
         
         ownerAccount.transfer(msg.value);
         members[msg.sender] = true;
-        tokensByMember[msg.sender] = 0;
-
+        
         emit Subscription(msg.sender);
     }
 
@@ -91,9 +88,5 @@ contract Troca is ReentrancyGuard {
         } else {
             return (_amount * feePercent / 100);
         }        
-    }
-
-    function mintNft(address _account) external {
-        tokensByMember[_account] = tokensByMember[_account] + 1;
     }
 } 
