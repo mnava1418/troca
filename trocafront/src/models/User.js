@@ -84,6 +84,13 @@ class User {
         return owner === account
     }
 
+    async getBalanceInfo(nft, account) {
+        const mintLimit = parseInt(await nft.methods.mintLimit().call())
+        const balanceOf = parseInt(await nft.methods.balanceOf(account).call())
+
+        return {mintLimit, balanceOf}
+    }
+
     disconnect() {
         localStorage.clear()
         this.dispatch(disconnectUser())
@@ -91,8 +98,8 @@ class User {
 
     async connect(account) {
         const socket = this.connectToSocket()
-        const {isMember, isOwner, contracts} = await this.setContracts(account)
-        this.dispatch(connectUser({account, isMember, isOwner, socket}))
+        const {isMember, isOwner, contracts, balanceOf, mintLimit} = await this.setContracts(account)
+        this.dispatch(connectUser({account, isMember, isOwner, socket, balanceOf, mintLimit}))
         
         const isOnline = localStorage.getItem('isOnline')
         this.connectToChat(isOnline, socket, account)
@@ -135,15 +142,20 @@ class User {
     async setContracts(account) {
         const contracts = await loadContracts(this.dispatch)
         let isMember, isOwner = false
+        let balanceOf, mintLimit = 0
         
         if(contracts.troca && contracts.nft) {
             isMember = await this.isMember(contracts.troca, account)
             isOwner = await this.isOwner(contracts.troca, account)
-
+            
+            const balanceInfo= await this.getBalanceInfo(contracts.nft, account)
+            balanceOf = balanceInfo.balanceOf
+            mintLimit = balanceInfo.mintLimit
+            
             subscribeTrocaEvents(contracts.troca, contracts.nft, account, this.dispatch)
         }
 
-        return {isMember, isOwner, contracts}
+        return {isMember, isOwner, contracts, balanceOf, mintLimit}
     }
 
     async getUserInfo() {

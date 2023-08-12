@@ -16,6 +16,8 @@ const INITIAL_STATE = {
         isMember: false,
         isOwner: false,
         account: undefined,
+        balanceOf: undefined,
+        mintLimit: undefined,
         userInfo: {
             username: '',
             email: '',
@@ -49,6 +51,8 @@ export const statusSlice = createSlice({
             state.connection.isMember = action.payload.isMember
             state.connection.isOwner = action.payload.isOwner
             state.connection.socket = action.payload.socket
+            state.connection.balanceOf = action.payload.balanceOf
+            state.connection.mintLimit = action.payload.mintLimit
         },
 
         disconnectUser: (state) => {
@@ -61,7 +65,9 @@ export const statusSlice = createSlice({
                     username: '',
                     email: '',
                     img: ''
-                }
+                },
+                balanceOf: undefined,
+                mintLimit: undefined
             }
         },
 
