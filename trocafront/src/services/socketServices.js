@@ -6,10 +6,6 @@ import { updateTokenPrice } from "../store/slices/portfolioSlice"
 import { showExchange, updateOrder } from "../store/slices/exchangeSlice"
 
 export const setMintingListeners = (dispatch, account, socket, actions = {}, contracts = {}) => {
-    socket.on('update-tokens-available', (info) => {
-        actions.showMintingStatus('', 10, 10, info.newToken)
-    })
-
     socket.on('minting-token', (newToken, mintingAccount) => {
         if(newToken !== undefined && newToken !== null) {
             if(mintingAccount === account) {
@@ -20,6 +16,7 @@ export const setMintingListeners = (dispatch, account, socket, actions = {}, con
                 .then(() => {
                     socket.emit('complete-minting', newToken)
                     actions.displayNFT(`${INFURA_URL}/${newToken.image}`)
+                    //actions.showMintingStatus('', limit, availableTokens, true)
                 })
                 .catch( errorMessage => {
                     dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))

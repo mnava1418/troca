@@ -2,28 +2,41 @@ import { useState } from 'react'
 import { MINTING_STATUS } from '../config'
 
 function useMint() {
+    //MINTING STATUS
     const [isMinting, setIsMinting] = useState(false)
     const [showNFT, setShowNFT] = useState('')
+
+    //ANIMATION
     const [animateCard, setAnimateCard] = useState('')
     const [animateLogo, setAnimateLogo] = useState('')
-    const [status, setStatus] = useState('')    
+    const [tokenImg, setTokenImg] = useState('')
+
+    //LABELS
+    const defaultFooter = 'Oli'
     const [header, setHeader] = useState('Mint an NFT')
     const [subtitle, setSubtitle] = useState('')
-    const [tokenImg, setTokenImg] = useState('')
-    const [availableTokens, setAvailableTokens] = useState(0)
+    const [footer, setFooter] = useState(defaultFooter)   
+
+
+    
+    //const [availableTokens, setAvailableTokens] = useState(0)
+
+    const updateLabels = (txt_header, txt_subtitle, txt_footer = defaultFooter ) => {
+        setHeader(txt_header)
+        setSubtitle(txt_subtitle)
+        setFooter(txt_footer)
+    }
 
     const startMinting = () => {
-        setIsMinting(true)        
-        setHeader('Please wait!')
-        setSubtitle('Our AI is generating your NFT :)')
+        setIsMinting(true)
+        updateLabels('Please wait!', 'Our AI is generating your NFT :)')
         startAnimation()
     }
 
     const stopMinting = () => {
-        setIsMinting(false)        
+        setIsMinting(false)   
+        updateLabels('Mint an NFT', '')     
         stopAnimation()
-        setHeader('Mint an NFT')
-        setSubtitle('')
     }
 
     const displayNFT = async (uri) => {        
@@ -35,14 +48,12 @@ function useMint() {
         reader.onloadend = () => {
             stopAnimation()
             setIsMinting(false)        
-            setHeader('Your new NFT is ready!')
-            setSubtitle('Please wait for the transaction to be confirmed.')
+            updateLabels('Your new NFT is ready!', 'Please wait for the transaction to be confirmed.')     
             setTokenImg(reader.result)
             setShowNFT('nft-mint-container-animate')
         }
 
         reader.readAsDataURL(imageData)
-
     }
 
     const startAnimation = () => {
@@ -56,41 +67,34 @@ function useMint() {
     }
 
     const showError = () => {
-        setHeader('Ooops, Something went wrong')
-        setSubtitle(`Please check your balance and try again later. We haven't charged anything.`)
+        updateLabels('Ooops, Something went wrong', `Please check your balance and try again later. We haven't charged anything.`)     
         stopAnimation()
         setIsMinting(false)        
     }
 
-    const showMintingStatus = (status, total = 0, available = 0, newToken = false) => {
+    const showMintingStatus = (status, available = 0, newToken = false) => {
         if(status !==MINTING_STATUS.minting && available === 0 && !newToken) {
-            setHeader('Unable to Mint')
-            setSubtitle('Sorry, no more nfts to mint.')
+            updateLabels('Unable to Mint', 'Sorry, no more nfts to mint.')     
         } 
 
         switch (status) {
             case MINTING_STATUS.minting:
-                setStatus('Someone else is minting!')
+                updateLabels('Mint an NFT', '', 'Someone else is minting!')     
                 break;
             case MINTING_STATUS.waiting_confirmation:
-                setHeader('Ready to Mint!')
-                setSubtitle('Please DO NOT LEAVE this page until transaction is confirmed.')
+                updateLabels('Ready to Mint!', 'Please DO NOT LEAVE this page until transaction is confirmed.')     
                 break;        
             default:
-                setStatus(`NFTs remaining to mint: ${available}/${total}`)
                 break;
         }           
-
-        setAvailableTokens(available)
     }
 
-    return {
-        isMinting, setIsMinting, startMinting, stopMinting, displayNFT,
-        showNFT, availableTokens,
-        animateCard, animateLogo,
-        status, showMintingStatus, showError,
-        header, subtitle, tokenImg
-    }
+    const mintingStatus = {isMinting, showNFT}
+    const animation = {tokenImg, animateCard, animateLogo}
+    const labels = {header, subtitle, footer}
+    const actions = {startMinting, stopMinting, displayNFT, showError, showMintingStatus}
+
+    return {mintingStatus, animation, labels, actions}
 }
 
 export default useMint
