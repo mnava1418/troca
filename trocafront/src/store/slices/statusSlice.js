@@ -97,6 +97,10 @@ export const statusSlice = createSlice({
 
         setStyleAnimation: (state, action) => {
             state.styleAnimation = action.payload
+        },
+
+        userMintNFT: (state) => {
+            state.connection.balanceOf += 1
         }
     }
 })
@@ -115,6 +119,7 @@ export const {
     updateChatUsers,
     setShowNftFilter,
     setStyleAnimation,
+    userMintNFT,
 } = statusSlice.actions
 
 //Selectors

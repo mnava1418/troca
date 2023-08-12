@@ -22,9 +22,9 @@ function Mint() {
     const [validated, setValidated] = useState(false)
     
     const {actions, animation, labels, mintingStatus} = useMint()
-    const {isMinting, showNFT} = mintingStatus
+    const {isMinting, showNFT, balanceOf, mintLimit} = mintingStatus
     const {animateCard, animateLogo, tokenImg} = animation
-    const {footer, header, subtitle} = labels
+    const {header, subtitle} = labels
 
     const {
         title, setTitle,
@@ -129,7 +129,7 @@ function Mint() {
                 </div>
             </div>
             <br />
-            <h4>{footer}</h4>
+            <h4>{balanceOf < mintLimit ? `NFTs remaining to mint: ${mintLimit - balanceOf}/${mintLimit}` : 'Sorry, no more nfts to mint.'}</h4>
         </section>       
     )
 }

@@ -1,30 +1,29 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { MINTING_STATUS } from '../config'
+
+import { connectionStatusSelector } from '../store/slices/statusSlice'
 
 function useMint() {
     //MINTING STATUS
     const [isMinting, setIsMinting] = useState(false)
     const [showNFT, setShowNFT] = useState('')
-
+    const {balanceOf, mintLimit} = useSelector(connectionStatusSelector)
+    
     //ANIMATION
     const [animateCard, setAnimateCard] = useState('')
     const [animateLogo, setAnimateLogo] = useState('')
     const [tokenImg, setTokenImg] = useState('')
 
-    //LABELS
-    const defaultFooter = 'Oli'
+    //LABELS    
     const [header, setHeader] = useState('Mint an NFT')
     const [subtitle, setSubtitle] = useState('')
-    const [footer, setFooter] = useState(defaultFooter)   
-
-
-    
+        
     //const [availableTokens, setAvailableTokens] = useState(0)
 
-    const updateLabels = (txt_header, txt_subtitle, txt_footer = defaultFooter ) => {
+    const updateLabels = (txt_header, txt_subtitle) => {
         setHeader(txt_header)
-        setSubtitle(txt_subtitle)
-        setFooter(txt_footer)
+        setSubtitle(txt_subtitle)    
     }
 
     const startMinting = () => {
@@ -72,14 +71,10 @@ function useMint() {
         setIsMinting(false)        
     }
 
-    const showMintingStatus = (status, available = 0, newToken = false) => {
-        if(status !==MINTING_STATUS.minting && available === 0 && !newToken) {
-            updateLabels('Unable to Mint', 'Sorry, no more nfts to mint.')     
-        } 
-
+    const showMintingStatus = (status) => {
         switch (status) {
             case MINTING_STATUS.minting:
-                updateLabels('Mint an NFT', '', 'Someone else is minting!')     
+                updateLabels('Mint an NFT', 'Someone else is minting!')
                 break;
             case MINTING_STATUS.waiting_confirmation:
                 updateLabels('Ready to Mint!', 'Please DO NOT LEAVE this page until transaction is confirmed.')     
@@ -89,9 +84,9 @@ function useMint() {
         }           
     }
 
-    const mintingStatus = {isMinting, showNFT}
+    const mintingStatus = {isMinting, showNFT, balanceOf, mintLimit}
     const animation = {tokenImg, animateCard, animateLogo}
-    const labels = {header, subtitle, footer}
+    const labels = {header, subtitle}
     const actions = {startMinting, stopMinting, displayNFT, showError, showMintingStatus}
 
     return {mintingStatus, animation, labels, actions}

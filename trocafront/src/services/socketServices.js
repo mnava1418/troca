@@ -1,6 +1,6 @@
 import { MINTING_STATUS } from "../config"
 import MyPortfolio from "../models/MyPortfolio"
-import { setAlert, updateChatUsers } from "../store/slices/statusSlice"
+import { setAlert, updateChatUsers, userMintNFT } from "../store/slices/statusSlice"
 import { INFURA_URL, BID_STATUS } from "../config"
 import { updateTokenPrice } from "../store/slices/portfolioSlice"
 import { showExchange, updateOrder } from "../store/slices/exchangeSlice"
@@ -16,7 +16,7 @@ export const setMintingListeners = (dispatch, account, socket, actions = {}, con
                 .then(() => {
                     socket.emit('complete-minting', newToken)
                     actions.displayNFT(`${INFURA_URL}/${newToken.image}`)
-                    //actions.showMintingStatus('', limit, availableTokens, true)
+                    dispatch(userMintNFT())
                 })
                 .catch( errorMessage => {
                     dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
