@@ -7,7 +7,6 @@ import NotFound from './components/NotFound';
 import Landing from './components/landing/Landing';
 import Wallet from './components/Wallet';
 import Profile from './components/Profile';
-import Create from './components/Create';
 import Portfolio from './components/Portfolio';
 import Mint from './components/Mint';
 import CustomAlert from './components/helpers/CustomAlert';
@@ -49,8 +48,7 @@ function App() {
           <Routes>
             <Route path={PATHS.main} element={<Landing />}/>
             <Route path={PATHS.wallet} element={<Wallet />}/>
-            <Route path={PATHS.profile} element={<Profile />}/>
-            <Route path={PATHS.create} element={<Create />}/>
+            <Route path={PATHS.profile} element={<Profile />}/>            
             <Route path={PATHS.portfolio} element={<Portfolio />}/>
             <Route path={PATHS.mint} element={<Mint />}/>
             <Route path={PATHS.orderBook} element={<OrderBook />}/>

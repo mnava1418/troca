@@ -205,8 +205,7 @@ function Menu() {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
-                    <Nav.Link href={PATHS.main}>Home</Nav.Link>
-                    {isOwner ? <Nav.Link href={PATHS.create}>Create</Nav.Link> : <></>}
+                    <Nav.Link href={PATHS.main}>Home</Nav.Link>                    
                     {isMember ? <Nav.Link href={PATHS.mint}>Mint</Nav.Link> : <></>}                    
                     {isConnected ? <Nav.Link href={PATHS.orderBook}>Order Book</Nav.Link> : <></>}
                     {isConnected ? <Nav.Link href={PATHS.portfolio}>Portfolio</Nav.Link> : <></>}
