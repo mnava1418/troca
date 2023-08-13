@@ -12,9 +12,6 @@ const setListeners = (io, socket, webPush) => {
         if(userIsMinting.isMinting) {
             await mintService.cancelMinting(socket.account, userIsMinting.token)
         }
-        
-        const chatUsers = userService.connectUserToChat(socket.account, false)
-        io.emit('update-chat-users', chatUsers);
     })
 
     mintingListeners(io, socket) //set minting listeners

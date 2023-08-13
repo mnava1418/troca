@@ -80,20 +80,32 @@ const getUserInfo = async (account) => {
     return userInfo
 }
 
-const connectUserToChat = (account, isOnline) => {
-    const dataPath = path.resolve(__dirname, '..', 'data')
-    const dataFile = path.join(dataPath, 'chatUsers.json')
+const connectUserToChat = async(account, isOnline) => {
+    await updateUserInfo(account, {isOnline})    
+    const chatUsers = await getChatUsers()    
+    return chatUsers
+}
 
-    let data = '{}'
-    if(fs.existsSync(dataFile)) {
-        data = fs.readFileSync(dataFile)
-    }
-    
-    const chatUsers = JSON.parse(data)
-    chatUsers[account] = isOnline
+const getChatUsers = async () => {
+    let chatUsers = {}
 
-    data = JSON.stringify(chatUsers)
-    fs.writeFileSync(dataFile, data)
+    const query = admin.database().ref('/users')
+    await query.once('value', (data) => {
+        if(data.exists()) {
+            const allUsers = data.toJSON()
+            
+            Object.keys(allUsers).forEach(account => {
+                if(allUsers[account].isOnline !== undefined) {
+                    chatUsers[account] = allUsers[account].isOnline
+                } else {
+                    chatUsers[account] = false
+                }                
+            })    
+        }
+    })
+    .catch(error => {
+        console.error(error)
+    })
     
     return chatUsers
 }
