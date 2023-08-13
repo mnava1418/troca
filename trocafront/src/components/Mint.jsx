@@ -36,25 +36,24 @@ function Mint() {
         e.stopPropagation()
         const form = document.getElementById('mintForm')
         
-        if (form.checkValidity()) {
+        if (form.checkValidity() && balanceOf < mintLimit) {
             actions.startMinting()
             socket.emit('generate-token', {title, description, price})
         } else {
             setValidated(true);
-        }
-        
-        /*if(availableTokens > 0 && !isMinting) {
-            startMinting()
-            socket.emit('generate-token')
-        }*/
+        }        
     }
 
     const getActionBtn = () => {
-        return (
-            <Form.Group controlId="mintBtn">
-                <Button variant="primary" style={{fontWeight: '600', width: '100%'}} onClick={mintNFT} >Mint NFT</Button>
-            </Form.Group>
-        )
+        if (balanceOf < mintLimit) {
+            return (
+                <Form.Group controlId="mintBtn">
+                    <Button variant="primary" style={{fontWeight: '600', width: '100%'}} onClick={mintNFT} >Mint NFT</Button>
+                </Form.Group>
+            )
+        } else {
+            return <></>
+        }
     }
 
     const goToPortfolio = (e) => {        
