@@ -98,7 +98,7 @@ class User {
 
     async connect(account) {
         const socket = this.connectToSocket()
-        const {isMember, isOwner, contracts, balanceOf, mintLimit} = await this.setContracts(account)
+        const {isMember, isOwner, contracts, balanceOf, mintLimit} = await this.setContracts(account, socket)
         this.dispatch(connectUser({account, isMember, isOwner, socket, balanceOf, mintLimit}))
         
         const isOnline = localStorage.getItem('isOnline')
@@ -139,7 +139,7 @@ class User {
         setExchangeListeners(socket, this.dispatch)
     }
 
-    async setContracts(account) {
+    async setContracts(account, socket) {
         const contracts = await loadContracts(this.dispatch)
         let isMember, isOwner = false
         let balanceOf, mintLimit = 0
@@ -152,7 +152,7 @@ class User {
             balanceOf = balanceInfo.balanceOf
             mintLimit = balanceInfo.mintLimit
             
-            subscribeTrocaEvents(contracts.troca, contracts.nft, account, this.dispatch)
+            subscribeTrocaEvents(contracts.troca, contracts.nft, account, this.dispatch, socket)
         }
 
         return {isMember, isOwner, contracts, balanceOf, mintLimit}

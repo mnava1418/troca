@@ -10,7 +10,7 @@ const updateSuscription = (account, subscription) => {
     })
 }
 
-const generateNotificaion = (order) => {
+const generateOrderNotificaion = (order) => {
     let action = ''
 
     switch(order.status) {
@@ -40,12 +40,28 @@ const generateNotificaion = (order) => {
     return payload
 }
 
-const sendNotification = async (account, order, webpush) => {
+const generateSellNotification = (token) => {
+    const payload = JSON.stringify({
+        title: 'Token Sold!',
+        text: `Congratulations! You just sold NFT #${token}`,
+        url: `${auth.origin[process.env.NODE_ENV]}/portfolio`,        
+    })    
+
+    return payload
+}
+
+const sendNotification = async (account, order, webpush, token = 0) => {
     const query = admin.database().ref(`/notifications/${account}`) 
     await query.once('value', (data) => {
         if(data.exists()) {
             const subscription = data.toJSON()
-            const payload = generateNotificaion(order)
+            let payload = ''
+
+            if(token != 0) {
+                payload = generateSellNotification(token)
+            } else {
+                payload = generateOrderNotificaion(order)
+            }            
 
             webpush.sendNotification(subscription, payload)
             .catch(e => console.error(e.stack))

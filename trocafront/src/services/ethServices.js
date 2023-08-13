@@ -180,13 +180,14 @@ export const usdToEth = async(usdAmount) => {
     return (usdAmount / ethPrice)
 }
 
-export const subscribeTrocaEvents = (troca, nft, account, dispatch) => {    
+export const subscribeTrocaEvents = (troca, nft, account, dispatch, socket) => {    
     troca.events.BuyToken()
     .on('data', (event) => {
         dispatch(transferToken({id: parseInt(event.returnValues.tokenId), newOwner: event.returnValues.buyer}))
 
         if(event.returnValues.buyer === account) {
-            dispatch(setAlert({show: true, type: 'success', text: 'Congratulations! Your new NFT is ready. Go to your portfolio to start playing with it.'}))
+            dispatch(setAlert({show: true, type: 'success', text: 'Congratulations! Your new NFT is ready. Go to your portfolio to start playing with it.'}))            
+            socket.emit('token-sold', event.returnValues.tokenId, event.returnValues.seller)
         } else if(event.returnValues.seller === account) {
             dispatch(setAlert({show: true, type: 'success', text: `Congratulations! You just sold NFT #${event.returnValues.tokenId}`}))
         }         
