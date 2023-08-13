@@ -87,7 +87,7 @@ function NFTCard({formatOwner, onlyUser, token, isProcessingLocal, setIsProcessi
 
     const listNFT = () => {
         setModal({
-            body: 'After you list your NFT, users from the network will be able to interact with them.',
+            body: 'After you list your NFT, users from the network will be able to interact with them. You cannot undo this action.',
             title: `List your NFT #${id}`,
             action: () => {myPortfolio.list(account, nft, troca, id, socket)}
         })
