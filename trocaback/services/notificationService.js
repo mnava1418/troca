@@ -1,6 +1,8 @@
 const admin = require('firebase-admin')
 const auth = require('../config/auth')
 const config = require('../config')
+const userService = require('./userService')
+const emailService = require('./emailService')
 
 const updateSuscription = (account, subscription) => {
     const query = admin.database().ref(`/notifications/${account}`)
@@ -70,6 +72,17 @@ const sendNotification = async (account, order, webpush, token = 0) => {
     .catch(error => {
         console.error(error)
     })
+
+    sendEmailNotification(account)
+}
+
+const sendEmailNotification = async(account) => {
+    const userInfo = await userService.getUserInfo(account)
+
+    if(userInfo && userInfo.email && userInfo.email.trim() !== '') {
+        const message = 'Esto es una prueba'
+        emailService.sendEmail(userInfo.email, 'Prueba!', message)
+    }
 }
 
 module.exports = {
