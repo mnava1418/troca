@@ -54,6 +54,8 @@ const generateSellNotification = (token) => {
 
 const sendNotification = async (account, order, webpush, token = 0) => {
     const query = admin.database().ref(`/notifications/${account}`) 
+    let notificationType = ''
+
     await query.once('value', (data) => {
         if(data.exists()) {
             const subscription = data.toJSON()
@@ -61,8 +63,10 @@ const sendNotification = async (account, order, webpush, token = 0) => {
 
             if(token != 0) {
                 payload = generateSellNotification(token)
+                notificationType = config.notificationType.sell
             } else {
                 payload = generateOrderNotificaion(order)
+                notificationType = config.notificationType.order
             }            
 
             webpush.sendNotification(subscription, payload)
@@ -73,15 +77,16 @@ const sendNotification = async (account, order, webpush, token = 0) => {
         console.error(error)
     })
 
-    sendEmailNotification(account)
+    sendEmailNotification(account, notificationType, order, token)
 }
 
-const sendEmailNotification = async(account) => {
+const sendEmailNotification = async(account, type, order, token) => {
     const userInfo = await userService.getUserInfo(account)
 
     if(userInfo && userInfo.email && userInfo.email.trim() !== '') {
-        const message = 'Esto es una prueba'
-        emailService.sendEmail(userInfo.email, 'Prueba!', message)
+        const message = type === config.notificationType.order ? emailService.orderNotificacionMessage(account, order.id) : emailService.sellNotificacionMessage(account, token)
+        const subject = type === config.notificationType.order ? 'Review your Order!' : 'Token Sold!'
+        emailService.sendEmail(userInfo.email, subject, message)
     }
 }
 
