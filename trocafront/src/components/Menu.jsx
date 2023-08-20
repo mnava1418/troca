@@ -9,11 +9,12 @@ import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner'
 import InputGroup from 'react-bootstrap/InputGroup'
 import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import usePortfolio from '../hooks/usePortfolio';
 import { connectionStatusSelector, showNftFilterSelector } from '../store/slices/statusSlice'
 import { setOnlyUser, setSelectedTokens } from '../store/slices/portfolioSlice';
+import { orderBookSelector } from '../store/slices/exchangeSlice'
 import { parseAccount } from '../services/ethServices';
 import { PATHS } from '../config'
 import User from '../models/User';
@@ -21,12 +22,21 @@ import logo from '../img/logoTransparent.png'
 
 function Menu() {
     const { isConnected, isOnline, account, isMember, isOwner, socket } = useSelector(connectionStatusSelector)
+    const orderBook = useSelector(orderBookSelector)
     const dispatch = useDispatch()
     const user = new User(dispatch)
 
     const { onlyUser, selectedTokens, allUsers, allTokens } = usePortfolio()
     const showNftFilter = useSelector(showNftFilterSelector)
     const [showFilters, setShowFilters ] = useState(false)
+
+    const [pendingNotifications, setPendingNotifications] = useState([])
+
+    useEffect(() => {
+        if(isConnected) {
+            setPendingNotifications(Object.values(orderBook).filter(order => (order.buyer === account && order.buyerIsNew) || (order.seller === account && order.sellerIsNew)))
+        }
+    }, [orderBook])
     
     const handleConnectWallet = () => {
         window.location.href = PATHS.wallet
@@ -139,7 +149,7 @@ function Menu() {
                 <Nav.Link href='#' style={{marginRight: '24px'}}>
                     <div style={{position: 'relative'}}>
                         <i className='bi bi-bell-fill' />                                          
-                        <span className="position-absolute top-0 translate-middle badge rounded-pill bg-danger">5</span>
+                       {pendingNotifications.length > 0 ? <span className="position-absolute top-0 translate-middle badge rounded-pill bg-danger">{pendingNotifications.length}</span> : <></>}
                     </div>
                 </Nav.Link>
                 {getNftFilter()}
