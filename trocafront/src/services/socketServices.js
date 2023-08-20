@@ -55,6 +55,7 @@ export const setExchangeListeners = (socket, dispatch) => {
         const orderId = parseInt(localStorage.getItem('orderId'))
         const isOnline = localStorage.getItem('isOnline')
 
+        order = {...order, buyerIsNew: true, sellerIsNew: true}
         dispatch(updateOrder({order}))
 
         if(order.status === BID_STATUS.reject) {
@@ -81,6 +82,7 @@ export const setExchangeListeners = (socket, dispatch) => {
     })
 
     socket.on('refresh-order', (order) => {
+        order = {...order, buyerIsNew: true, sellerIsNew: true}
         dispatch(updateOrder({order}))
     })
 }

@@ -36,6 +36,8 @@ function Menu() {
         if(isConnected) {
             setPendingNotifications(Object.values(orderBook).filter(order => (order.buyer === account && order.buyerIsNew) || (order.seller === account && order.sellerIsNew)))
         }
+
+        // eslint-disable-next-line
     }, [orderBook])
     
     const handleConnectWallet = () => {
