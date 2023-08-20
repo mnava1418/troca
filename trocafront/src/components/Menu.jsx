@@ -128,14 +128,20 @@ function Menu() {
                         </Tooltip>
                     }
                 >
-                    <Nav.Link href={PATHS.profile} style={{marginRight: '24px'}}>{
+                    <Nav.Link href={PATHS.profile} style={{marginRight: '12px'}}>{
                         isMember ? 
                             <>{parseAccount(account)} <i className='bi bi-patch-check-fill' style={ isOwner ? {color: 'gold'} : {color: '#2ee09a'}} /></>
                         :
                             parseAccount(account) 
                         }
                     </Nav.Link>
-                </OverlayTrigger>                                               
+                </OverlayTrigger>
+                <Nav.Link href='#' style={{marginRight: '24px'}}>
+                    <div style={{position: 'relative'}}>
+                        <i className='bi bi-bell-fill' />                                          
+                        <span className="position-absolute top-0 translate-middle badge rounded-pill bg-danger">5</span>
+                    </div>
+                </Nav.Link>
                 {getNftFilter()}
             </Nav>
         )
