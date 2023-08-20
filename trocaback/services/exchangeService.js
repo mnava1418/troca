@@ -3,7 +3,7 @@ const notificationService = require('./notificationService')
 
 const updateBid = (order, account, webPush) => {
     const query = admin.database().ref(`/orders/${order.id}`)
-    query.update(order)
+    query.update({...order, buyerIsNew: true, sellerIsNew: true})
     .then(() => {
         notificationService.sendNotification(account, order, webPush)
     })
