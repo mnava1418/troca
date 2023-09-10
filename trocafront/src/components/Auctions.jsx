@@ -4,6 +4,11 @@ import { useSelector } from 'react-redux'
 import { connectionStatusSelector } from '../store/slices/statusSlice';
 import { PATHS } from '../config';
 
+import AuctionsList from './AuctionsList';
+import AuctionDetails from './AuctionDetails';
+
+import '../styles/Auction.css'
+
 function Auctions() {
     const { isConnected, isMember } = useSelector(connectionStatusSelector)  
 
@@ -12,15 +17,18 @@ function Auctions() {
             window.location.href = PATHS.wallet
         } else if(!isMember) {
             window.location.href = PATHS.main
-        } else {
-            console.log('auction')
         }
 
         // eslint-disable-next-line
     }, [isConnected, isMember])
 
     return(
-        <h1>Auctions</h1>
+        <section className='d-flex flex-column justify-content-center align-items-center full-screen'>
+            <div className='auction-container'>
+                <AuctionsList />
+                <AuctionDetails />
+            </div>
+        </section>
     )
 }
 
