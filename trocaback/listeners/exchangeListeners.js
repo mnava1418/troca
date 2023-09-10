@@ -4,7 +4,7 @@ const notificationService = require('../services/notificationService')
 module.exports = (io, socket, webPush) => {
     socket.on('update-bid', (order, to) => {
         console.info('order', order)
-        exchangeService.updateBid(order, to, webPush)
+        order = exchangeService.updateBid(order, to, webPush)
         socket.emit('refresh-order', order)
         io.to(to).emit('review-bid', order);
     })

@@ -1,15 +1,22 @@
 const admin = require('firebase-admin')
 const notificationService = require('./notificationService')
+const bidStatus = require('../config/index').bidStatus
 
-const updateBid = (order, account, webPush) => {
+const updateBid = (order, to, webPush) => {    
+    const buyerIsNew = order.buyer === to && order.status !== bidStatus.complete && order.status !== bidStatus.reject
+    const sellerIsNew = order.seller === to && order.status !== bidStatus.complete && order.status !== bidStatus.reject
+    order = {...order, buyerIsNew, sellerIsNew}
+
     const query = admin.database().ref(`/orders/${order.id}`)
-    query.update({...order, buyerIsNew: true, sellerIsNew: true})
+    query.update(order)
     .then(() => {
-        notificationService.sendNotification(account, order, webPush)
+        notificationService.sendNotification(to, order, webPush)
     })
     .catch(error => {
         console.error(error)
     })
+
+    return order
 }
 
 const getOrderBook = async(account) => {
