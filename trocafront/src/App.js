@@ -13,6 +13,7 @@ import CustomAlert from './components/helpers/CustomAlert';
 import Exchange from './components/Exchange';
 import Spinner from 'react-bootstrap/Spinner'
 import OrderBook from './components/OrderBook';
+import Auctions from './components/Auctions';
 
 import User from './models/User';
 import { PATHS } from './config'
@@ -52,6 +53,7 @@ function App() {
             <Route path={PATHS.portfolio} element={<Portfolio />}/>
             <Route path={PATHS.mint} element={<Mint />}/>
             <Route path={PATHS.orderBook} element={<OrderBook />}/>
+            <Route path={PATHS.auctions} element={<Auctions />}/>
             <Route  path='*' element={<NotFound />}/>
           </Routes>
         </BrowserRouter>
