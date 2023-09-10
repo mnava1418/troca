@@ -148,7 +148,7 @@ function Menu() {
                         }
                     </Nav.Link>
                 </OverlayTrigger>
-                <Nav.Link href='#' style={{marginRight: '24px'}}>
+                <Nav.Link href={PATHS.orderBook} style={{marginRight: '24px'}}>
                     <div style={{position: 'relative'}}>
                         <i className='bi bi-bell-fill' />                                          
                        {pendingNotifications.length > 0 ? <span className="position-absolute top-0 translate-middle badge rounded-pill bg-danger">{pendingNotifications.length}</span> : <></>}

@@ -9,7 +9,7 @@ import { orderBookSelector, showExchange } from '../store/slices/exchangeSlice'
 import { parseAccount } from '../services/ethServices'
 
 function OrderBook () {
-    const { isConnected } = useSelector(connectionStatusSelector)
+    const { isConnected, account } = useSelector(connectionStatusSelector)
     const orderBook = useSelector(orderBookSelector)
     const [selectedPage, setSelectedPage] = useState(0)
     const dispatch = useDispatch()
@@ -67,9 +67,12 @@ function OrderBook () {
                     <tbody>
                         {orderBook.slice(selectedPage * 10, selectedPage * 10 + 10).map((order, index) => {
                             const orderDate = new Date(order.id)
+
+                            const orderIsNew = ((order.buyerIsNew && order.buyer === account) || (order.sellerIsNew && order.seller === account))
+
                             return(
                                 <tr key={index} style={{cursor: 'pointer'}} onClick={() => {dispatch(showExchange({show: true, order}))}}>
-                                    <td>{order.id}</td>
+                                    <td>{orderIsNew ? <b>{`${order.id} **`}</b> : order.id}</td>
                                     <td>{`${orderDate.getDate()}/${orderDate.getMonth() + 1}/${orderDate.getFullYear()}`}</td>
                                     <td>{parseAccount(order.buyer)}</td>
                                     <td>{order.buyerTokenId}</td>
