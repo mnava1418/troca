@@ -19,6 +19,10 @@ module.exports = {
         sell: 'SELL'
     },
 
+    auctionStatus: {
+        new: 'NEW',
+    },
+
     huggingFaceURL: 'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1',
 
     email: 'martin@mnavapena.com'

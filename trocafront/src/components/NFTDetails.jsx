@@ -1,5 +1,5 @@
-import {useState} from 'react'
-import {useSelector} from 'react-redux'
+import {useState, useEffect} from 'react'
+import {useSelector, useDispatch} from 'react-redux'
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner'
 import Button from 'react-bootstrap/Button';
@@ -8,16 +8,27 @@ import Accordion from 'react-bootstrap/Accordion'
 import useWeb3 from '../hooks/useWeb3';
 import { parseAccount } from '../services/ethServices';
 import { connectionStatusSelector } from '../store/slices/statusSlice';
+import { setAuctionListeners } from '../services/socketServices'
 
 import '../styles/Mint.css'
 
 function NFTDetails({setShowDetails, token, tokenImg, onlyUser, formatOwner, isProcessingLocal, setIsProcessingLocal}) {
     const [validated, setValidated] = useState(false)
-    const {id, title, description, price, key} = token
+    const {id, title, description, price, key, isListed} = token
     const [priceETH, setPriceETH] = useState(price)
         
     const {nft} = useWeb3()
     const { socket } = useSelector(connectionStatusSelector)
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if(onlyUser) {
+            setAuctionListeners(socket, dispatch, {setIsProcessingLocal})
+        } 
+
+        // eslint-disable-next-line
+    }, [])
 
     const handleSubmit = () => {
         const form = document.getElementById('detailsForm')
@@ -28,12 +39,18 @@ function NFTDetails({setShowDetails, token, tokenImg, onlyUser, formatOwner, isP
             setValidated(true);
         }
     }
+
+    const createAuction = () => {
+        setIsProcessingLocal(true)
+        socket.emit('create-auction', token)
+    }
     
     const getActionBtn = () => {
         return (
             <div className='d-flex flex-row justify-content-center align-items-center'>                
                 <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={() => {setShowDetails(false)}}>Close</Button>
                 {onlyUser ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={handleSubmit}>Update</Button> : ''}
+                {onlyUser && isListed ? <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={createAuction}>Auction</Button> : ''}
             </div> 
         )
     }

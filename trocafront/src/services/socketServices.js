@@ -84,3 +84,12 @@ export const setExchangeListeners = (socket, dispatch) => {
         dispatch(updateOrder({order}))
     })
 }
+
+export const setAuctionListeners = (socket, dispatch, actions = {}) => {
+    socket.on('auction-created', (auction) => {     
+        actions.setIsProcessingLocal(false)
+
+        const alertType = auction.result ? 'success' : 'danger'
+        dispatch(setAlert({show: true, type: alertType, text: auction.message}))
+    })
+}
