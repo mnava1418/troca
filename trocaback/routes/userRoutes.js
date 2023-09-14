@@ -9,6 +9,7 @@ const upload = multer()
 module.exports = () => {    
     router.get('/', authController.validateToken, userController.getUserInfo)    
     router.post('/', authController.validateToken, upload.single('imgData'), userController.updateUserInfo)
+    router.post('/subscribe', authController.validateToken, userController.subscribe)
     router.get('/all', authController.validateToken, userController.getAllUsers)    
     return router
 }

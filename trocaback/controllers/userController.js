@@ -42,8 +42,22 @@ const getAllUsers = async(req, res) => {
     res.status(200).json({users: users.all})
 }
 
+const subscribe = async(req, res) => {
+    const account = req.originalAccount
+    const {activateMembership} =  req.body        
+
+    const result = await userService.updateUserInfo(account, {isMember: activateMembership})
+
+    if(result) {
+        res.status(200).json({message: 'Ok'})
+    } else {
+        res.status(500).json({error: 'Unable to update user information.'})
+    }
+}
+
 module.exports = {
     getUserInfo,
     updateUserInfo,
-    getAllUsers
+    getAllUsers,
+    subscribe
 }

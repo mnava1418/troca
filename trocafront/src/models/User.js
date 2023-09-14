@@ -198,10 +198,18 @@ class User {
 
     becomeMember(account, troca, web3, fee = '1') {
         troca.methods.subscribe().send({from: account, value: web3.utils.toWei(fee, 'ether')})
-        .on('transactionHash', () => {
-            this.dispatch(setAlert({show: true, type: 'success', text: 'Congrats! You are a new member.'}))
-            this.dispatch(setIsMember(true))
+        .on('transactionHash', async() => {            
             this.dispatch(setIsProcessing(false))
+            const token = localStorage.getItem('jwt')
+
+            const response = await post(this.baseURL, '/user/subscribe', {activateMembership: true}, token)
+
+            if(response.status === 200) {
+                this.dispatch(setAlert({show: true, type: 'success', text: 'Congrats! You are a new member.'}))
+                this.dispatch(setIsMember(true))
+            } else {
+                this.dispatch(setAlert({show: true, type: 'danger', text: response.data.error}))
+            }
         })
         .on('error', (error) => {
             console.error(error)
