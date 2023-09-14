@@ -52,6 +52,16 @@ const generateSellNotification = (token) => {
     return payload
 }
 
+const generateNewAuctionNotification = (auctionId) => {
+    const payload = JSON.stringify({
+        title: 'New Auction!',
+        text: `Click for more details.`,
+        url: `${auth.origin[process.env.NODE_ENV]}/auctions?${auctionId}`,        
+    })    
+
+    return payload
+}
+
 const sendNotification = async (account, order, webpush, token = 0) => {
     const query = admin.database().ref(`/notifications/${account}`) 
     let notificationType = ''
@@ -69,8 +79,7 @@ const sendNotification = async (account, order, webpush, token = 0) => {
                 notificationType = config.notificationType.order
             }            
 
-            webpush.sendNotification(subscription, payload)
-            .catch(e => console.error(e.stack))
+            desktopNotification(subscription, payload, webpush)
         }
     })
     .catch(error => {
@@ -78,6 +87,11 @@ const sendNotification = async (account, order, webpush, token = 0) => {
     })
 
     sendEmailNotification(account, notificationType, order, token)
+}
+
+const desktopNotification = (subscription, payload, webpush) => {
+    webpush.sendNotification(subscription, payload)
+    .catch(e => console.error(e.stack))
 }
 
 const sendEmailNotification = async(account, type, order, token) => {
@@ -90,7 +104,32 @@ const sendEmailNotification = async(account, type, order, token) => {
     }
 }
 
+const notifyAll = async (account, desktopPayload, webPush) => {
+    desktopAll(account, desktopPayload, webPush) 
+}
+
+const desktopAll = async(account, payload, webPush) => {
+    const query = admin.database().ref('/notifications')
+    let subscriptions = {}
+    await query.once('value', (data) => {
+        if(data.exists()) {
+            subscriptions = data.toJSON()
+        }        
+    })
+    .catch(error => {
+        console.error(error)
+    })
+
+    Object.keys(subscriptions).forEach(id => {
+        if(id !== account) {
+            desktopNotification(subscriptions[id], payload, webPush)            
+        }
+    })
+}
+
 module.exports = {
     updateSuscription,
-    sendNotification
+    sendNotification,
+    notifyAll,
+    generateNewAuctionNotification,
 }
