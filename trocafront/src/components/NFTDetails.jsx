@@ -18,7 +18,7 @@ function NFTDetails({setShowDetails, token, tokenImg, onlyUser, formatOwner, isP
     const [priceETH, setPriceETH] = useState(price)
         
     const {nft} = useWeb3()
-    const { socket } = useSelector(connectionStatusSelector)
+    const { socket, isMember } = useSelector(connectionStatusSelector)
 
     const dispatch = useDispatch()
 
@@ -50,7 +50,7 @@ function NFTDetails({setShowDetails, token, tokenImg, onlyUser, formatOwner, isP
             <div className='d-flex flex-row justify-content-center align-items-center'>                
                 <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={() => {setShowDetails(false)}}>Close</Button>
                 {onlyUser ? <Button variant="primary" style={{width: '100px', margin: '16px'}} onClick={handleSubmit}>Update</Button> : ''}
-                {onlyUser && isListed ? <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={createAuction}>Auction</Button> : ''}
+                {onlyUser && isListed  && isMember? <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={createAuction}>Auction</Button> : ''}
             </div> 
         )
     }
