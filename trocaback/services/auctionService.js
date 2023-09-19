@@ -53,6 +53,41 @@ const joinAuction = async (account, auction) => {
     return result
 }
 
+const getUserAuction = async(account) => {
+    const userInfo = await userService.getUserInfo(account)
+
+    if(userInfo && userInfo.auction){
+        return userInfo.auction.toString()
+    } else {
+        return undefined
+    }
+}
+
+const getLiveAuctions = async (account) => {
+    const userAuction = await getUserAuction(account)
+    
+    const liveAuctions = {}
+    const query = admin.database().ref(`/auctions`) 
+    
+    await query.once('value', (data) => {
+        if(data.exists()) {
+            data = data.toJSON()
+
+            Object.keys(data).forEach(id => {
+                if(id === userAuction || data[id].status === auctionStatus.new) {
+                    liveAuctions[id] = data[id]
+                }
+            })
+        }
+    })
+    .catch(error => {
+        console.error(error)      
+    })
+
+    return liveAuctions
+}
+
 module.exports = {
-    creatAuction
+    creatAuction,
+    getLiveAuctions
 }
