@@ -53,10 +53,13 @@ const generateSellNotification = (token) => {
 }
 
 const generateNewAuctionNotification = (auctionId) => {
+    const message = emailService.newAuctionMessage(auctionId)
+
     const payload = JSON.stringify({
         title: 'New Auction!',
         text: `Click for more details.`,
         url: `${auth.origin[process.env.NODE_ENV]}/auctions?${auctionId}`,        
+        message
     })    
 
     return payload
@@ -106,6 +109,9 @@ const sendEmailNotification = async(account, type, order, token) => {
 
 const notifyAll = async (account, desktopPayload, webPush) => {
     desktopAll(account, desktopPayload, webPush) 
+
+    const payload = JSON.parse(desktopPayload)
+    emailAll(payload.title, payload.message)
 }
 
 const desktopAll = async(account, payload, webPush) => {
@@ -125,6 +131,13 @@ const desktopAll = async(account, payload, webPush) => {
             desktopNotification(subscriptions[id], payload, webPush)            
         }
     })
+}
+
+const emailAll = async(subject, message) => {
+    const members = await userService.getValidatedMembers()
+    const emails = members.map(member => member.email)    
+
+    emailService.sendEmail(emails.toString(), subject, message)
 }
 
 module.exports = {

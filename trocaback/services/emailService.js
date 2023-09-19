@@ -21,7 +21,16 @@ const createTransporter = () => {
 }
 
 const sendEmail = async(to, subject, html ) => {
-    const mailOptions = { from, to, subject, html }
+    const mailOptions = { from, subject, html }
+
+    to = to.split(',')
+
+    if(to.length > 1) {
+        mailOptions.bcc = to
+    } else {
+        mailOptions.to = to[0]
+    }
+    
     const transporter = createTransporter()
 
     await transporter.sendMail(mailOptions)
@@ -61,8 +70,22 @@ const sellNotificacionMessage = (account, tokenId) => {
     </div>`
 }
 
+const newAuctionMessage = (auctionId) => {
+    return `
+    <div style="color:inherit;font-size:inherit;line-height:inherit">    
+        <p style="margin-bottom:1em;line-height:1.6;font-size:18px">
+            Hi! 
+        </p>
+        <p style="margin-bottom:1em;font-size:16px;line-height:1.6">
+            A new auction has been created! Would you like to participate?. <a href="${origin[process.env.NODE_ENV]}/auctions?${auctionId}" target="_blank">Click Here</a> to get more details.
+        </p>
+        <p style="margin-bottom:1em;font-size:16px;line-height:1.6">Keep swaping, <br/>Troca Team</p>
+    </div>`
+}
+
 module.exports = {
     sendEmail,
     orderNotificacionMessage,
-    sellNotificacionMessage
+    sellNotificacionMessage,
+    newAuctionMessage
 }
