@@ -64,6 +64,23 @@ const getAllUsers = async() => {
     return info
 }
 
+const getValidatedMembers = async() => {
+    const query = admin.database().ref('/users')
+    let members = []
+
+    await query.once('value', (data) => {
+        if(data.exists()) {
+            const users = data.toJSON()
+            members = Object.values(users).filter(user => user.isMember && user.email && user.email.trim() !== '')
+        }
+    })
+    .catch(error => {
+        console.error(error)
+    })
+
+    return members
+}
+
 const getUserInfo = async (account) => {
     const query = admin.database().ref(`/users/${account}`)
     let userInfo = undefined
@@ -115,5 +132,6 @@ module.exports = {
     updateUserInfo,
     validateUserInfo,
     getAllUsers,
-    connectUserToChat
+    connectUserToChat,
+    getValidatedMembers
 }
