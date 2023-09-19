@@ -20,5 +20,6 @@ export const {
 } = auctionSlice.actions
 
 //Selectors
+export const liveAuctionsSelector = (state) => state.auction.liveAuctions
 
 export default auctionSlice.reducer
