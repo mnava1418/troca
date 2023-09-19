@@ -1,8 +1,9 @@
 import {useEffect} from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import { connectionStatusSelector } from '../store/slices/statusSlice';
 import { PATHS } from '../config';
+import Auction from '../models/Auction';
 
 import AuctionsList from './AuctionsList';
 import AuctionDetails from './AuctionDetails';
@@ -11,14 +12,17 @@ import '../styles/Auction.css'
 
 function Auctions() {
     const { isConnected, isMember } = useSelector(connectionStatusSelector)  
+    const dispatch = useDispatch()
+    const auctionModel = new Auction(dispatch)
 
     useEffect(() => {
         if(!isConnected) {
             window.location.href = PATHS.wallet
         } else if(!isMember) {
             window.location.href = PATHS.main
+        } else {
+            auctionModel.getLiveAuctions()
         }
-
         // eslint-disable-next-line
     }, [isConnected, isMember])
 
