@@ -21,6 +21,7 @@ module.exports = {
 
     auctionStatus: {
         new: 'NEW',
+        live: 'LIVE'
     },
 
     huggingFaceURL: 'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1',

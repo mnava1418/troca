@@ -1,5 +1,6 @@
 const auctionService = require('../services/auctionService')
 const notificationService = require('../services/notificationService')
+const { auctionStatus } = require('../config')
 
 module.exports = (io, socket, webPush) => {
     socket.on('create-auction', async (token) => {
@@ -34,5 +35,14 @@ module.exports = (io, socket, webPush) => {
 
     socket.on('join-auction-room', async(auctionId) => {
         socket.join(auctionId.toString())        
+    })
+
+    socket.on('start-auction', async(auctionId, price) => {
+        const result = await auctionService.updateAuction(auctionId, {status: auctionStatus.live})
+
+        if(result) {
+            io.to(auctionId.toString()).emit('auction-message', auctionId, `Auction started. Initial price ${price} ETH.`)
+            io.emit('auction-started', auctionId)
+        }
     })
 }

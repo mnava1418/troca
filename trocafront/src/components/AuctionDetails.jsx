@@ -30,6 +30,8 @@ function AuctionDetails() {
         
         if(action === AUCTION_ACTIONS.join) {            
             socket.emit('join-auction', currentAuction.id, currentAuction.users)
+        } else if(action === AUCTION_ACTIONS.start) {
+            socket.emit('start-auction', currentAuction.id, currentAuction.price)
         }
     }
 
@@ -44,7 +46,6 @@ function AuctionDetails() {
     }
 
     const showDetails = () => {
-        //console.log('auction', currentAuction)
         return(
             <>
             <div className='d-flex flex-column justify-content-start align-items-center' style={{width: '100%', height: '100%'}}>

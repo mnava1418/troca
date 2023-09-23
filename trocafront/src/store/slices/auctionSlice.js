@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { AUCTION_STATUS } from '../../config'
 
 const INITIAL_STATE = {
     liveAuctions: {},
@@ -32,8 +33,7 @@ export const auctionSlice = createSlice({
                     state.currentAuction.messages = []
                 }
 
-                state.currentAuction.messages.push(message)
-                console.log(state.currentAuction.messages)
+                state.currentAuction.messages.push(message)                
             }
         },
 
@@ -63,6 +63,22 @@ export const auctionSlice = createSlice({
                 const {id, auction} = action.payload
                 state.liveAuctions[id] = {...auction, id: id.toString()}
             }
+        },
+
+        startAuction: (state, action) => {
+            const id = action.payload.id.toString()
+
+            if(state.currentAuction && state.currentAuction.id.toString() === id ) {                
+                state.currentAuction.status = AUCTION_STATUS.live
+            }
+
+            if(state.liveAuctions[id]) {                
+                state.liveAuctions[id].status = AUCTION_STATUS.live
+
+                if(state.userAuction === undefined || state.userAuction !== id) {
+                    delete state.liveAuctions[id]
+                }
+            }
         }
     }
 })
@@ -74,7 +90,8 @@ export const {
     showMessage,
     userJoin,
     updateUserAuction,
-    updateAuctionsList
+    updateAuctionsList,
+    startAuction
 } = auctionSlice.actions
 
 //Selectors

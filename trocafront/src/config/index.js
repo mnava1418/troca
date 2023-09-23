@@ -48,6 +48,7 @@ export const BID_ACTIONS = {
 
 export const AUCTION_STATUS = {
     new: 'NEW',
+    live: 'LIVE'
 }
 
 export const AUCTION_ACTIONS = {

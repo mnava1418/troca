@@ -4,7 +4,7 @@ import { setAlert, updateChatUsers, userMintNFT } from "../store/slices/statusSl
 import { INFURA_URL, BID_STATUS } from "../config"
 import { updateTokenPrice } from "../store/slices/portfolioSlice"
 import { showExchange, updateOrder } from "../store/slices/exchangeSlice"
-import { showMessage, userJoin, updateUserAuction,updateAuctionsList } from "../store/slices/auctionSlice"
+import { showMessage, userJoin, updateUserAuction,updateAuctionsList, startAuction } from "../store/slices/auctionSlice"
 
 export const setMintingListeners = (dispatch, account, socket, actions = {}, contracts = {}) => {
     socket.on('minting-token', (newToken, mintingAccount) => {
@@ -111,5 +111,9 @@ export const setAuctionListeners = (socket, dispatch, actions = {}) => {
         if(auction.result) {
             dispatch(updateAuctionsList({id: auction.auctionId, auction: auction.auctionInfo}))
         }
+    })
+
+    socket.on('auction-started', (auctionId) => {        
+        dispatch(startAuction({id: auctionId}))
     })
 }
