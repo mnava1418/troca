@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { liveAuctionsSelector, selectAuction } from '../store/slices/auctionSlice'
+import { parseAccount } from '../services/ethServices';
 
 import AuctionElement from './AuctionElement'
 
@@ -16,7 +17,11 @@ function AuctionsList() {
                             return(
                                 <tr key={auctionId} onClick={() => {dispatch(selectAuction(auctionId))}}>
                                     <td key={auctionId}>
-                                        <AuctionElement auction={liveAuctions[auctionId]}/>
+                                        <AuctionElement 
+                                            auction={liveAuctions[auctionId]} 
+                                            style={{borderBottom: '1px solid var(--contrast-color)'}} 
+                                            subtitle={parseAccount(liveAuctions[auctionId].account)}
+                                        />
                                     </td>
                                 </tr>
                             )
