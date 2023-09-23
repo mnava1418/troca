@@ -58,7 +58,7 @@ const generateNewAuctionNotification = (auctionId) => {
     const payload = JSON.stringify({
         title: 'New Auction!',
         text: `Click for more details.`,
-        url: `${auth.origin[process.env.NODE_ENV]}/auctions?${auctionId}`,        
+        url: `${auth.origin[process.env.NODE_ENV]}/auctions?id=${auctionId}`,        
         message
     })    
 

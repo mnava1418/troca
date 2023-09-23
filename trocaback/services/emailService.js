@@ -77,7 +77,7 @@ const newAuctionMessage = (auctionId) => {
             Hi! 
         </p>
         <p style="margin-bottom:1em;font-size:16px;line-height:1.6">
-            A new auction has been created! Would you like to participate?. <a href="${origin[process.env.NODE_ENV]}/auctions?${auctionId}" target="_blank">Click Here</a> to get more details.
+            A new auction has been created! Would you like to participate?. <a href="${origin[process.env.NODE_ENV]}/auctions?id=${auctionId}" target="_blank">Click Here</a> to get more details.
         </p>
         <p style="margin-bottom:1em;font-size:16px;line-height:1.6">Keep swaping, <br/>Troca Team</p>
     </div>`
