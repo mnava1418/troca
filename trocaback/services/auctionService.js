@@ -92,11 +92,15 @@ const getLiveAuctions = async (account) => {
         if(data.exists()) {
             data = data.toJSON()
 
-            Object.keys(data).forEach(id => {
-                if(id === userAuction || data[id].status === auctionStatus.new) {
-                    liveAuctions[id] = {...data[id], id: id.toString()}
-                }
-            })
+            if(userAuction) {
+                liveAuctions[userAuction] = {...data[userAuction], id: userAuction.toString()}
+            } else {
+                Object.keys(data).forEach(id => {
+                    if(id === userAuction || data[id].status === auctionStatus.new) {
+                        liveAuctions[id] = {...data[id], id: id.toString()}
+                    }
+                })
+            }            
         }
     })
     .catch(error => {

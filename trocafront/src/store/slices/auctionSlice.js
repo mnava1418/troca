@@ -37,10 +37,10 @@ export const auctionSlice = createSlice({
             }
         },
 
-        userJoin: (state, action) => {
+        userJoin: (state, action) => {            
             const {id} =  action.payload
 
-            if(state.currentAuction.id === id) {
+            if(state.currentAuction && state.currentAuction.id === id) {
                 state.currentAuction.users +=1
             }
 
@@ -48,7 +48,12 @@ export const auctionSlice = createSlice({
         },
 
         updateUserAuction: (state, action) => {
-            state.userAuction = action.payload.id
+            const {id} = action.payload
+            state.userAuction = id
+            
+            const lives = {}
+            lives[id] = state.liveAuctions[id]
+            state.liveAuctions = lives            
         }
     }
 })
