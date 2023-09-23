@@ -4,6 +4,7 @@ import { setAlert, updateChatUsers, userMintNFT } from "../store/slices/statusSl
 import { INFURA_URL, BID_STATUS } from "../config"
 import { updateTokenPrice } from "../store/slices/portfolioSlice"
 import { showExchange, updateOrder } from "../store/slices/exchangeSlice"
+import { showMessage, userJoin, updateUserAuction } from "../store/slices/auctionSlice"
 
 export const setMintingListeners = (dispatch, account, socket, actions = {}, contracts = {}) => {
     socket.on('minting-token', (newToken, mintingAccount) => {
@@ -91,5 +92,18 @@ export const setAuctionListeners = (socket, dispatch, actions = {}) => {
 
         const alertType = auction.result ? 'success' : 'danger'
         dispatch(setAlert({show: true, type: alertType, text: auction.message}))
+    })
+
+    socket.on('auction-message', (auctionId, message) => {
+        console.log('recibimos mensaje', auctionId, message)
+        //dispatch(showMessage({id: auctionId, message }))        
+    })
+
+    socket.on('auction-joined', (auctionID) => {        
+        dispatch(userJoin({id: auctionID}))
+    })
+
+    socket.on('auction-user-update', (auctionID) => {
+        dispatch(updateUserAuction({id: auctionID}))
     })
 }
