@@ -25,7 +25,7 @@ const creatAuction = async (account, token) => {
     })
 
     if(result) {
-        return {result: true, message: 'Auction created. Go to the auction panel when you are ready to initiate it.', auctionId}
+        return {result: true, message: 'Auction created. Go to the auction panel when you are ready to initiate it.', auctionId, auctionInfo}
     } else {
         return {result: false, message: 'Error creating auction. Please try again.'}
     }

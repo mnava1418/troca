@@ -56,6 +56,13 @@ export const auctionSlice = createSlice({
             const lives = {}
             lives[id] = state.liveAuctions[id]
             state.liveAuctions = lives            
+        },
+
+        updateAuctionsList: (state, action) => {
+            if(state.userAuction === undefined) {                
+                const {id, auction} = action.payload
+                state.liveAuctions[id] = {...auction, id: id.toString()}
+            }
         }
     }
 })
@@ -66,7 +73,8 @@ export const {
     selectAuction,
     showMessage,
     userJoin,
-    updateUserAuction
+    updateUserAuction,
+    updateAuctionsList
 } = auctionSlice.actions
 
 //Selectors

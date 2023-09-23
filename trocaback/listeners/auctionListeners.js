@@ -8,6 +8,7 @@ module.exports = (io, socket, webPush) => {
         if(auction.result) {
             const newAuctionDesktopPayload = notificationService.generateNewAuctionNotification(auction.auctionId)
             notificationService.notifyAll(socket.account, newAuctionDesktopPayload, webPush)
+            socket.broadcast.emit('auction-update-list', auction);
         }
 
         socket.emit('auction-created', auction)
