@@ -1,12 +1,22 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { liveAuctionsSelector, selectAuction } from '../store/slices/auctionSlice'
+import { connectionStatusSelector } from '../store/slices/statusSlice';
 import { parseAccount } from '../services/ethServices';
 
 import AuctionElement from './AuctionElement'
 
 function AuctionsList() {
     const dispatch = useDispatch()
-    const {liveAuctions} = useSelector(liveAuctionsSelector)    
+    const {liveAuctions, userAuction} = useSelector(liveAuctionsSelector)    
+    const { socket } = useSelector(connectionStatusSelector)
+
+    const openAuction = (id) => {
+        dispatch(selectAuction(id))
+
+        if(userAuction && userAuction.toString() === id.toString()) {
+            socket.emit('join-auction-room', id)
+        }        
+    }
 
     const getAuctionsList = () => {
         const sortedAuctions = Object.values(liveAuctions)
@@ -18,7 +28,7 @@ function AuctionsList() {
                     {
                         sortedAuctions.map(auction => {
                             return(
-                                <tr key={auction.id} onClick={() => {dispatch(selectAuction(auction.id))}}>
+                                <tr key={auction.id} onClick={() => {openAuction(auction.id)}}>
                                     <td key={auction.id}>
                                         <AuctionElement 
                                             auction={auction} 

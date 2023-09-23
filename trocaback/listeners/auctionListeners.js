@@ -30,4 +30,8 @@ module.exports = (io, socket, webPush) => {
             socket.emit('auction-message', auctionId, 'You already have an auction in progress.')
         }        
     })
+
+    socket.on('join-auction-room', async(auctionId) => {
+        socket.join(auctionId.toString())        
+    })
 }
