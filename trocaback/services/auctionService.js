@@ -94,7 +94,7 @@ const getLiveAuctions = async (account) => {
 
             Object.keys(data).forEach(id => {
                 if(id === userAuction || data[id].status === auctionStatus.new) {
-                    liveAuctions[id] = data[id]
+                    liveAuctions[id] = {...data[id], id: id.toString()}
                 }
             })
         }

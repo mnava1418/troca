@@ -9,18 +9,21 @@ function AuctionsList() {
     const {liveAuctions} = useSelector(liveAuctionsSelector)    
 
     const getAuctionsList = () => {
+        const sortedAuctions = Object.values(liveAuctions)
+        sortedAuctions.sort((a,b) => (parseInt(a.id) <= parseInt(b.id)) ? 1 : -1)
+
         return(
             <table style={{width: '100%'}}>
                 <tbody>
                     {
-                        Object.keys(liveAuctions).map(auctionId => {
+                        sortedAuctions.map(auction => {
                             return(
-                                <tr key={auctionId} onClick={() => {dispatch(selectAuction(auctionId))}}>
-                                    <td key={auctionId}>
+                                <tr key={auction.id} onClick={() => {dispatch(selectAuction(auction.id))}}>
+                                    <td key={auction.id}>
                                         <AuctionElement 
-                                            auction={liveAuctions[auctionId]} 
+                                            auction={auction} 
                                             style={{borderBottom: '1px solid var(--contrast-color)'}} 
-                                            subtitle={parseAccount(liveAuctions[auctionId].account)}
+                                            subtitle={parseAccount(auction.account)}
                                         />
                                     </td>
                                 </tr>
