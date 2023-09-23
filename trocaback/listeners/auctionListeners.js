@@ -12,4 +12,21 @@ module.exports = (io, socket, webPush) => {
 
         socket.emit('auction-created', auction)
     })
+
+    socket.on('join-auction', async(auctionId, users) => {
+        const userAuction = await auctionService.userInAuction(socket.account)        
+
+        if(!userAuction.isInAuction) {
+            users += 1
+            const joinResult = await auctionService.joinAuction(socket.account, parseInt(auctionId), {users})
+
+            if(joinResult) {
+                socket.join(auctionId.toString())
+                io.emit('auction-joined', auctionId)
+                io.to(auctionId.toString()).emit('auction-message', auctionId, `User ${socket.account} has joined the auction.`)
+            }
+        } else {
+            socket.emit('auction-message', auctionId, 'You already have an auction in progress.')
+        }        
+    })
 }

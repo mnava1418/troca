@@ -12,7 +12,7 @@ function AuctionDetails() {
     const dispatch = useDispatch()
     const currentAuction = useSelector(currentAuctionSelector)
     const liveAuctions = useSelector(liveAuctionsSelector)
-    const { account } = useSelector(connectionStatusSelector)
+    const { account, socket } = useSelector(connectionStatusSelector)
     const [showNFT, setShowNFT] = useState(false)
 
     useEffect(() => {
@@ -27,7 +27,10 @@ function AuctionDetails() {
 
     const handleSubmit = (e, action) => {
         e.stopPropagation()
-        console.log(action)
+        
+        if(action === AUCTION_ACTIONS.join) {            
+            socket.emit('join-auction', currentAuction.id, currentAuction.users)
+        }
     }
 
     const getActionBtn = () => {
@@ -41,7 +44,7 @@ function AuctionDetails() {
     }
 
     const showDetails = () => {
-        console.log('auction', currentAuction)
+        //console.log('auction', currentAuction)
         return(
             <>
             <div className='d-flex flex-column justify-content-start align-items-center' style={{width: '100%', height: '100%'}}>

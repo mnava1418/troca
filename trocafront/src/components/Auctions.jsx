@@ -2,6 +2,7 @@ import {useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { connectionStatusSelector } from '../store/slices/statusSlice';
+import { setAuctionListeners } from '../services/socketServices'
 import { PATHS } from '../config';
 import Auction from '../models/Auction';
 
@@ -11,7 +12,7 @@ import AuctionDetails from './AuctionDetails';
 import '../styles/Auction.css'
 
 function Auctions() {
-    const { isConnected, isMember } = useSelector(connectionStatusSelector)  
+    const { isConnected, isMember, socket } = useSelector(connectionStatusSelector)  
     const dispatch = useDispatch()
     const auctionModel = new Auction(dispatch)
 
@@ -22,6 +23,7 @@ function Auctions() {
             window.location.href = PATHS.main
         } else {
             auctionModel.getLiveAuctions()
+            setAuctionListeners(socket, dispatch, {})
         }
         // eslint-disable-next-line
     }, [isConnected, isMember])
