@@ -3,9 +3,9 @@ const userService = require('./userService')
 const auctionStatus = require('../config').auctionStatus
 
 const creatAuction = async (account, token) => {
-    const isUserInAuction = await userInAuction(account)
+    const userAuction = await userInAuction(account)
 
-    if(isUserInAuction) {
+    if(userAuction.isInAuction) {
         return {result: false, message: 'You already have an auction in progress.'}
     }
     
@@ -31,20 +31,39 @@ const creatAuction = async (account, token) => {
     }
 }
 
+const updateAuction = async(id, info) =>{
+    const query = admin.database().ref(`/auctions/${id}`) 
+    const result = await query.update(info)
+    .then(() => true)
+    .catch(error => {
+        console.error(error)
+        return false
+    })
+
+    return result
+}
+
 const userInAuction = async (account) => {
-    const userInfo = await userService.getUserInfo(account)
+    const userInfo = await userService.getUserInfo(account)    
 
     if(userInfo && userInfo.auction){
-        return true
+        return {isInAuction: true, auctionId: userInfo.auction}
     } else {
-        return false
+        return {isInAuction: false}
     }
 }
 
-const joinAuction = async (account, auction) => {
+const joinAuction = async (account, auction, info = undefined) => {
     const query = admin.database().ref(`/users/${account}`)
     const result = await query.update({auction})
-    .then(() => true)
+    .then(async() => {
+        if(info) {
+            const updateResult = await updateAuction(auction, info)   
+            return updateResult
+        } else {
+            return true
+        }
+    })
     .catch(error => {
         console.error(error)
         return false
@@ -84,10 +103,13 @@ const getLiveAuctions = async (account) => {
         console.error(error)      
     })
 
-    return liveAuctions
+    return {userAuction, liveAuctions}
 }
 
 module.exports = {
     creatAuction,
-    getLiveAuctions
+    getLiveAuctions,
+    updateAuction,
+    userInAuction,
+    joinAuction,
 }
