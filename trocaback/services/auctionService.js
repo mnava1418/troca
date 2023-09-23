@@ -11,7 +11,7 @@ const creatAuction = async (account, token) => {
     
     const auctionId = Date.now()
     const {id, image, title, price} = token
-    const auctionInfo = {tokenId: id, image, title, price, status: auctionStatus.new, account}
+    const auctionInfo = {tokenId: id, image, title, price, status: auctionStatus.new, account, users: 0}
 
     const query = admin.database().ref(`/auctions/${auctionId}`) 
     const result = await query.update(auctionInfo)
