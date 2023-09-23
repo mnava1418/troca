@@ -21,6 +21,7 @@
 .auction-element {    
     padding: 8px;
     cursor: pointer;
+    width: 100%;
 }
 
 .auction-element:hover {
@@ -30,8 +31,7 @@
 .auction-element-info {
     height: 70px;
     width: 70%;
-    padding: 8px 16px 8px 16px;
-    border-bottom: 1px solid var(--contrast-color);
+    padding: 8px 16px 8px 16px;    
 }
 
 .auction-element-info h6 {
@@ -46,8 +46,21 @@
 
 .auction-details {
     width: 100%;
-    height: 67%;
-    background-color: green;
+    height: 67%;        
+    border-left: 1px solid var(--contrast-color);
+    padding: 0px 16px 0px 16px;    
+}
+
+.auction-details-default {
+    width: 100px;
+    height: 100px;
+    background-image: url('../img/logoTransparent.png');
+}
+
+.auction-details-messages {
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to bottom right, rgba(46,224,154,0.3) 0%, rgba(21,38,92,1) 90%);
 }
 
 /* Small devices (landscape phones, 576px and up)*/

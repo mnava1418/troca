@@ -45,3 +45,12 @@ export const BID_ACTIONS = {
     accept: 'ACCEPT',
     confirm: 'CONFIRM'
 }
+
+export const AUCTION_STATUS = {
+    new: 'NEW',
+}
+
+export const AUCTION_ACTIONS = {
+    start: 'START',
+    join: 'JOIN'
+}
