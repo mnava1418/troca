@@ -1,10 +1,12 @@
-import { useSelector } from 'react-redux'
-import { liveAuctionsSelector } from '../store/slices/auctionSlice'
+import { useSelector, useDispatch } from 'react-redux'
+import { liveAuctionsSelector, selectAuction } from '../store/slices/auctionSlice'
 
 import AuctionElement from './AuctionElement'
 
 function AuctionsList() {
+    const dispatch = useDispatch()
     const liveAuctions = useSelector(liveAuctionsSelector)    
+
     const getAuctionsList = () => {
         return(
             <table style={{width: '100%'}}>
@@ -12,7 +14,7 @@ function AuctionsList() {
                     {
                         Object.keys(liveAuctions).map(auctionId => {
                             return(
-                                <tr key={auctionId}>
+                                <tr key={auctionId} onClick={() => {dispatch(selectAuction(auctionId))}}>
                                     <td key={auctionId}>
                                         <AuctionElement auction={liveAuctions[auctionId]}/>
                                     </td>
