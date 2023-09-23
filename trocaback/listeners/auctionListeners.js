@@ -24,6 +24,7 @@ module.exports = (io, socket, webPush) => {
                 socket.join(auctionId.toString())
                 io.emit('auction-joined', auctionId)
                 io.to(auctionId.toString()).emit('auction-message', auctionId, `User ${socket.account} has joined the auction.`)
+                socket.emit('auction-user-update', auctionId)
             }
         } else {
             socket.emit('auction-message', auctionId, 'You already have an auction in progress.')

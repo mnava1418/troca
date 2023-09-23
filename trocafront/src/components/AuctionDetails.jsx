@@ -11,7 +11,7 @@ import Button from 'react-bootstrap/Button';
 function AuctionDetails() {
     const dispatch = useDispatch()
     const currentAuction = useSelector(currentAuctionSelector)
-    const liveAuctions = useSelector(liveAuctionsSelector)
+    const {liveAuctions, userAuction} = useSelector(liveAuctionsSelector)
     const { account, socket } = useSelector(connectionStatusSelector)
     const [showNFT, setShowNFT] = useState(false)
 
@@ -36,7 +36,7 @@ function AuctionDetails() {
     const getActionBtn = () => {
         if(account === currentAuction.account && currentAuction.status === AUCTION_STATUS.new && currentAuction.users > 0) {
             return(<Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={(e) => {handleSubmit(e, AUCTION_ACTIONS.start)}}>Start</Button>)
-        }if(account !== currentAuction.account && currentAuction.status === AUCTION_STATUS.new) {
+        }if(!userAuction && account !== currentAuction.account && currentAuction.status === AUCTION_STATUS.new) {
             return(<Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={(e) => {handleSubmit(e, AUCTION_ACTIONS.join)}}>Join</Button>)
         } else {
             return(<></>)

@@ -6,7 +6,7 @@ import AuctionElement from './AuctionElement'
 
 function AuctionsList() {
     const dispatch = useDispatch()
-    const liveAuctions = useSelector(liveAuctionsSelector)    
+    const {liveAuctions} = useSelector(liveAuctionsSelector)    
 
     const getAuctionsList = () => {
         return(

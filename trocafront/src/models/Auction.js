@@ -13,8 +13,9 @@ class Auction {
 
         get(this.baseURL, '/auction', token)
         .then(response => {
-            if(response.status === 200) {                
-                this.dispatch(setLiveAuctions({liveAuctions: response.data.liveAuctions}))                
+            if(response.status === 200) {                                
+                const {liveAuctions, userAuction} = response.data
+                this.dispatch(setLiveAuctions({liveAuctions, userAuction}))
             }
         })
     }
