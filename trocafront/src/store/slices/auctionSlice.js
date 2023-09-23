@@ -44,7 +44,9 @@ export const auctionSlice = createSlice({
                 state.currentAuction.users +=1
             }
 
-            state.liveAuctions[id].users +=1
+            if(state.liveAuctions[id]) {
+                state.liveAuctions[id].users +=1
+            }
         },
 
         updateUserAuction: (state, action) => {
