@@ -17,6 +17,8 @@ module.exports = (io, socket, webPush) => {
 
     socket.on('join-auction', async(auctionId, users) => {
         const userAuction = await auctionService.userInAuction(socket.account)        
+        const messageId = Date.now()
+        const message = {id: messageId, user: socket.account, text: undefined}
 
         if(!userAuction.isInAuction) {
             users += 1
@@ -25,12 +27,18 @@ module.exports = (io, socket, webPush) => {
             if(joinResult) {
                 socket.join(auctionId.toString())
                 io.emit('auction-joined', auctionId)
-                io.to(auctionId.toString()).emit('auction-message', auctionId, `User ${socket.account} has joined the auction.`)
+
+                message.text = `User ${socket.account} has joined the auction.`
+                
+                io.to(auctionId.toString()).emit('auction-message', auctionId, message.text)
                 socket.emit('auction-user-update', auctionId)
             }
         } else {
-            socket.emit('auction-message', auctionId, 'You already have an auction in progress.')
-        }        
+            message.text = 'You already have an auction in progress.'
+            socket.emit('auction-message', auctionId, message.text)
+        }   
+        
+        auctionService.saveMessage(auctionId, message)
     })
 
     socket.on('join-auction-room', async(auctionId) => {
@@ -38,10 +46,15 @@ module.exports = (io, socket, webPush) => {
     })
 
     socket.on('start-auction', async(auctionId, price) => {
+        
         const result = await auctionService.updateAuction(auctionId, {status: auctionStatus.live})
 
         if(result) {
-            io.to(auctionId.toString()).emit('auction-message', auctionId, `Auction started. Initial price ${price} ETH.`)
+            const messageId = Date.now()
+            const message = {id: messageId, user: socket.account, text: `Auction started. Initial price ${price} ETH.`}
+            auctionService.saveMessage(auctionId, message)
+            
+            io.to(auctionId.toString()).emit('auction-message', auctionId, message.text)
             io.emit('auction-started', auctionId)
         }
     })

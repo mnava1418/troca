@@ -43,6 +43,20 @@ const updateAuction = async(id, info) =>{
     return result
 }
 
+const saveMessage = async(id, message) => {
+    const query = admin.database().ref(`/auctions/${id}/messages/${message.id}`) 
+    const {user, text} = message
+
+    const result = await query.update({user, text})
+    .then(() => true)
+    .catch(error => {
+        console.error(error)
+        return false
+    })
+
+    return result
+}
+
 const userInAuction = async (account) => {
     const userInfo = await userService.getUserInfo(account)    
 
@@ -116,4 +130,5 @@ module.exports = {
     updateAuction,
     userInAuction,
     joinAuction,
+    saveMessage
 }
