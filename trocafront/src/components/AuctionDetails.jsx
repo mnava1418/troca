@@ -45,6 +45,26 @@ function AuctionDetails() {
         }
     }
 
+    const getAuctionMessages = () => {
+        let messages = []
+        
+        if(currentAuction.messages) {
+            messages = Object.values(currentAuction.messages).slice().reverse()
+        }
+
+        return(
+            <div className='d-flex flex-column-reverse justify-content-start align-items-end auction-details-messages'>
+                {messages.map((currMessage, index) => {
+                    return(
+                        <div key={index} className="message-container">
+                            <p className="message-text">{currMessage.text}</p>
+                        </div> 
+                    )
+                })}
+            </div>
+        )
+    }
+
     const showDetails = () => {
         return(
             <>
@@ -53,7 +73,7 @@ function AuctionDetails() {
                     <AuctionElement auction={currentAuction} subtitle={`${currentAuction.users} active users`} />
                     {getActionBtn()}
                 </div>
-                <div className='auction-details-messages'></div>
+                {getAuctionMessages()}
             </div>
             {showNFT && currentAuction ? <NFTImage image={currentAuction.image} close={setShowNFT}/> : <></>}
             </>

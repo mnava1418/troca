@@ -25,18 +25,6 @@ export const auctionSlice = createSlice({
             }
         },
 
-        showMessage: (state, action) => {
-            const {id, message} =  action.payload
-
-            if(state.currentAuction.id === id) {
-                if(!state.currentAuction.hasOwnProperty('messages')) {
-                    state.currentAuction.messages = []
-                }
-
-                state.currentAuction.messages.push(message)                
-            }
-        },
-
         userJoin: (state, action) => {            
             const {id} =  action.payload
 
@@ -79,6 +67,27 @@ export const auctionSlice = createSlice({
                     delete state.liveAuctions[id]
                 }
             }
+        },
+
+        addAuctionMessage: (state, action) => {
+            const id = action.payload.id.toString()
+            const message = action.payload.message 
+
+            if(state.currentAuction && state.currentAuction.id.toString() === id ) {     
+                if(!state.currentAuction.messages) {
+                    state.currentAuction.messages = {}
+                }
+                
+                state.currentAuction.messages[message.id] = {text: message.text, user: message.user}
+            }
+
+            if(state.liveAuctions[id]) {                
+                if(!state.liveAuctions[id].messages) {
+                    state.liveAuctions[id].messages = {}
+                }
+
+                state.liveAuctions[id].messages[message.id] = {text: message.text, user: message.user}
+            }
         }
     }
 })
@@ -87,11 +96,11 @@ export const auctionSlice = createSlice({
 export const {
     setLiveAuctions,
     selectAuction,
-    showMessage,
     userJoin,
     updateUserAuction,
     updateAuctionsList,
-    startAuction
+    startAuction,
+    addAuctionMessage
 } = auctionSlice.actions
 
 //Selectors
