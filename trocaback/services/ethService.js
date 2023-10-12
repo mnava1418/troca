@@ -110,10 +110,19 @@ const generateTokenImage = async (description) => {
     return tokenImage    
 }
 
+const parseAccount = (account) => {
+    if(account === undefined || account.length < 5) {
+        return ''
+    } else {
+        return `${account.substring(0,5)}...${account.substring(account.length - 4)}`
+    }
+}
+
 module.exports = {
     ipfsUploadImg,
     saveNFTMetaData,
     updateMetaData,
     generateTokenImage,
-    unPinToken
+    unPinToken,
+    parseAccount
 }
