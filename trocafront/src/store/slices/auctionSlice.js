@@ -58,6 +58,10 @@ export const auctionSlice = createSlice({
 
             if(state.currentAuction && state.currentAuction.id.toString() === id ) {                
                 state.currentAuction.status = AUCTION_STATUS.live
+
+                if(state.userAuction !== id ) {
+                    state.currentAuction = undefined
+                }
             }
 
             if(state.liveAuctions[id]) {                
