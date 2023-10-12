@@ -1,5 +1,6 @@
 const auctionService = require('../services/auctionService')
 const notificationService = require('../services/notificationService')
+const ethService = require('../services/ethService')
 const { auctionStatus } = require('../config')
 
 module.exports = (io, socket, webPush) => {
@@ -28,17 +29,17 @@ module.exports = (io, socket, webPush) => {
                 socket.join(auctionId.toString())
                 io.emit('auction-joined', auctionId)
 
-                message.text = `User ${socket.account} has joined the auction.`
+                message.text = `User ${ethService.parseAccount(socket.account)} has joined the auction.`
+                auctionService.saveMessage(auctionId, message)
                 
-                io.to(auctionId.toString()).emit('auction-message', auctionId, message.text)
+                io.to(auctionId.toString()).emit('auction-message', auctionId, message)
                 socket.emit('auction-user-update', auctionId)
             }
         } else {
             message.text = 'You already have an auction in progress.'
-            socket.emit('auction-message', auctionId, message.text)
+            socket.emit('auction-message', auctionId, message)
         }   
         
-        auctionService.saveMessage(auctionId, message)
     })
 
     socket.on('join-auction-room', async(auctionId) => {
@@ -54,7 +55,7 @@ module.exports = (io, socket, webPush) => {
             const message = {id: messageId, user: socket.account, text: `Auction started. Initial price ${price} ETH.`}
             auctionService.saveMessage(auctionId, message)
             
-            io.to(auctionId.toString()).emit('auction-message', auctionId, message.text)
+            io.to(auctionId.toString()).emit('auction-message', auctionId, message)
             io.emit('auction-started', auctionId)
         }
     })
