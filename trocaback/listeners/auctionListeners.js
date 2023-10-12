@@ -32,7 +32,7 @@ module.exports = (io, socket, webPush) => {
                 message.text = `User ${ethService.parseAccount(socket.account)} has joined the auction.`
                 auctionService.saveMessage(auctionId, message)
                 
-                io.to(auctionId.toString()).emit('auction-message', auctionId, message)
+                io.emit('auction-message', auctionId, message)
                 socket.emit('auction-user-update', auctionId)
             }
         } else {
