@@ -7,6 +7,7 @@ import { AUCTION_STATUS, AUCTION_ACTIONS } from '../config';
 import AuctionElement from './AuctionElement'
 import NFTImage from './NFTImage'
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 function AuctionDetails() {
     const dispatch = useDispatch()
@@ -14,6 +15,7 @@ function AuctionDetails() {
     const {liveAuctions, userAuction} = useSelector(liveAuctionsSelector)
     const { account, socket } = useSelector(connectionStatusSelector)
     const [showNFT, setShowNFT] = useState(false)
+    const [bidPrice, setBidPrice] = useState(0)
 
     useEffect(() => {
         const queryString = window.location.search
@@ -40,6 +42,27 @@ function AuctionDetails() {
             return(<Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={(e) => {handleSubmit(e, AUCTION_ACTIONS.start)}}>Start</Button>)
         }if(!userAuction && account !== currentAuction.account && currentAuction.status === AUCTION_STATUS.new) {
             return(<Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={(e) => {handleSubmit(e, AUCTION_ACTIONS.join)}}>Join</Button>)
+        }if(userAuction === currentAuction.id && account !== currentAuction.account && currentAuction.status === AUCTION_STATUS.live) {
+            return(
+                <div className='d-flex flex-row justify-content-center align-items-center auction-form form-container-dark'>
+                    <Form id='detailsForm' autoComplete='off'>
+                        <Form.Group controlId="mintPrice" style={{marginLeft: '0px'}}>
+                            <Form.Control
+                                required
+                                type='number'
+                                step='0.00001'
+                                min={currentAuction.price}
+                                placeholder="10 ETH"
+                                defaultValue={currentAuction.price}
+                                onChange={(e) => setBidPrice(e.target.value)}
+                                onClick={(e) => e.stopPropagation()}
+                                style={{backgroundColor: 'transparent'}}
+                            />
+                        </Form.Group>  
+                    </Form>
+                    <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={(e) => {handleSubmit(e, AUCTION_ACTIONS.join)}}>Submit</Button>
+                </div> 
+            )
         } else {
             return(<></>)
         }

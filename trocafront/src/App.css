@@ -116,7 +116,7 @@ section h5 {
   margin: 24px 0px 24px 0px;
 }
 
-.form-container form input, .form-container form select, .form-container form textarea
+.form-container form input, .form-container form select, .form-container form textarea, .auction-form form input
 {
   background-color: transparent;
   border-color: var(--contrast-color);
