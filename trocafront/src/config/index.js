@@ -53,5 +53,6 @@ export const AUCTION_STATUS = {
 
 export const AUCTION_ACTIONS = {
     start: 'START',
-    join: 'JOIN'
+    join: 'JOIN',
+    update: 'UPDATE'
 }

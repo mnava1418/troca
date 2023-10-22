@@ -16,6 +16,7 @@ function AuctionDetails() {
     const { account, socket } = useSelector(connectionStatusSelector)
     const [showNFT, setShowNFT] = useState(false)
     const [bidPrice, setBidPrice] = useState(0)
+    const [validated, setValidated] = useState(false)
 
     useEffect(() => {
         const queryString = window.location.search
@@ -34,6 +35,19 @@ function AuctionDetails() {
             socket.emit('join-auction', currentAuction.id, currentAuction.users)
         } else if(action === AUCTION_ACTIONS.start) {
             socket.emit('start-auction', currentAuction.id, currentAuction.price)
+        } else if(action === AUCTION_ACTIONS.update) {            
+            submitPrice()
+        }
+    }
+
+    const submitPrice = () => {        
+        const form = document.getElementById('auctionForm')
+        if (form.checkValidity()) {            
+            document.getElementById('mintPrice').value = ''
+            socket.emit('price-update-auction', currentAuction.id, bidPrice)
+            setValidated(false);
+        } else {
+            setValidated(true);
         }
     }
 
@@ -45,22 +59,21 @@ function AuctionDetails() {
         }if(userAuction === currentAuction.id && account !== currentAuction.account && currentAuction.status === AUCTION_STATUS.live) {
             return(
                 <div className='d-flex flex-row justify-content-center align-items-center auction-form form-container-dark'>
-                    <Form id='detailsForm' autoComplete='off'>
+                    <Form id='auctionForm' noValidate validated={validated} autoComplete='off'>
                         <Form.Group controlId="mintPrice" style={{marginLeft: '0px'}}>
-                            <Form.Control
+                            <Form.Control                                
                                 required
                                 type='number'
                                 step='0.00001'
                                 min={currentAuction.price}
-                                placeholder="10 ETH"
-                                defaultValue={currentAuction.price}
+                                placeholder={currentAuction.price}                                
                                 onChange={(e) => setBidPrice(e.target.value)}
-                                onClick={(e) => e.stopPropagation()}
+                                onClick={(e) => {e.stopPropagation()}}
                                 style={{backgroundColor: 'transparent'}}
                             />
                         </Form.Group>  
                     </Form>
-                    <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={(e) => {handleSubmit(e, AUCTION_ACTIONS.join)}}>Submit</Button>
+                    <Button variant="outline-light" style={{width: '100px', margin: '16px'}} onClick={(e) => {handleSubmit(e, AUCTION_ACTIONS.update)}}>Submit</Button>
                 </div> 
             )
         } else {

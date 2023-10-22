@@ -57,6 +57,31 @@ const saveMessage = async(id, message) => {
     return result
 }
 
+const updatePrice = async(id, price, account) => {
+    let result = false
+    result = await updateAuction(id, {price: price})
+
+    if(result) {
+        result = await priceHistory(id, {account, price})
+    }    
+
+    return result
+}
+
+const priceHistory = async(id, info) => {
+    const priceId = Date.now()
+    const query = admin.database().ref(`/auctions/${id}/priceHistory/${priceId}`) 
+    
+    const result = await query.update(info)
+    .then(() => true)
+    .catch(error => {
+        console.error(error)
+        return false
+    })
+
+    return result
+}
+
 const userInAuction = async (account) => {
     const userInfo = await userService.getUserInfo(account)    
 
@@ -130,5 +155,6 @@ module.exports = {
     updateAuction,
     userInAuction,
     joinAuction,
-    saveMessage
+    saveMessage,    
+    updatePrice
 }

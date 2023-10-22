@@ -59,4 +59,32 @@ module.exports = (io, socket, webPush) => {
             io.emit('auction-started', auctionId)
         }
     })
+
+    socket.on('price-update-auction', async(auctionId, newPrice) => {
+        const currentAuction = await auctionService.getLiveAuctions(socket.account)
+        .then(result => {
+            return result.liveAuctions[auctionId]
+        })
+
+        const messageId = Date.now()
+        const message = {id: messageId, user: socket.account, text: ''}
+        
+        if(currentAuction && parseFloat(newPrice) > parseFloat(currentAuction.price)) {
+            auctionService.updatePrice(auctionId, newPrice, socket.account)
+            .then(result => {
+                if(result) {
+                    message.text = `User ${ethService.parseAccount(socket.account)} updated auction price. Current price ${newPrice} ETH.`
+                    auctionService.saveMessage(auctionId, message)
+                    io.to(auctionId.toString()).emit('auction-message', auctionId, message)
+                    io.to(auctionId.toString()).emit('auction-price-updated', auctionId, newPrice)
+                } else {
+                    message.text = `Unable to update auction price.`
+                    socket.emit('auction-message', auctionId, message)
+                }
+            })
+        } else {
+            message.text = 'Invalid price.'
+            socket.emit('auction-message', auctionId, message)
+        }
+    })
 }

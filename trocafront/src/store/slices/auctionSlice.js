@@ -92,6 +92,18 @@ export const auctionSlice = createSlice({
 
                 state.liveAuctions[id].messages[message.id] = {text: message.text, user: message.user}
             }
+        },
+
+        updateAuctionPrice: (state, action) => {
+            const {id, newPrice} = action.payload
+
+            if(state.currentAuction.id.toString() === id.toString()) {                
+                state.currentAuction.price = newPrice                
+            }
+
+            if(state.liveAuctions[id]) {
+                state.liveAuctions[id].price = newPrice
+            }
         }
     }
 })
@@ -104,7 +116,8 @@ export const {
     updateUserAuction,
     updateAuctionsList,
     startAuction,
-    addAuctionMessage
+    addAuctionMessage,
+    updateAuctionPrice
 } = auctionSlice.actions
 
 //Selectors
