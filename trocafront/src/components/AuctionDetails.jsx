@@ -60,7 +60,7 @@ function AuctionDetails() {
             return(
                 <div className='d-flex flex-row justify-content-center align-items-center auction-form form-container-dark'>
                     <Form id='auctionForm' noValidate validated={validated} autoComplete='off'>
-                        <Form.Group controlId="mintPrice" style={{marginLeft: '0px'}}>
+                        <Form.Group controlId="mintPrice" style={{marginLeft: '0px', width: '130px'}}>
                             <Form.Control                                
                                 required
                                 type='number'
