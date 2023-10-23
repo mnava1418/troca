@@ -21,7 +21,13 @@ module.exports = {
 
     auctionStatus: {
         new: 'NEW',
-        live: 'LIVE'
+        live: 'LIVE',
+        pending: 'PENDING_CONFIRMATION'
+    },
+
+    auctionMessages: {
+        1: 'once',
+        2: 'twice'
     },
 
     huggingFaceURL: 'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1',

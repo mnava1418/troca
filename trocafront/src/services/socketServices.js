@@ -10,7 +10,8 @@ import {
     updateUserAuction,
     updateAuctionsList, 
     startAuction,
-    updateAuctionPrice
+    updateAuctionPrice,
+    pendingConfirmation
 } from "../store/slices/auctionSlice"
 
 export const setMintingListeners = (dispatch, account, socket, actions = {}, contracts = {}) => {
@@ -125,5 +126,9 @@ export const setAuctionListeners = (socket, dispatch, actions = {}) => {
 
     socket.on('auction-price-updated', (id, newPrice) => {
         dispatch(updateAuctionPrice({id, newPrice}))
+    })
+
+    socket.on('auction-pending-confirmation', (id) => {
+        dispatch(pendingConfirmation({id}))
     })
 }

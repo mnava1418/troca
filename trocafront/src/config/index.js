@@ -48,7 +48,8 @@ export const BID_ACTIONS = {
 
 export const AUCTION_STATUS = {
     new: 'NEW',
-    live: 'LIVE'
+    live: 'LIVE',
+    pending: 'PENDING_CONFIRMATION'
 }
 
 export const AUCTION_ACTIONS = {

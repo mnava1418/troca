@@ -1,6 +1,10 @@
 const admin = require('firebase-admin')
 const userService = require('./userService')
-const auctionStatus = require('../config').auctionStatus
+const ethService = require('./ethService')
+const {auctionStatus, auctionMessages} = require('../config')
+
+const auctionTimers = {}
+
 
 const creatAuction = async (account, token) => {
     const userAuction = await userInAuction(account)
@@ -57,15 +61,51 @@ const saveMessage = async(id, message) => {
     return result
 }
 
-const updatePrice = async(id, price, account) => {
+const updatePrice = async(id, price, account, io) => {
     let result = false
     result = await updateAuction(id, {price: price})
 
     if(result) {
         result = await priceHistory(id, {account, price})
-    }    
+    }
+    
+    if(result) {
+        controlActiveInterval(id, price, account, io)
+    }
 
     return result
+}
+
+const controlActiveInterval = (id, price, account, io) => {        
+    if(!auctionTimers[id]) {
+        auctionTimers[id] ={}
+    }
+
+    if(auctionTimers[id].active) {
+        clearInterval(auctionTimers[id].active.interval)
+    } else {
+        auctionTimers[id].active = {}
+    }
+    
+    const interval = setInterval((currentId, currentPrice, currentAccount)=> {
+        const messageId = Date.now()
+        const message = {id: messageId, user: currentAccount, text: ''}
+
+        if(auctionTimers[currentId].active.waitCount < 2) {
+            auctionTimers[currentId].active.waitCount++
+            message.text = `${currentPrice} ETH ${auctionMessages[auctionTimers[currentId].active.waitCount]}`
+        } else {
+            clearInterval(interval)
+            updateAuction(currentId, {status: auctionStatus.pending})
+            message.text = `User ${ethService.parseAccount(currentAccount)} won the auction! User has 20 seconds to confirm transaction or auction will restart.`
+            io.to(currentId.toString()).emit('auction-pending-confirmation', currentId)            
+        }     
+
+        io.to(currentId.toString()).emit('auction-message', currentId, message)
+    }, 3000, id, price, account)
+
+    auctionTimers[id].active.interval = interval
+    auctionTimers[id].active.waitCount = 0
 }
 
 const priceHistory = async(id, info) => {

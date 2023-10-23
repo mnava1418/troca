@@ -104,6 +104,18 @@ export const auctionSlice = createSlice({
             if(state.liveAuctions[id]) {
                 state.liveAuctions[id].price = newPrice
             }
+        },
+
+        pendingConfirmation: (state, action) => {
+            const {id} = action.payload
+
+            if(state.currentAuction.id.toString() === id.toString()) {                
+                state.currentAuction.status = AUCTION_STATUS.pending
+            }
+
+            if(state.liveAuctions[id]) {
+                state.liveAuctions[id].status = AUCTION_STATUS.pending
+            }
         }
     }
 })
@@ -117,7 +129,8 @@ export const {
     updateAuctionsList,
     startAuction,
     addAuctionMessage,
-    updateAuctionPrice
+    updateAuctionPrice,
+    pendingConfirmation
 } = auctionSlice.actions
 
 //Selectors

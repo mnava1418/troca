@@ -70,7 +70,7 @@ module.exports = (io, socket, webPush) => {
         const message = {id: messageId, user: socket.account, text: ''}
         
         if(currentAuction && parseFloat(newPrice) > parseFloat(currentAuction.price)) {
-            auctionService.updatePrice(auctionId, newPrice, socket.account)
+            auctionService.updatePrice(auctionId, newPrice, socket.account, io)
             .then(result => {
                 if(result) {
                     message.text = `User ${ethService.parseAccount(socket.account)} updated auction price. Current price ${newPrice} ETH.`
