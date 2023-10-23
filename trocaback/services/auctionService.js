@@ -95,9 +95,12 @@ const controlActiveInterval = (id, price, account, io) => {
             auctionTimers[currentId].active.waitCount++
             message.text = `${currentPrice} ETH ${auctionMessages[auctionTimers[currentId].active.waitCount]}`
         } else {
-            clearInterval(interval)
-            updateAuction(currentId, {status: auctionStatus.pending})
             message.text = `User ${ethService.parseAccount(currentAccount)} won the auction! User has 20 seconds to confirm transaction or auction will restart.`
+
+            clearInterval(interval)
+            updateAuction(currentId, {status: auctionStatus.pending})            
+            saveMessage(currentId, message)
+
             io.to(currentId.toString()).emit('auction-pending-confirmation', currentId)            
         }     
 
