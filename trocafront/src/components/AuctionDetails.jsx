@@ -42,8 +42,7 @@ function AuctionDetails() {
 
     const submitPrice = () => {        
         const form = document.getElementById('auctionForm')
-        if (form.checkValidity()) {            
-            document.getElementById('mintPrice').value = ''
+        if (form.checkValidity()) {                        
             socket.emit('price-update-auction', currentAuction.id, bidPrice)
             setValidated(false);
         } else {
