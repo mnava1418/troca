@@ -1,10 +1,10 @@
 :root {
-  --primary-color: #ef84f5;
-  --secondary-color: #2ee09a;
+  --primary-color: #018ABD;
+  --secondary-color: #97CBDC;
   --navBar-height: 65px;
   --two-navBar-height: 130px;
   --contrast-color: #6c757d;  
-  --bg-color: #15265C;
+  --bg-color: #004581;
 }
 
 .App {
@@ -15,7 +15,7 @@
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  background-image: linear-gradient(to bottom right, rgba(46,224,154,0.3) 0%, rgba(21,38,92,1) 90%);
+  background-image: linear-gradient(to bottom right, rgba(0,0,0,0.3) 0%, rgba(0,69,129,1) 90%);
 }
 
 nav {
@@ -266,18 +266,18 @@ input:checked + .slider:before {
 
 .modal-content {
   background-color: var(--bg-color) !important;
-  background-image: radial-gradient(circle, rgba(239,132,245,0.3) 0%, rgba(21,38,92,1) 100%) !important;
+  background-image: radial-gradient(circle, rgba(1,138,189,0.3) 0%, rgba(0,69,129,1) 100%) !important;
   color: #ffffff !important;
 }
 
 .offcanvas {
   background-color: var(--bg-color) !important;
-  background-image: radial-gradient(circle, rgba(239,132,245,0.3) 0%, rgba(21,38,92,1) 100%) !important;
+  background-image: radial-gradient(circle, rgba(1,138,189,0.3) 0%, rgba(0,69,129,1) 100%) !important;
 }
 
 .table {
   background-color: var(--bg-color) !important;
-  background-image: radial-gradient(circle, rgba(239,132,245,0.3) 0%, rgba(21,38,92,1) 100%) !important;
+  background-image: radial-gradient(circle, rgba(1,138,189,0.3) 0%, rgba(0,69,129,1) 100%) !important;
   color: #ffffff !important;
 }
 
