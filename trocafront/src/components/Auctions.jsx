@@ -1,6 +1,7 @@
 import {useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
+import useWeb3 from '../hooks/useWeb3';
 import { connectionStatusSelector } from '../store/slices/statusSlice';
 import { setAuctionListeners } from '../services/socketServices'
 import { PATHS } from '../config';
@@ -13,6 +14,7 @@ import '../styles/Auction.css'
 
 function Auctions() {
     const { isConnected, isMember, socket, account  } = useSelector(connectionStatusSelector)  
+    const {nft, troca, web3} = useWeb3()
     const dispatch = useDispatch()
     const auctionModel = new Auction(dispatch)
 
@@ -23,7 +25,7 @@ function Auctions() {
             window.location.href = PATHS.main
         } else {
             auctionModel.getLiveAuctions()
-            setAuctionListeners(socket, dispatch, {}, account)
+            setAuctionListeners(socket, dispatch, {}, account, {nft, troca, web3})
         }
         // eslint-disable-next-line
     }, [isConnected, isMember])

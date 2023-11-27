@@ -94,7 +94,7 @@ export const setExchangeListeners = (socket, dispatch) => {
     })
 }
 
-export const setAuctionListeners = (socket, dispatch, actions = {}) => {
+export const setAuctionListeners = (socket, dispatch, actions = {}, account = '', contracts = {}) => {
     socket.on('auction-created', (auction) => {     
         actions.setIsProcessingLocal(false)
 
@@ -128,7 +128,12 @@ export const setAuctionListeners = (socket, dispatch, actions = {}) => {
         dispatch(updateAuctionPrice({id, newPrice}))
     })
 
-    socket.on('auction-pending-confirmation', (id) => {
-        dispatch(pendingConfirmation({id}))
+    socket.on('auction-pending-confirmation', (auction) => {                
+        dispatch(pendingConfirmation({id: auction.id}))
+
+        if(auction.winner === account) {
+            const portfolio = new MyPortfolio(dispatch)
+            portfolio.confirmAuction(contracts.troca, contracts.nft, contracts.web3, auction.token, auction.winner)
+        }
     })
 }

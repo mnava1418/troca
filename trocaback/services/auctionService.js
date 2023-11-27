@@ -103,7 +103,7 @@ const controlActiveInterval = (id, price, account, io) => {
             .then(async (result) => {
                 if(result) {
                     const currentAuction = await getCurrentAuction(currentId)
-                    const confirmAuction = {id: currentId, winner: currentAccount, price: currentPrice, token: {owner: currentAuction.account, id: currentAuction.tokenId}}
+                    const confirmAuction = {id: currentId, winner: currentAccount, token: {owner: currentAuction.account, id: currentAuction.tokenId, price: currentPrice}}
                     io.to(currentId.toString()).emit('auction-pending-confirmation', confirmAuction)
                 }
             })
