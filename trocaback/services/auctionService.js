@@ -87,7 +87,7 @@ const controlActiveInterval = (id, price, account, io) => {
         auctionTimers[id].active = {}
     }
     
-    const interval = setInterval((currentId, currentPrice, currentAccount)=> {
+    const interval = setInterval((currentId, currentPrice, currentAccount) => {
         const messageId = Date.now()
         const message = {id: messageId, user: currentAccount, text: ''}
 
@@ -98,10 +98,17 @@ const controlActiveInterval = (id, price, account, io) => {
             message.text = `User ${ethService.parseAccount(currentAccount)} won the auction! User has 20 seconds to confirm transaction or auction will restart.`
 
             clearInterval(interval)
-            updateAuction(currentId, {status: auctionStatus.pending})            
-            saveMessage(currentId, message)
 
-            io.to(currentId.toString()).emit('auction-pending-confirmation', currentId)            
+            updateAuction(currentId, {status: auctionStatus.pending})
+            .then(async (result) => {
+                if(result) {
+                    const currentAuction = await getCurrentAuction(currentId)
+                    const confirmAuction = {id: currentId, winner: currentAccount, price: currentPrice, token: {owner: currentAuction.account, id: currentAuction.tokenId}}
+                    io.to(currentId.toString()).emit('auction-pending-confirmation', confirmAuction)
+                }
+            })
+
+            saveMessage(currentId, message)
         }     
 
         io.to(currentId.toString()).emit('auction-message', currentId, message)
@@ -190,6 +197,22 @@ const getLiveAuctions = async (account) => {
     })
 
     return {userAuction, liveAuctions}
+}
+
+const getCurrentAuction = async (auctionId) => {
+    let currentAuction = {}
+    const query = admin.database().ref(`/auctions/${auctionId}`)
+
+    await query.once('value', (data) => {
+        if(data.exists()) {
+            currentAuction = data.toJSON()
+        }
+    })
+    .catch(error => {
+        console.error(error)
+    })
+
+    return currentAuction
 }
 
 module.exports = {
