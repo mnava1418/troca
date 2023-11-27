@@ -12,7 +12,7 @@ import AuctionDetails from './AuctionDetails';
 import '../styles/Auction.css'
 
 function Auctions() {
-    const { isConnected, isMember, socket } = useSelector(connectionStatusSelector)  
+    const { isConnected, isMember, socket, account  } = useSelector(connectionStatusSelector)  
     const dispatch = useDispatch()
     const auctionModel = new Auction(dispatch)
 
@@ -23,7 +23,7 @@ function Auctions() {
             window.location.href = PATHS.main
         } else {
             auctionModel.getLiveAuctions()
-            setAuctionListeners(socket, dispatch, {})
+            setAuctionListeners(socket, dispatch, {}, account)
         }
         // eslint-disable-next-line
     }, [isConnected, isMember])

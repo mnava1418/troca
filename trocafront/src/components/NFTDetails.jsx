@@ -18,13 +18,13 @@ function NFTDetails({setShowDetails, token, tokenImg, onlyUser, formatOwner, isP
     const [priceETH, setPriceETH] = useState(price)
         
     const {nft} = useWeb3()
-    const { socket, isMember } = useSelector(connectionStatusSelector)
+    const { socket, isMember, account } = useSelector(connectionStatusSelector)
 
     const dispatch = useDispatch()
 
     useEffect(() => {
         if(onlyUser) {
-            setAuctionListeners(socket, dispatch, {setIsProcessingLocal})
+            setAuctionListeners(socket, dispatch, {setIsProcessingLocal}, account)
         } 
 
         // eslint-disable-next-line
