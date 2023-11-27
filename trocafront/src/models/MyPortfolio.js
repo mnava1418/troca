@@ -106,15 +106,19 @@ class MyPortfolio {
     }
 
     confirmAuction (troca, nft, web3, token, account) {
-        troca.methods.buyToken(nft._address, token.owner, token.id).send({from: account, value: web3.utils.toWei(token.price, 'ether')})
-        .on('transactionHash', () => {
-            this.dispatch(setAlert({show: true, type: 'warning', text: 'Please wait for the transaction to be confirmed.'}))
+        const auctionPromise = new Promise((resolve, reject) => {
+            troca.methods.buyToken(nft._address, token.owner, token.id).send({from: account, value: web3.utils.toWei(token.price, 'ether')})
+            .on('transactionHash', () => {
+                resolve()
+            })
+            .on('error', (error) => {
+                console.error(error)
+                const errorMessage = parseError(error)
+                reject(errorMessage)                
+            })        
         })
-        .on('error', (error) => {
-            console.error(error)
-            const errorMessage = parseError(error)
-            this.dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
-        })        
+
+        return auctionPromise        
     }
 }
 

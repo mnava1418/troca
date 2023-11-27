@@ -134,6 +134,12 @@ export const setAuctionListeners = (socket, dispatch, actions = {}, account = ''
         if(auction.winner === account) {
             const portfolio = new MyPortfolio(dispatch)
             portfolio.confirmAuction(contracts.troca, contracts.nft, contracts.web3, auction.token, auction.winner)
+            .then(() => {
+                dispatch(setAlert({show: true, type: 'warning', text: 'Please wait for the transaction to be confirmed.'}))
+            })
+            .catch((errorMessage) => {
+                dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
+            })
         }
     })
 }
