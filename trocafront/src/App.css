@@ -98,6 +98,9 @@ section h5 {
   position: fixed;
   top: var(--navBar-height);
   z-index: 3000;
+  width: 100%;
+  font-size: larger;
+  font-weight: 500;
 }
 
 .full-content {

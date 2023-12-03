@@ -65,7 +65,7 @@ function App() {
   const showAlert = () => {
     setTimeout(() => {
       dispatch(closeAlert())
-    }, 5000)
+    }, 6000)
 
     return(<CustomAlert type={alert.type} text={alert.text} action={alert.action} actionId={alert.actionId} />)
   }

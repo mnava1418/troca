@@ -19,8 +19,9 @@ function CustomAlert({type, text, actionId, action}) {
     
     return (
         <Alert variant={type} onClose={() => dispatch(closeAlert())} dismissible className='custom-alert'>
-            <Alert.Heading>{type === 'danger' ? 'Error!' : type === 'success' ? 'Success!' : 'Warning!'}</Alert.Heading>            
-            <p id='alertText' />
+            <div className='d-flex flex-row justify-content-center align-items-center'>                       
+                <p id='alertText' style={{margin: '0px'}}/>
+            </div>
         </Alert>
     );
   }
