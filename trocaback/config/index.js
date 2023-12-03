@@ -23,7 +23,8 @@ module.exports = {
         new: 'NEW',
         live: 'LIVE',
         pending: 'PENDING_CONFIRMATION',
-        end: 'END'
+        end: 'END',
+        complete: 'COMPLETE'
     },
 
     auctionMessages: {

@@ -137,6 +137,7 @@ export const setAuctionListeners = (socket, dispatch, actions = {}, account = ''
             portfolio.confirmAuction(contracts.troca, contracts.nft, contracts.web3, auction.token, auction.winner)
             .then(() => {
                 dispatch(setAlert({show: true, type: 'warning', text: 'Please wait for the transaction to be confirmed.'}))
+                socket.emit('complete-auction', auction.id)
             })
             .catch((errorMessage) => {
                 dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
@@ -155,5 +156,9 @@ export const setAuctionListeners = (socket, dispatch, actions = {}, account = ''
                 socket.emit('price-update-auction', id, newPrice)
             }, 2000)
         }        
+    })
+
+    socket.on('auction-completed', (id, status) => {
+        dispatch(updateStatus({id, status}))
     })
 }

@@ -138,4 +138,14 @@ module.exports = (io, socket, webPush) => {
         io.to(auctionId.toString()).emit('auction-message', auctionId, message)    
         io.to(auctionId.toString()).emit('auction-rejected', auctionId, currentStatus, socket.account, newAccount, newPrice, restartAuction)        
     })
+
+    socket.on('complete-auction', (auctionId) => {
+        auctionService.completeAuction(auctionId)
+
+        const messageId = Date.now()
+        const message = {id: messageId, user: socket.account, text: 'Auction completed. Thanks for participating, keep swaping!'}
+        auctionService.saveMessage(auctionId, message)
+        io.to(auctionId.toString()).emit('auction-message', auctionId, message)    
+        io.to(auctionId.toString()).emit('auction-completed', auctionId, auctionStatus.complete)
+    })
 }

@@ -223,6 +223,32 @@ const getCurrentAuction = async (auctionId) => {
     return currentAuction
 }
 
+const completeAuction = async (auctionId) => {
+    updateAuction(auctionId, {status: auctionStatus.complete})
+
+    const query = admin.database().ref('/users')
+    const accountsToComplete = []
+
+    await query.once('value', (data) => {        
+        if(data.exists()) {  
+            const users = data.toJSON()          
+            Object.keys(users).forEach(account => {
+                if(users[account].auction && users[account].auction.toString() === auctionId.toString()) {
+                    accountsToComplete.push(leaveAuction(account))                    
+                }
+            })            
+        }        
+    })
+    .catch(error => {
+        console.error(error)
+    })
+
+    Promise.all(accountsToComplete)
+    .catch(error => {
+        console.error(error)
+    })
+}
+
 module.exports = {
     creatAuction,
     getLiveAuctions,
@@ -232,5 +258,6 @@ module.exports = {
     saveMessage,    
     updatePrice,
     getCurrentAuction,
-    leaveAuction
+    leaveAuction,
+    completeAuction
 }
