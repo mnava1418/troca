@@ -1,7 +1,7 @@
 import { MINTING_STATUS } from "../config"
 import MyPortfolio from "../models/MyPortfolio"
 import { setAlert, updateChatUsers, userMintNFT } from "../store/slices/statusSlice"
-import { INFURA_URL, BID_STATUS } from "../config"
+import { INFURA_URL, BID_STATUS, PATHS } from "../config"
 import { updateTokenPrice } from "../store/slices/portfolioSlice"
 import { showExchange, updateOrder } from "../store/slices/exchangeSlice"
 import { 
@@ -11,7 +11,8 @@ import {
     updateAuctionsList, 
     startAuction,
     updateAuctionPrice,
-    pendingConfirmation
+    updateStatus,
+    userLeaves,
 } from "../store/slices/auctionSlice"
 
 export const setMintingListeners = (dispatch, account, socket, actions = {}, contracts = {}) => {
@@ -128,8 +129,8 @@ export const setAuctionListeners = (socket, dispatch, actions = {}, account = ''
         dispatch(updateAuctionPrice({id, newPrice}))
     })
 
-    socket.on('auction-pending-confirmation', (auction) => {                
-        dispatch(pendingConfirmation({id: auction.id}))
+    socket.on('auction-pending-confirmation', (auction, status) => {                
+        dispatch(updateStatus({id: auction.id, status }))
 
         if(auction.winner === account) {
             const portfolio = new MyPortfolio(dispatch)
@@ -139,7 +140,20 @@ export const setAuctionListeners = (socket, dispatch, actions = {}, account = ''
             })
             .catch((errorMessage) => {
                 dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
+                socket.emit('reject-auction', auction.id)
             })
         }
+    })
+
+    socket.on('auction-rejected', (id, status, currentAccount, newAccount, newPrice, restartAuction) => {
+        dispatch(updateAuctionPrice({id, newPrice}))
+        dispatch(updateStatus({id, status}))
+        dispatch(userLeaves({id, isWinner: account === currentAccount }))        
+        
+        if(restartAuction && newAccount === account) {            
+            setTimeout(() => {
+                socket.emit('price-update-auction', id, newPrice)
+            }, 2000)
+        }        
     })
 }

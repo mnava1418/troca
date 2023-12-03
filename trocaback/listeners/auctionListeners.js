@@ -69,7 +69,7 @@ module.exports = (io, socket, webPush) => {
         const messageId = Date.now()
         const message = {id: messageId, user: socket.account, text: ''}
         
-        if(currentAuction && parseFloat(newPrice) > parseFloat(currentAuction.price)) {
+        if(currentAuction && parseFloat(newPrice) >= parseFloat(currentAuction.price)) {
             auctionService.updatePrice(auctionId, newPrice, socket.account, io)
             .then(result => {
                 if(result) {
@@ -86,5 +86,56 @@ module.exports = (io, socket, webPush) => {
             message.text = 'Invalid price.'
             socket.emit('auction-message', auctionId, message)
         }
+    })
+
+    socket.on('reject-auction', async(auctionId) => {
+        const currentAuction = await auctionService.getCurrentAuction(auctionId)
+        const priceHistory = currentAuction.priceHistory
+        const newPriceHistory = {}
+        let previousPrice = 0        
+
+        Object.keys(priceHistory).sort().forEach(id => {
+            if(priceHistory[id].account !== socket.account) {
+                newPriceHistory[id] = priceHistory[id]
+
+                if(id > previousPrice) {
+                    previousPrice = id
+                }
+            }            
+        })
+
+        const messageId = Date.now()
+        const message = {id: messageId, user: socket.account, text: ''}
+        
+        const currentUsers = currentAuction.users - 1        
+        let restartAuction = true
+        let newPrice = undefined
+        let newAccount = undefined
+        let currentStatus = auctionStatus.live
+
+        const toExecute = [auctionService.leaveAuction(socket.account)]
+        const auctionInfo = {priceHistory: newPriceHistory, status: currentStatus, users: currentUsers}
+
+        if(currentUsers > 0 && previousPrice > 0) {
+            message.text = `User ${ethService.parseAccount(socket.account)} canceled the transaction and has been removed from the auction. Previous price was ${newPriceHistory[previousPrice].price} from ${ethService.parseAccount(newPriceHistory[previousPrice].account)}. Restarting auction...`
+            auctionInfo.price = newPriceHistory[previousPrice].price
+            newPrice = newPriceHistory[previousPrice].price
+            newAccount = newPriceHistory[previousPrice].account
+        } else {
+            message.text = `User ${ethService.parseAccount(socket.account)} canceled the transaction and has been removed from the auction. No more live prices so auction is terminated.`   
+            currentStatus = auctionStatus.end 
+            auctionInfo.status = currentStatus
+            auctionInfo.price = null
+            toExecute.push(auctionService.leaveAuction(currentAuction.account))
+            restartAuction = false
+        }
+        
+        toExecute.push(auctionService.updateAuction(auctionId, auctionInfo))
+
+        await Promise.all(toExecute)
+            
+        auctionService.saveMessage(auctionId, message)
+        io.to(auctionId.toString()).emit('auction-message', auctionId, message)    
+        io.to(auctionId.toString()).emit('auction-rejected', auctionId, currentStatus, socket.account, newAccount, newPrice, restartAuction)        
     })
 }

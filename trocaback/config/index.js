@@ -22,7 +22,8 @@ module.exports = {
     auctionStatus: {
         new: 'NEW',
         live: 'LIVE',
-        pending: 'PENDING_CONFIRMATION'
+        pending: 'PENDING_CONFIRMATION',
+        end: 'END'
     },
 
     auctionMessages: {

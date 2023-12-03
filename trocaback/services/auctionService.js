@@ -104,7 +104,7 @@ const controlActiveInterval = (id, price, account, io) => {
                 if(result) {
                     const currentAuction = await getCurrentAuction(currentId)
                     const confirmAuction = {id: currentId, winner: currentAccount, token: {owner: currentAuction.account, id: currentAuction.tokenId, price: currentPrice}}
-                    io.to(currentId.toString()).emit('auction-pending-confirmation', confirmAuction)
+                    io.to(currentId.toString()).emit('auction-pending-confirmation', confirmAuction, auctionStatus.pending)
                 }
             })
 
@@ -161,6 +161,14 @@ const joinAuction = async (account, auction, info = undefined) => {
     return result
 }
 
+const leaveAuction = async(account) => {
+    const query = admin.database().ref(`/users/${account}`)
+    await query.update({auction: null})    
+    .catch(error => {
+        console.error(error)        
+    })
+}
+
 const getUserAuction = async(account) => {
     const userInfo = await userService.getUserInfo(account)
 
@@ -185,7 +193,7 @@ const getLiveAuctions = async (account) => {
                 liveAuctions[userAuction] = {...data[userAuction], id: userAuction.toString()}
             } else {
                 Object.keys(data).forEach(id => {
-                    if(id === userAuction || data[id].status === auctionStatus.new) {
+                    if(account === data[id].account || data[id].status === auctionStatus.new) {
                         liveAuctions[id] = {...data[id], id: id.toString()}
                     }
                 })
@@ -222,5 +230,7 @@ module.exports = {
     userInAuction,
     joinAuction,
     saveMessage,    
-    updatePrice
+    updatePrice,
+    getCurrentAuction,
+    leaveAuction
 }

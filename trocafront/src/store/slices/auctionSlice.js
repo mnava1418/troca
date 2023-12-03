@@ -37,6 +37,22 @@ export const auctionSlice = createSlice({
             }
         },
 
+        userLeaves: (state, action) => {
+            const {id, isWinner} =  action.payload
+
+            if(state.currentAuction && state.currentAuction.id === id) {
+                if(isWinner) {
+                    state.userAuction = undefined
+                } 
+
+                state.currentAuction.users -=1                               
+            }
+
+            if(state.liveAuctions[id]) {
+                state.liveAuctions[id].users -=1
+            }
+        },
+
         updateUserAuction: (state, action) => {
             const {id} = action.payload
             state.userAuction = id
@@ -97,7 +113,7 @@ export const auctionSlice = createSlice({
         updateAuctionPrice: (state, action) => {
             const {id, newPrice} = action.payload
 
-            if(state.currentAuction.id.toString() === id.toString()) {                
+            if(state.currentAuction && state.currentAuction.id.toString() === id.toString()) {                
                 state.currentAuction.price = newPrice                
             }
 
@@ -106,17 +122,17 @@ export const auctionSlice = createSlice({
             }
         },
 
-        pendingConfirmation: (state, action) => {
-            const {id} = action.payload
+        updateStatus: (state, action) => {
+            const {id, status} = action.payload
 
-            if(state.currentAuction.id.toString() === id.toString()) {                
-                state.currentAuction.status = AUCTION_STATUS.pending
+            if(state.currentAuction && state.currentAuction.id.toString() === id.toString()) {                
+                state.currentAuction.status = status
             }
 
             if(state.liveAuctions[id]) {
-                state.liveAuctions[id].status = AUCTION_STATUS.pending
+                state.liveAuctions[id].status = status
             }
-        }
+        },
     }
 })
 
@@ -125,12 +141,14 @@ export const {
     setLiveAuctions,
     selectAuction,
     userJoin,
+    userLeaves,
     updateUserAuction,
     updateAuctionsList,
     startAuction,
     addAuctionMessage,
     updateAuctionPrice,
-    pendingConfirmation
+    updateStatus,
+    removeFromAuction
 } = auctionSlice.actions
 
 //Selectors
