@@ -25,8 +25,11 @@ function openPushNotification(event) {
             for (const client of allClients) {
                 const url = new URL(client.url);
                 
-                if(url.host === targetURL.host) {                    
-                    client.navigate(targetURL)
+                if(url.host === targetURL.host) {
+                    if(!targetURL.pathname.toLowerCase().includes('orderbook') ) {
+                        client.navigate(targetURL)
+                    }
+
                     client.focus()
                     clientFounded = true
                     break
