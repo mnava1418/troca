@@ -1,6 +1,6 @@
 .exchange-container {
     background-color: var(--bg-color);   
-    background-image: radial-gradient(circle, rgba(1,138,189,0.3) 0%, rgba(0,69,129,1) 100%) !important; 
+    background-image: radial-gradient(circle, rgba(29,26,57,0.3) 0%, rgba(69,25,82,0.6) 100%) !important; 
     border: 1px solid var(--bg-color);
     border-radius: 25px;
     overflow: auto;
