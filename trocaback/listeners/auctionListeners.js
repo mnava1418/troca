@@ -8,6 +8,7 @@ module.exports = (io, socket, webPush) => {
         const auction = await auctionService.creatAuction(socket.account, token)        
         
         if(auction.result) {
+            auctionService.markToken(token.key, true)
             const newAuctionDesktopPayload = notificationService.generateNewAuctionNotification(auction.auctionId)
             notificationService.notifyAll(socket.account, newAuctionDesktopPayload, webPush)
             socket.broadcast.emit('auction-update-list', auction);
@@ -88,7 +89,8 @@ module.exports = (io, socket, webPush) => {
         }
     })
 
-    socket.on('reject-auction', async(auctionId) => {
+    socket.on('reject-auction', async(auction) => {
+        const {id: auctionId, token} = auction
         const currentAuction = await auctionService.getCurrentAuction(auctionId)
         const priceHistory = currentAuction.priceHistory
         const newPriceHistory = {}
@@ -127,6 +129,7 @@ module.exports = (io, socket, webPush) => {
             auctionInfo.status = currentStatus
             auctionInfo.price = null
             toExecute.push(auctionService.leaveAuction(currentAuction.account))
+            toExecute.push(auctionService.markToken(token.key, null))
             restartAuction = false
         }
         

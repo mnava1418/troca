@@ -14,8 +14,8 @@ const creatAuction = async (account, token) => {
     }
     
     const auctionId = Date.now()
-    const {id, image, title, price} = token
-    const auctionInfo = {tokenId: id, image, title, price, status: auctionStatus.new, account, users: 0}
+    const {id, image, title, price, key} = token
+    const auctionInfo = {tokenId: id, tokenKey: key, image, title, price, status: auctionStatus.new, account, users: 0}
 
     const query = admin.database().ref(`/auctions/${auctionId}`) 
     const result = await query.update(auctionInfo)
@@ -33,6 +33,14 @@ const creatAuction = async (account, token) => {
     } else {
         return {result: false, message: 'Error creating auction. Please try again.'}
     }
+}
+
+const markToken = (key, inAuction) => {
+    const query = admin.database().ref(`/tokens/${key}`)
+    query.update({inAuction})
+    .catch(error => {
+        console.log(error)
+    })
 }
 
 const updateAuction = async(id, info) =>{
@@ -103,7 +111,7 @@ const controlActiveInterval = (id, price, account, io) => {
             .then(async (result) => {
                 if(result) {
                     const currentAuction = await getCurrentAuction(currentId)
-                    const confirmAuction = {id: currentId, winner: currentAccount, token: {owner: currentAuction.account, id: currentAuction.tokenId, price: currentPrice}}
+                    const confirmAuction = {id: currentId, winner: currentAccount, token: {owner: currentAuction.account, id: currentAuction.tokenId, key: currentAuction.tokenKey, price: currentPrice}}
                     io.to(currentId.toString()).emit('auction-pending-confirmation', confirmAuction, auctionStatus.pending)
                 }
             })
@@ -259,5 +267,6 @@ module.exports = {
     updatePrice,
     getCurrentAuction,
     leaveAuction,
-    completeAuction
+    completeAuction,
+    markToken
 }

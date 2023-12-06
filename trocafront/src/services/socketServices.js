@@ -141,7 +141,7 @@ export const setAuctionListeners = (socket, dispatch, actions = {}, account = ''
             })
             .catch((errorMessage) => {
                 dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
-                socket.emit('reject-auction', auction.id)
+                socket.emit('reject-auction', auction)
             })
         }
     })

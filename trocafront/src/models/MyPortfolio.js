@@ -40,7 +40,8 @@ class MyPortfolio {
                     image: catalog[key].image,
                     imageData: undefined,
                     price: catalog[key].price,
-                    description: catalog[key].description,                    
+                    description: catalog[key].description,  
+                    inAuction: catalog[key].inAuction                  
                 }
             }
         } 
