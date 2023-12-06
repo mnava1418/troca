@@ -24,6 +24,7 @@ function AuctionDetails() {
 
         if(Object.keys(liveAuctions).length > 0 && urlParams.has('id')) {            
             dispatch(selectAuction(urlParams.get('id')))
+            socket.emit('join-auction-room', urlParams.get('id'))
         }
         // eslint-disable-next-line
     }, [liveAuctions])
