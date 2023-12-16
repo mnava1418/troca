@@ -3,7 +3,7 @@ const firebase = require('../loaders/firebaseLoader')
 const socketio = require('../loaders/socketIoLoader')
 
 const http = require('http');
-const port = 9000
+const port = process.env.PORT || 9000;
 
 const startServer = () => {
   app.set('port', port);
