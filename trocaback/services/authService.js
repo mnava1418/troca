@@ -23,7 +23,9 @@ const validateToken = (token) => {
 }
 
 const getProvider = () => {
-    const provider = new Web3.providers.HttpProvider("http://127.0.0.1:8545") //TO-DO: Set production provider URL
+    const providerURL = authConfig.web3.provider[process.env.NODE_ENV]
+    const provider = new Web3.providers.HttpProvider(providerURL)
+
     return provider
 }
 
