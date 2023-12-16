@@ -1,6 +1,7 @@
 const admin = require('firebase-admin')
 const auth = require('../config/auth')
 const config = require('../config')
+const fetch = require('node-fetch')
 
 const infuraAuth = auth.infura
 const huggingFaceAuth = auth.huggingFace
