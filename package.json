@@ -1,0 +1,33 @@
+{
+    "_comments": [
+      "DO NOT UPDATE node-fetch dependency",
+      "run script for heroku"
+    ],
+    "name": "trocaback",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+      "start": "node ./trocaback/bin/www"      
+    },
+    "dependencies": {
+      "cookie-parser": "~1.4.4",
+      "debug": "~2.6.9",
+      "dotenv": "^16.3.1",
+      "express": "~4.16.1",
+      "express-rate-limit": "^6.11.2",
+      "firebase-admin": "^11.11.1",
+      "hbs": "~4.0.4",
+      "http-errors": "~1.6.3",
+      "ipfs-http-client": "^60.0.1",
+      "jsonwebtoken": "^9.0.2",
+      "morgan": "~1.9.1",
+      "multer": "^1.4.5-lts.1",
+      "node-fetch": "^2.7.0",
+      "nodemailer": "^6.9.7",
+      "socket.io": "^4.7.2",
+      "validator": "^13.11.0",
+      "web-push": "^3.6.6",
+      "web3": "^1.10.3"
+    }
+  }
+  
