@@ -12,6 +12,7 @@ module.exports = (io, socket, webPush) => {
             const newAuctionDesktopPayload = notificationService.generateNewAuctionNotification(auction.auctionId)
             notificationService.notifyAll(socket.account, newAuctionDesktopPayload, webPush)
             socket.broadcast.emit('auction-update-list', auction);
+            io.emit('token-inAuction', token.id, true)
         }
 
         socket.emit('auction-created', auction)
@@ -131,6 +132,7 @@ module.exports = (io, socket, webPush) => {
             toExecute.push(auctionService.leaveAuction(currentAuction.account))
             toExecute.push(auctionService.markToken(token.key, null))
             restartAuction = false
+            io.emit('token-inAuction', token.id, false)
         }
         
         toExecute.push(auctionService.updateAuction(auctionId, auctionInfo))
@@ -142,8 +144,11 @@ module.exports = (io, socket, webPush) => {
         io.to(auctionId.toString()).emit('auction-rejected', auctionId, currentStatus, socket.account, newAccount, newPrice, restartAuction)        
     })
 
-    socket.on('complete-auction', (auctionId) => {
+    socket.on('complete-auction', (auction) => {
+        const {id: auctionId, token} = auction
         auctionService.completeAuction(auctionId)
+        auctionService.markToken(token.key, null)
+        io.emit('token-inAuction', token.id, false)
 
         const messageId = Date.now()
         const message = {id: messageId, user: socket.account, text: 'Auction completed. Thanks for participating, keep swaping!'}

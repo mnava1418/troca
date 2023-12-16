@@ -56,6 +56,18 @@ export const portfolioSlice = createSlice({
             })
         },
 
+        tokenInAuction: (state, action) => {
+            if(state.allTokens[action.payload.id]) {
+                state.allTokens[action.payload.id].inAuction = action.payload.inAuction
+            }
+            
+            state.selectedTokens.forEach(token => {
+                if(token.id === action.payload.id) {
+                    token.inAuction = action.payload.inAuction
+                }
+            })
+        },
+
         transferToken: (state, action) => {
             if(state.allTokens[action.payload.id]) {
                 state.allTokens[action.payload.id].isListed = false
@@ -81,7 +93,8 @@ export const {
     loadTokenImg,
     updateTokenPrice,
     listToken,
-    transferToken
+    transferToken,
+    tokenInAuction
 } = portfolioSlice.actions
 
 //Selectors

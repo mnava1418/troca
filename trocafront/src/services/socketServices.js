@@ -1,8 +1,8 @@
 import { MINTING_STATUS } from "../config"
 import MyPortfolio from "../models/MyPortfolio"
 import { setAlert, updateChatUsers, userMintNFT } from "../store/slices/statusSlice"
-import { INFURA_URL, BID_STATUS, PATHS } from "../config"
-import { updateTokenPrice } from "../store/slices/portfolioSlice"
+import { INFURA_URL, BID_STATUS } from "../config"
+import { updateTokenPrice, tokenInAuction } from "../store/slices/portfolioSlice"
 import { showExchange, updateOrder } from "../store/slices/exchangeSlice"
 import { 
     addAuctionMessage, 
@@ -50,7 +50,11 @@ export const setPortfolioListeners = (socket, setIsProcessingLocal, dispatch) =>
         setIsProcessingLocal(false)
         dispatch(updateTokenPrice({id, price}))
         dispatch(setAlert({show: true, type: 'success', text: 'Token updated.'}))
-    })   
+    })
+
+    socket.on('token-inAuction', (id, inAuction) => {
+        dispatch(tokenInAuction({id, inAuction}))
+    })
 }
 
 export const setChatListeners = (socket, dispatch) => {
@@ -137,7 +141,7 @@ export const setAuctionListeners = (socket, dispatch, actions = {}, account = ''
             portfolio.confirmAuction(contracts.troca, contracts.nft, contracts.web3, auction.token, auction.winner)
             .then(() => {
                 dispatch(setAlert({show: true, type: 'warning', text: 'Please wait for the transaction to be confirmed.'}))
-                socket.emit('complete-auction', auction.id)
+                socket.emit('complete-auction', auction)
             })
             .catch((errorMessage) => {
                 dispatch(setAlert({show: true, type: 'danger', text: errorMessage}))
