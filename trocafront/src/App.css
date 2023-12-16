@@ -7,6 +7,10 @@
   --bg-color: #1D1A39;
 }
 
+::placeholder {
+  color: var(--contrast-color) !important;
+}
+
 .App {
   background-color: var(--bg-color);
   min-height: 100vh;
@@ -282,6 +286,8 @@ input:checked + .slider:before {
   background-color: var(--bg-color) !important;
   background-image: radial-gradient(circle, rgba(29,26,57,0.3) 0%, rgba(69,25,82,0.6) 100%) !important;
   color: #ffffff !important;
+  --bs-table-bg: var(--bg-color) !important;
+  --bs-table-color: #ffffff !important;
 }
 
 .table tr td {
