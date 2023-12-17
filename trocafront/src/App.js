@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 
@@ -16,7 +16,6 @@ import OrderBook from './components/OrderBook';
 import Auctions from './components/Auctions';
 
 import User from './models/User';
-import { PATHS } from './config'
 import { alertSelector, closeAlert, setShowNftFilter } from './store/slices/statusSlice'
 import { showExchangeSelector } from './store/slices/exchangeSlice';
 
@@ -45,18 +44,18 @@ function App() {
   const showApp = () => {
     return (
       <>
-        <BrowserRouter>
+        <Router basename={process.env.PUBLIC_URL}>
           <Routes>
-            <Route path={PATHS.main} element={<Landing />}/>
-            <Route path={PATHS.wallet} element={<Wallet />}/>
-            <Route path={PATHS.profile} element={<Profile />}/>            
-            <Route path={PATHS.portfolio} element={<Portfolio />}/>
-            <Route path={PATHS.mint} element={<Mint />}/>
-            <Route path={PATHS.orderBook} element={<OrderBook />}/>
-            <Route path={PATHS.auctions} element={<Auctions />}/>
+            <Route path='/' element={<Landing />}/>
+            <Route path='/wallet' element={<Wallet />}/>
+            <Route path='/profile' element={<Profile />}/>            
+            <Route path='/portfolio' element={<Portfolio />}/>
+            <Route path='/mint' element={<Mint />}/>
+            <Route path='/orderBook' element={<OrderBook />}/>
+            <Route path='/auctions' element={<Auctions />}/>
             <Route  path='*' element={<NotFound />}/>
           </Routes>
-        </BrowserRouter>
+        </Router>
         {showExchange ? <Exchange /> : <></>}
       </>
     )
