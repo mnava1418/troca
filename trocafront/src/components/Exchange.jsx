@@ -16,7 +16,7 @@ import '../styles/Exchange.css'
 function Exchange() {
     const dispatch = useDispatch()
     const { account, socket } = useSelector(connectionStatusSelector)
-    const { nft, troca, web3} = useWeb3()
+    const { nft, troca, web3, networkId} = useWeb3()
     
     const orderBook = useSelector(orderBookSelector)
     const order = useSelector(bidOrderSelector)
@@ -24,7 +24,7 @@ function Exchange() {
     const {seller, sellerTokenId, buyer, buyerTokenId, price, status} = order
 
     const isBuyer = buyer === account
-    const exchange = new ExchangeModel(dispatch, troca, nft)
+    const exchange = new ExchangeModel(dispatch, troca, nft, networkId)
 
     useEffect(() => {
         document.getElementById('exchangePrice').value = (price !== 0 ? price.toString() : '')

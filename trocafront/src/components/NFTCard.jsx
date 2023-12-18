@@ -24,7 +24,7 @@ function NFTCard({formatOwner, onlyUser, token, isProcessingLocal, setIsProcessi
     const { isMember, account, socket } = useSelector(connectionStatusSelector)
     const chatUsers = useSelector(chatUsersSelector)
     const { allTokens } = usePortfolio()
-    const { nft, troca, web3 } = useWeb3()
+    const { nft, troca, web3, networkId } = useWeb3()
     const { showDetails, setShowDetails } = useNFTActions()
 
     const {
@@ -34,7 +34,7 @@ function NFTCard({formatOwner, onlyUser, token, isProcessingLocal, setIsProcessi
     } = useNFTCard()
 
     const myPortfolio = new MyPortfolio(dispatch)
-    const exchange = new Exchange(dispatch, troca, nft)
+    const exchange = new Exchange(dispatch, troca, nft, networkId)
 
     useEffect(() => {
         if(allTokens[id].imageData === undefined) {

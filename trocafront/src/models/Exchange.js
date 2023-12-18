@@ -4,10 +4,11 @@ import { BACK_URLS, BID_STATUS } from '../config'
 import { parseError } from '../services/ethServices'
 
 class Exchange {
-    constructor (_dispatch, _troca, _nft) {
+    constructor (_dispatch, _troca, _nft, _networkId) {
         this.dispatch = _dispatch
         this.troca = _troca
         this.nft = _nft
+        this.networkId = _networkId
         this.baseURL = BACK_URLS[process.env.NODE_ENV]
     }    
 
@@ -19,6 +20,7 @@ class Exchange {
 
     updateBid(socket, order, status, isBuyer) {
         order.status = status
+        order.networkId = this.networkId
         const receiver = isBuyer ? order.seller : order.buyer
         this.dispatch(updateOrderStatus({status: order.status}))
         socket.emit('update-bid', order, receiver)
