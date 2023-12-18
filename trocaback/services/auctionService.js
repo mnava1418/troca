@@ -39,7 +39,7 @@ const markToken = (key, inAuction) => {
     const query = admin.database().ref(`/tokens/${key}`)
     query.update({inAuction})
     .catch(error => {
-        console.log(error)
+        console.error(error)
     })
 }
 
