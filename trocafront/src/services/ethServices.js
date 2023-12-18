@@ -122,6 +122,7 @@ export const accountListener = (account, user) => {
 
 export const loadContracts = async(dispatch) => {
     const web3 = getWeb3Provider()
+    const networkId = await web3.eth.net.getId()
     let contractsLoaded = {}
 
     for(const contractName in SMART_CONTRACTS) {
@@ -139,7 +140,7 @@ export const loadContracts = async(dispatch) => {
     if(Object.keys(contractsLoaded).length === 0) {
         dispatch(setAlert({show: true, type: 'danger', text: "Smart Contracts not available. Select another network."}))
     } else {
-        dispatch(loadContractData({web3, contracts: contractsLoaded}))
+        dispatch(loadContractData({web3, contracts: contractsLoaded, networkId}))
     }
 
     return contractsLoaded
