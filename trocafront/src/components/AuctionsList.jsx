@@ -4,11 +4,13 @@ import { connectionStatusSelector } from '../store/slices/statusSlice';
 import { parseAccount } from '../services/ethServices';
 
 import AuctionElement from './AuctionElement'
+import useWeb3 from '../hooks/useWeb3';
 
 function AuctionsList() {
     const dispatch = useDispatch()
     const {liveAuctions, userAuction} = useSelector(liveAuctionsSelector)    
     const { socket } = useSelector(connectionStatusSelector)
+    const { networkId } = useWeb3()
 
     const openAuction = (id) => {
         dispatch(selectAuction(id))
@@ -19,7 +21,7 @@ function AuctionsList() {
     }
 
     const getAuctionsList = () => {
-        const sortedAuctions = Object.values(liveAuctions)
+        const sortedAuctions = Object.values(liveAuctions).filter(auction => auction.networkId === networkId)
         sortedAuctions.sort((a,b) => (parseInt(a.id) <= parseInt(b.id)) ? 1 : -1)
 
         return(
