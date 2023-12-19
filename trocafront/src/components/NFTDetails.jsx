@@ -17,7 +17,7 @@ function NFTDetails({setShowDetails, token, tokenImg, onlyUser, formatOwner, isP
     const {id, title, description, price, key, isListed} = token
     const [priceETH, setPriceETH] = useState(price)
         
-    const {nft, troca, web3} = useWeb3()
+    const {nft, troca, web3, networkId} = useWeb3()
     const { socket, isMember, account } = useSelector(connectionStatusSelector)
 
     const dispatch = useDispatch()
@@ -42,7 +42,7 @@ function NFTDetails({setShowDetails, token, tokenImg, onlyUser, formatOwner, isP
 
     const createAuction = () => {
         setIsProcessingLocal(true)
-        socket.emit('create-auction', token)
+        socket.emit('create-auction', token, networkId)
     }
     
     const getActionBtn = () => {

@@ -6,7 +6,7 @@ const {auctionStatus, auctionMessages} = require('../config')
 const auctionTimers = {}
 
 
-const creatAuction = async (account, token) => {
+const creatAuction = async (account, token, networkId) => {
     const userAuction = await userInAuction(account)
 
     if(userAuction.isInAuction) {
@@ -15,7 +15,17 @@ const creatAuction = async (account, token) => {
     
     const auctionId = Date.now()
     const {id, image, title, price, key} = token
-    const auctionInfo = {tokenId: id, tokenKey: key, image, title, price, status: auctionStatus.new, account, users: 0}
+    const auctionInfo = {
+        tokenId: id, 
+        tokenKey: key, 
+        image, 
+        title, 
+        price, 
+        status: auctionStatus.new, 
+        account, 
+        users: 0,
+        networkId
+    }
 
     const query = admin.database().ref(`/auctions/${auctionId}`) 
     const result = await query.update(auctionInfo)

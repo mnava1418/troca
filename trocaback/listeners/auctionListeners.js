@@ -4,8 +4,8 @@ const ethService = require('../services/ethService')
 const { auctionStatus } = require('../config')
 
 module.exports = (io, socket, webPush) => {
-    socket.on('create-auction', async (token) => {
-        const auction = await auctionService.creatAuction(socket.account, token)        
+    socket.on('create-auction', async (token, networkId) => {
+        const auction = await auctionService.creatAuction(socket.account, token, networkId)        
         
         if(auction.result) {
             auctionService.markToken(token.key, true)
