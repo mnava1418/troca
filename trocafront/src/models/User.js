@@ -8,7 +8,8 @@ import {
     accountListener,  
     loadContracts,
     parseError,
-    subscribeTrocaEvents
+    subscribeTrocaEvents,
+    getWeb3Provider
 } from '../services/ethServices'
 
 import { 
@@ -39,10 +40,12 @@ class User {
         connectWallet(this.dispatch).then(async(account) => {
             if(account) {
                 const result = await signMessage(account, this.dispatch)
+                const web3 = getWeb3Provider()
+                const networkId = await web3.eth.net.getId()
                 if( result.isValid) {
                     this.dispatch(setIsProcessing(true))
                     
-                    const response = await post(this.baseURL, '/auth/login', {signature: result.signature, account})
+                    const response = await post(this.baseURL, '/auth/login', {signature: result.signature, account, networkId})
 
                     this.dispatch(setIsProcessing(false))
 

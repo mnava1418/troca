@@ -1,8 +1,8 @@
 const authService = require('../services/authService')
 
 const login = async (req, res) => {
-    const {account, signature} = req.body
-    const result = await authService.login(account, signature)
+    const {account, signature, networkId} = req.body
+    const result = await authService.login(account, signature, networkId)
 
     if(result.isValid) {
         res.status(200).json({token: result.token})

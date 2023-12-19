@@ -5,8 +5,9 @@ module.exports = {
     web3: {
         message: 'Please sign this message to validate you are the owner of the wallet. This request will not generate any cost or gas fees. Your authentication status will reset after 24 hours.',
         provider: {
-            development: 'http://127.0.0.1:8545',
-            production: `https://sepolia.infura.io/v3/${process.env.INFURA_PROJECT_ID}`
+            5777: 'http://127.0.0.1:8545',
+            11155111: `https://sepolia.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+            1: `https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
         }        
     },
 

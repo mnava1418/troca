@@ -22,15 +22,15 @@ const validateToken = (token) => {
     return result
 }
 
-const getProvider = () => {
-    const providerURL = authConfig.web3.provider[process.env.NODE_ENV]
+const getProvider = (networkId) => {
+    const providerURL = authConfig.web3.provider[networkId]
     const provider = new Web3.providers.HttpProvider(providerURL)
 
     return provider
 }
 
-const login = async (account, signature) => {
-    const web3 = new Web3(getProvider())
+const login = async (account, signature, networkId) => {
+    const web3 = new Web3(getProvider(networkId))
     let originalAccount = ''
 
     try {

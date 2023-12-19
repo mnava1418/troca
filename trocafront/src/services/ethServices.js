@@ -14,7 +14,7 @@ const SMART_CONTRACTS = {
     troca: TrocaContract
 }
 
-const getWeb3Provider = () => {
+export const getWeb3Provider = () => {
     const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545')
     return web3
 }
