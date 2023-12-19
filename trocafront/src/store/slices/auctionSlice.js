@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { createSelector } from 'reselect'
 import { AUCTION_STATUS } from '../../config'
 
 const INITIAL_STATE = {
@@ -152,11 +153,16 @@ export const {
 } = auctionSlice.actions
 
 //Selectors
-export const liveAuctionsSelector = (state) => { 
-    const liveAuctions = state.auction.liveAuctions
-    const userAuction = state.auction.userAuction
-    return {liveAuctions, userAuction}
-}
+const getLiveAuctions = (state) => state.auction.liveAuctions
+const getUserAuction = (state) => state.auction.userAuction
+
+export const liveAuctionsSelector = createSelector(
+    getLiveAuctions,
+    getUserAuction,
+    (liveAuctions, userAuction) => {
+        return {liveAuctions, userAuction}
+    }
+)
 
 export const currentAuctionSelector = (state) => state.auction.currentAuction
 
