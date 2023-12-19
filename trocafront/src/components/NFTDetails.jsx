@@ -11,6 +11,7 @@ import { connectionStatusSelector } from '../store/slices/statusSlice';
 import { setAuctionListeners } from '../services/socketServices'
 
 import '../styles/Mint.css'
+import { ETHER_SCAN_URLS } from '../config';
 
 function NFTDetails({setShowDetails, token, tokenImg, onlyUser, formatOwner, isProcessingLocal, setIsProcessingLocal}) {
     const [validated, setValidated] = useState(false)
@@ -93,7 +94,7 @@ function NFTDetails({setShowDetails, token, tokenImg, onlyUser, formatOwner, isP
                                     <div className='d-flex flex-column justify-content-center align-items-center'>
                                         <div className='d-flex flex-row justify-content-between align-items-center nft-details-item'>
                                             <div>Contract Address</div>
-                                            <div><a href={`https://etherscan.io/address/${nft._address}`} target={'_blank'} rel='noreferrer'>{parseAccount(nft._address)}</a></div>
+                                            <div><a href={`${ETHER_SCAN_URLS[networkId]}${nft._address}`} target={'_blank'} rel='noreferrer'>{parseAccount(nft._address)}</a></div>
                                         </div>    
                                         <div className='d-flex flex-row justify-content-between align-items-center nft-details-item'>
                                             <div>Token ID</div>

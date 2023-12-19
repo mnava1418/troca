@@ -58,3 +58,9 @@ export const AUCTION_ACTIONS = {
     join: 'JOIN',
     update: 'UPDATE'
 }
+
+export const ETHER_SCAN_URLS = {
+    5777: 'https://sepolia.etherscan.io/address/',
+    11155111: 'https://sepolia.etherscan.io/address/',
+    1: 'https://etherscan.io/address/',
+}
