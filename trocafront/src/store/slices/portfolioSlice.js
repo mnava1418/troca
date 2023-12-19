@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { createSelector } from 'reselect'
 
 const INITIAL_STATE = {
     allTokens: {},
@@ -98,29 +99,35 @@ export const {
 } = portfolioSlice.actions
 
 //Selectors
-export const portfolioTokensSelector = (state) => {
-    const account = state.status.connection.account
-    const tokens = state.portfolio.selectedTokens
-    const onlyUser = state.portfolio.onlyUser
+const getAccountSelector = (state) => state.status.connection.account
+const getTokensSelector = (state) => state.portfolio.selectedTokens
+const getOnlyUserSelector = (state) => state.portfolio.onlyUser
 
-    const result = []
 
-    if( onlyUser ) {
+export const portfolioTokensSelector = createSelector(
+    getAccountSelector,
+    getTokensSelector,
+    getOnlyUserSelector,
+    (account, tokens, onlyUser) => {
+        const result = []
+        
+        if( onlyUser ) {
         tokens.forEach(element => {
             if(element.owner === account) {
-                result.push(element)
+                result.push({...element})
             }
         })
-    } else {        
-        tokens.forEach(element => {
-            if(element.owner !== account && element.isListed && !element.inAuction) {
-                result.push(element)
-            }
-        })
-    }
+        } else {        
+            tokens.forEach(element => {
+                if(element.owner !== account && element.isListed && !element.inAuction) {
+                    result.push({...element})
+                }
+            })
+        }
 
-    return result
-}
+        return [...result]
+    }
+)
 
 export const onlyUserSelector = (state) => state.portfolio.onlyUser
 

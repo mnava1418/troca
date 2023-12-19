@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { createSelector } from 'reselect'
 import { BID_STATUS } from '../../config'
 
 const INITIAL_STATE = {
@@ -91,10 +92,17 @@ export const showExchangeSelector = (state) => state.exchange.show
 export const bidOrderSelector = (state) => state.exchange.order
 export const orderChangedSelector = (state) => state.exchange.orderChanged
 
-export const orderBookSelector = (state) => { 
-    const orderBook = [...Object.values(state.exchange.orderBook)].filter(order => order.networkId === state.contracts.networkId)
-    orderBook.sort((a, b) => a.id <= b.id ? 1 : -1)
-    return orderBook.slice(0,101)
-}
+const getOrderBookSelector = (state) => state.exchange.orderBook
+const getNetworkIdSelector = (state) => state.contracts.networkId
+
+export const orderBookSelector = createSelector(
+    getOrderBookSelector,
+    getNetworkIdSelector,
+    (orderBook, networkId) => {
+        const orderBookList = [...Object.values(orderBook)].filter(order => order.networkId === networkId )
+        orderBookList.sort((a, b) => a.id <= b.id ? 1 : -1)
+        return orderBookList.slice(0,101)
+    }
+)
 
 export default exchangeSlice.reducer
