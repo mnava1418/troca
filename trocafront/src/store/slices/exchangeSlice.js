@@ -92,7 +92,7 @@ export const bidOrderSelector = (state) => state.exchange.order
 export const orderChangedSelector = (state) => state.exchange.orderChanged
 
 export const orderBookSelector = (state) => { 
-    const orderBook = [...Object.values(state.exchange.orderBook)]
+    const orderBook = [...Object.values(state.exchange.orderBook)].filter(order => order.networkId === state.contracts.networkId)
     orderBook.sort((a, b) => a.id <= b.id ? 1 : -1)
     return orderBook.slice(0,101)
 }
