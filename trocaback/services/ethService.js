@@ -77,6 +77,29 @@ const unPinToken = async(token) => {
     })
 }
 
+const unPinList = async() => {
+    const list = [
+    ]
+
+    const toUnPin = []
+    const client = await getClient()
+
+    list.forEach(element => {
+        toUnPin.push(client.pin.rm(element))
+    })
+
+    const result = await Promise.all(toUnPin)
+    .then(() => {
+        return true
+    })
+    .catch(error => {
+        console.error(error)
+        return false
+    })
+
+    return result
+}
+
 const updateMetaData = async (uri, metaData) => {
     const query = admin.database().ref(`/tokens/${uri}`)
     const result = await query.update(metaData)
@@ -125,5 +148,6 @@ module.exports = {
     updateMetaData,
     generateTokenImage,
     unPinToken,
-    parseAccount
+    parseAccount,
+    unPinList
 }

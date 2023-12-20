@@ -6,5 +6,6 @@ const router = express.Router()
 
 module.exports = () => {    
     router.get('/', authController.validateToken, portfolioController.getAllTokens)
+    //router.get('/unPin', authController.validateToken, portfolioController.unPinTokens)
     return router
 }
