@@ -1,0 +1,97 @@
+.cs-card.cs-style1 {
+  position: relative;
+  background: linear-gradient(
+    90deg,
+    #ffffff 47.8%,
+    rgba(255, 255, 255, 0.22) 75.6%
+  );
+  overflow: hidden;
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    background-color: $gray;
+    right: -125px;
+    border: 1px solid $border;
+  }
+  &::before {
+    top: -142px;
+    transform: rotate(55deg);
+  }
+  &::after {
+    bottom: -142px;
+    right: -125px;
+    transform: rotate(35deg);
+  }
+
+  .cs-card_in {
+    height: 192px;
+    display: flex;
+    align-items: center;
+    padding: 20px 70px 20px 25px;
+    border: 1px solid $border;
+  }
+  .cs-card_arrow {
+    font-size: 32px;
+    position: absolute;
+    right: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .cs-card_title {
+    max-width: 200px;
+  }
+}
+
+.cs-card.cs-style2 {
+  .cs-card_number {
+    height: 48px;
+    width: 48px;
+    border-radius: 50%;
+    position: relative;
+  }
+  .cs-card_tick {
+    position: absolute;
+    right: -4px;
+    top: 3px;
+    display: flex;
+  }
+  .cs-card_in {
+    padding: 25px;
+    border-radius: 0 10px 10px;
+  }
+}
+.cs-card.cs-style3 {
+  border-radius: 10px;
+  padding: 35px 30px 30px;
+  transition: all 0.5s ease;
+  .cs-card_number {
+    -webkit-text-stroke: 2px $accent;
+    color: transparent;
+    height: 50px;
+    width: 50px;
+    border: 2px dashed $accent;
+    margin: auto;
+    border-radius: 50%;
+    margin-bottom: 25px;
+  }
+  &:hover {
+    transform: scale(1.04);
+  }
+}
+@media screen and (max-width: 991px) {
+  .cs-card.cs-style1 {
+    .cs-card_title {
+      max-width: 180px;
+    }
+    .cs-card_in {
+      height: 140px;
+    }
+    &:before,
+    &::after {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,228 @@
+/*--------------------------------------------------------------
+>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+1. Typography
+2. Preloader
+3. Spacing
+4. General
+5. Slider
+6. Isotope
+7. Video Popup
+8. Sidebar
+9. Post Details
+10. Portfolio Details
+11. Service Details
+12. Form
+13. Commingsoon
+14. Header
+15. Footer
+16. Accordian
+17. Countdown
+18. Counter
+19. CTA
+20. Contact
+21. Menu Card
+22. Expertise
+23. Event
+24. Gallery
+25. Hero
+26. Icon Box
+27. Image Box
+28. Info Card
+29. Logo Carousel
+30. Newsletter
+31. Portfolio
+32. Post
+33. Pricing Table
+34. Progressbar
+35. Product
+36. Shop Sidebar
+37. Section Heading
+38. Team
+39. Testimonial
+40. Text Box
+41. Course
+42. Video Block
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+1. Typography
+----------------------------------------------------------------*/
+// Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+body,
+html {
+  color: $secondary;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6em;
+  overflow-x: hidden;
+  background-color: $gray;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  clear: both;
+  color: $primary;
+  padding: 0;
+  margin: 0 0 20px 0;
+  font-weight: 600;
+  line-height: 1.2em;
+  font-family: 'Poppins', sans-serif;
+}
+
+.cs-primary_font {
+  letter-spacing: 0.02em;
+}
+
+.cs-primary_font,
+.cs-btn {
+  font-family: 'Poppins', sans-serif;
+}
+
+.cs-secondary_font {
+  font-family: 'Inter', sans-serif;
+}
+
+h1 {
+  font-size: 56px;
+}
+
+h2 {
+  font-size: 42px;
+}
+
+h3 {
+  font-size: 30px;
+}
+
+h4 {
+  font-size: 24px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+h6 {
+  font-size: 16px;
+}
+
+p {
+  margin-bottom: 15px;
+}
+
+ul {
+  margin: 0 0 25px 0;
+  padding-left: 20px;
+  list-style: square outside none;
+}
+
+ol {
+  padding-left: 20px;
+  margin-bottom: 25px;
+}
+
+dfn,
+cite,
+em,
+i {
+  font-style: italic;
+}
+
+blockquote {
+  margin: 0 15px;
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.6em;
+  margin: 0;
+}
+
+address {
+  margin: 0 0 15px;
+}
+
+img {
+  border: 0;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+button {
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  text-decoration: none;
+  color: $accent;
+}
+
+table {
+  width: 100%;
+  margin-bottom: 25px;
+
+  th {
+    font-weight: 600;
+    color: $secondary;
+  }
+
+  td,
+  th {
+    border-top: 1px solid $border;
+    padding: 11px 10px;
+  }
+}
+
+dl {
+  margin-bottom: 25px;
+
+  dt {
+    font-weight: 600;
+  }
+}
+
+b,
+strong {
+  font-weight: bold;
+}
+
+pre {
+  color: $secondary;
+  border: 1px solid $border;
+  font-size: 18px;
+  padding: 25px;
+  border-radius: 5px;
+}
+
+kbd {
+  font-size: 100%;
+  background-color: $secondary;
+  border-radius: 5px;
+}
+:root {
+  scroll-behavior: initial;
+}
+@media screen and (max-width: 991px) {
+  body,
+  html {
+    font-size: 16px;
+    line-height: 1.6em;
+  }
+  h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+}
