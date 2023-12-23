@@ -1,6 +1,6 @@
 function Steps () {
     return(
-        <section id="stepsSection">
+        <section id="startSection">
             <div className="container">
             <div className="cs-seciton_heading cs-style1 text-center wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s">
                 <h3 className="cs-section_title cs-font_16 cs-font_14_sm cs-gradient_color">Simple Steps</h3>

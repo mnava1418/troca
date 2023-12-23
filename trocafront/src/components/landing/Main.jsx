@@ -11,7 +11,7 @@ function Main() {
     }
 
     const exploreMore = () => {
-      const stepsSection = document.getElementById('stepsSection')
+      const stepsSection = document.getElementById('startSection')
 
       if (stepsSection) {
         stepsSection.scrollIntoView({ behavior: 'smooth' });
