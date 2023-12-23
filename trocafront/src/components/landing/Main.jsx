@@ -6,8 +6,16 @@ import '../../styles/Main.css'
 import imgOne from '../../assets/img/hero_img_1.png'
 
 function Main() {
-    const openPortfolio = async() => {
+    const openPortfolio = () => {
       window.location.href = PATHS.portfolio
+    }
+
+    const exploreMore = () => {
+      const stepsSection = document.getElementById('stepsSection')
+
+      if (stepsSection) {
+        stepsSection.scrollIntoView({ behavior: 'smooth' });
+      }
     }
 
     return (
@@ -19,7 +27,7 @@ function Main() {
                         <h2 className="cs-hero_secondary_title cs-font_24 cs-font_18_sm">Welcome to TROCA,</h2>
                         <h1 className="cs-hero_title cs-font_64 cs-font_36_sm cs-bold">The easiest way <br />to trade your NFTs.</h1>
                         <div className="cs-btn_group">
-                            <Button variant="primary" style={{fontWeight: '600'}}>Explore More</Button>
+                            <Button variant="primary" style={{fontWeight: '600'}} onClick={exploreMore}>Explore More</Button>
                             <Button variant="outline-light" style={{fontWeight: '600'}} onClick={openPortfolio}>View Portfolio</Button>
                         </div>
                         <h3 className="cs-hero_subtitle cs-font_18 cs-font_16_sm cs-body_line_height">
