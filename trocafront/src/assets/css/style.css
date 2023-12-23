@@ -707,7 +707,7 @@ hr {
 }
 
 .cs-light_bg {
-  background-color: #fff;
+  background-image: radial-gradient(circle, rgba(29,26,57,0.3) 0%, rgba(69,25,82,0.6) 100%) !important;
 }
 
 .cs-vertical_middle {
@@ -3473,11 +3473,11 @@ li.menu-item-has-children
 }
 
 .cs-card.cs-style3 .cs-card_number {
-  -webkit-text-stroke: 2px #0052FF;
-  color: transparent;
+  -webkit-text-stroke: 2px #F39F5A;
+  color: #F39F5A;
   height: 50px;
   width: 50px;
-  border: 2px dashed #0052FF;
+  border: 2px dashed #F39F5A;
   margin: auto;
   border-radius: 50%;
   margin-bottom: 25px;
@@ -3838,7 +3838,7 @@ li.menu-item-has-children
 }
 
 .cs-dark .cs-light_bg {
-  background: linear-gradient(108.18deg, rgba(234, 76, 137, 0.1) -2.02%, rgba(77, 68, 198, 0.1));
+  background-image: radial-gradient(circle, rgba(29,26,57,0.3) 0%, rgba(69,25,82,0.6) 100%) !important;
 }
 
 .cs-dark .cs-form_field {

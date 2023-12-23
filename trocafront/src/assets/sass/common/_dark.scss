@@ -93,11 +93,7 @@
     backdrop-filter: blur(10px);
   }
   .cs-light_bg {
-    background: linear-gradient(
-      108.18deg,
-      rgba(234, 76, 137, 0.1) -2.02%,
-      rgba(77, 68, 198, 0.1)
-    );
+    background-image: radial-gradient(circle, rgba(29,26,57,0.3) 0%, rgba(69,25,82,0.6) 100%) !important;
   }
   .cs-form_field {
     border-color: hsla(0, 0%, 100%, 0.12);
