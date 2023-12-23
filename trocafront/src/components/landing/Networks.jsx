@@ -4,7 +4,7 @@ function Networks() {
             <div className="container">
                 <div className="cs-seciton_heading cs-style1 text-center wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s">
                     <h3 className="cs-section_title cs-font_16 cs-font_14_sm cs-gradient_color">Networks</h3>
-                    <h2 className="cs-section_subtitle cs-m0 cs-font_36 cs-font_24_sm">Use 2 ETH networks</h2>
+                    <h2 className="cs-section_subtitle cs-m0 cs-font_36 cs-font_24_sm">Available in 2 ETH networks</h2>
                 </div>
                 <div className="cs-height_50 cs-height_lg_30"></div>
                 <div className="row wow fadeIn justify-content-center" data-wow-duration="1s" data-wow-delay="0.2s">

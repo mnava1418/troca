@@ -30,7 +30,7 @@ function Steps () {
                 <div className="cs-card cs-style3 text-center cs-light_bg">
                     <div className="cs-card_in">
                     <div className="cs-card_number cs-font_30 cs-font_24_sm cs-primary_font cs-body_line_height cs-center">3</div>
-                    <h3 className="cs-card_title cs-font_30 cs-font_24_sm cs-m0">Mint Using Our AI</h3>
+                    <h3 className="cs-card_title cs-font_30 cs-font_24_sm cs-m0">Use AI To Mint</h3>
                     </div>
                 </div>
                 <div className="cs-height_25 cs-height_lg_25"></div>
