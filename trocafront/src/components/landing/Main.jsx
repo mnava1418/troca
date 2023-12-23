@@ -16,7 +16,7 @@ function Main() {
                 <div className="cs-dark_overlay"></div>
                 <div className="container">
                     <div className="cs-hero_text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.35s">
-                        <h2 className="cs-hero_secondary_title cs-font_24 cs-font_18_sm">Welcome to TROCAA,</h2>
+                        <h2 className="cs-hero_secondary_title cs-font_24 cs-font_18_sm">Welcome to TROCA,</h2>
                         <h1 className="cs-hero_title cs-font_64 cs-font_36_sm cs-bold">The easiest way <br />to trade your NFTs.</h1>
                         <div className="cs-btn_group">
                             <Button variant="primary" style={{fontWeight: '600'}}>Explore More</Button>
@@ -27,7 +27,7 @@ function Main() {
                         </h3>
                     </div>
                     <div className="cs-hero_img wow fadeIn" data-wow-duration="1s" data-wow-delay="0.2s">
-                        <img src={imgOne} alt="Trocaa" />
+                        <img src={imgOne} alt="Troca" />
                     </div>
                 </div>
                 <div id="background-wrap">
