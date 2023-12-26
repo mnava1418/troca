@@ -47,6 +47,7 @@ To run the app locally follow the next steps
 
 3. Deploy smart contracts
     ```bash
+    cd smartContracts
     truffle migrate
 
 4. Run backend
