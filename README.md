@@ -38,7 +38,7 @@ To run the app locally follow the next steps
 
 1. Clone the Repository:
    ```bash
-   git clone https://github.com/your-username/troca.git
+   git clone https://github.com/mnava1418/troca.git
    cd troca
 
 2. Install dependencies (repeat for each module)
