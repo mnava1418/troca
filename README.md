@@ -10,7 +10,7 @@ Welcome to TROCA, the platform that allows you to discover, trade, and create NF
 
 ## Member Benefits
 
-- **Mint My Own NFTs:** Create and customize your own NFTs easily and uniquely.
+- **Mint My Own NFTs:** Create and customize your own NFTs easily and uniquely using AI.
 - **Participate in Auctions:** Join exciting live auctions where you can win amazing NFTs.
 - **Trade with Other Members:** Connect with collectors and engage in exclusive NFT trades.
 - **Zero Commission:** As a member, enjoy the freedom to sell without worrying about commissions.
