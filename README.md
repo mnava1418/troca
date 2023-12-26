@@ -20,10 +20,9 @@ Welcome to TROCA, the platform that allows you to discover, trade, and create NF
 1. **Visit Troca Website:**
     https://trocaa.netlify.app/
 
-2. **Connect your wallet to a ETH Network**\
-    App can run in two ETH networks.
-    - **Sepolia:** Test network
-    - **Mainnet:** ETH main network. THIS IS PRODUCTION
+2. **Connect your wallet to a ETH Network:** App can run in two ETH networks.
+- **Sepolia:** Test network
+- **Mainnet:** ETH main network. THIS IS PRODUCTION
 
 3. **Have fun!**
 
