@@ -141,6 +141,10 @@ export const loadContracts = async(dispatch) => {
         dispatch(setAlert({show: true, type: 'danger', text: "Smart Contracts not available. Select another network."}))
     } else {
         dispatch(loadContractData({web3, contracts: contractsLoaded, networkId}))
+
+        if(networkId !== 1) {
+            dispatch(setAlert({show: true, type: 'warning', text: "You are connected to a test network! Be carefull."}))
+        }
     }
 
     return contractsLoaded
