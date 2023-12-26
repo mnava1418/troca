@@ -56,7 +56,8 @@ export const AUCTION_STATUS = {
 export const AUCTION_ACTIONS = {
     start: 'START',
     join: 'JOIN',
-    update: 'UPDATE'
+    update: 'UPDATE',
+    cancel: 'CANCEL'
 }
 
 export const ETHER_SCAN_URLS = {

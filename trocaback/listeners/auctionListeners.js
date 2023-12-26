@@ -156,4 +156,18 @@ module.exports = (io, socket, webPush) => {
         io.to(auctionId.toString()).emit('auction-message', auctionId, message)    
         io.to(auctionId.toString()).emit('auction-completed', auctionId, auctionStatus.complete)
     })
+
+    socket.on('cancel-auction', async(auctionId, tokenKey) => {
+        const toExecute = [
+            auctionService.leaveAuction(socket.account),
+            auctionService.markToken(tokenKey, null),
+            auctionService.updateAuction(auctionId, {status: auctionStatus.end})
+        ]
+        
+        await Promise.all(toExecute)
+
+        const messageId = Date.now()
+        const message = {id: messageId, user: socket.account, text: 'Auction has been cancelled.'}
+        socket.emit('auction-message', auctionId, message)
+    })
 }
