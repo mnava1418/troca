@@ -61,6 +61,7 @@ To run the app locally follow the next steps
 
 6. Open your browser and visit http://localhost:3000 
 
+## Need help?
 
 If you have questions or detect any bug on the app, please **raise an issue!** I´ll be happy to assit.
 
