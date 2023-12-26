@@ -22,8 +22,8 @@ Welcome to TROCA, the platform that allows you to discover, trade, and create NF
 
 2. **Connect your wallet to a ETH Network**
     App can run in two ETH networks.
-        Sepolia: Test network
-        Mainnet: eth main network. THIS IS PRODUCTION
+    - **Sepolia:** Test network
+    - **Mainnet:** ETH main network. THIS IS PRODUCTION
 
 3. **Have fun!**
 
