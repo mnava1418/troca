@@ -20,28 +20,28 @@ Welcome to TROCA, the platform that allows you to discover, trade, and create NF
 1. **Visit Troca Website:**
     https://trocaa.netlify.app/
 
-2. **Connect your wallet to a ETH Network:** App can run in two ETH networks.
+2. **Connect your wallet to an ETH Network:** App can run in two ETH networks.
 - **Sepolia:** Test network
 - **Mainnet:** ETH main network. THIS IS PRODUCTION
 
 3. **Have fun!**
 
-## Do you want to run the app locally?\
+## Do you want to run the app locally?
 
-Project consists in three main modules
+Project has three main modules
 
 - **smartContracts:** Smart Contracts that controls the app
 - **trocafront:** Front End
 - **trocaback:** Back End
 
-To run the app locally follow the next steps\
+To run the app locally follow the next steps
 
-1. Clone the Repository:\
+1. Clone the Repository:
    ```bash
    git clone https://github.com/your-username/troca.git
    cd troca
 
-2. Install dependencies (repeat for each module)\
+2. Install dependencies (repeat for each module)
     ```bash
     npm install
 
@@ -61,26 +61,6 @@ To run the app locally follow the next steps\
 
 6. Open your browser and visit http://localhost:3000 
 
-Install Dependencies:
 
-bash
-Copy code
-npm install
-Run the Application:
-
-bash
-Copy code
-npm start
-Explore TROCA:
-Open your browser and visit http://localhost:3000 to explore the TROCA platform.
-
-Contributing
-Contributions are welcome! If you find issues or potential improvements, feel free to open an issue or submit a pull request.
-
-License
-This project is licensed under the MIT License. See the LICENSE file for more details.
-
-© 2023 TROCA. All rights reserved.
-///TERMINA
-
+If you have questions or detect any bug on the app, please **raise an issue!** I´ll be happy to assit.
 
